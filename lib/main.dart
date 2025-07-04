@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'screens/login.dart';
 import 'screens/register.dart';
 import 'screens/forgot_password.dart';
+import 'screens/home_screen.dart';
+// import 'screens/interview_screen.dart';
 
 void main() {
   runApp(InterviewApplication());
@@ -18,6 +20,8 @@ class InterviewApplication extends StatelessWidget {
         LoginScreen.routeName: (_) => LoginScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),
         ForgotPasswordScreen.routeName: (_) => ForgotPasswordScreen(),
+        HomeScreen.routeName: (_) => HomeScreen(),
+        // '/interview': (_) => InterviewScreen(),
       },
     );
   }

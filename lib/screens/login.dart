@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
 import 'register.dart';
 import 'forgot_password.dart';
 
@@ -19,11 +20,12 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKey.currentState!.save();
     setState(() => _loading = true);
 
-    // TODO: Gọi API đăng nhập
+    // TODO: Thay bằng API thật của bạn
     Future.delayed(Duration(seconds: 2), () {
       setState(() => _loading = false);
-      // Ví dụ điều hướng thành công:
-      // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
+      // Nếu đăng nhập thành công, điều hướng vào HomeScreen
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     });
   }
 
