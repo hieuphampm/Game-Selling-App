@@ -13,7 +13,7 @@ class InterviewApplication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Interview-Application',
+      title: 'Game Selling App',
       theme: ThemeData(primarySwatch: Colors.grey),
       initialRoute: LoginScreen.routeName,
       routes: {
