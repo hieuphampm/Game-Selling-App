@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'screens/login.dart';
-import 'screens/register.dart';
-import 'screens/forgot_password.dart';
+import 'auth/login.dart';
+import 'auth/register.dart';
+import 'auth/forgot_password.dart';
 
 void main() {
   runApp(InterviewApplication());
