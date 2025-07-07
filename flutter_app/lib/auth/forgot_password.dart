@@ -51,7 +51,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         fit: StackFit.expand,
         children: [
           // 1. Background image
-          Image.asset('assets/images/bg.jpg', fit: BoxFit.cover),
+          Image.asset('assets/images/white_bg.jpg', fit: BoxFit.cover),
           // 2. Overlay mờ
           Container(color: Colors.black.withOpacity(0.3)),
 

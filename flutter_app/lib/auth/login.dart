@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/bg.jpg', fit: BoxFit.cover),
+          Image.asset('assets/images/dark_bg.png', fit: BoxFit.cover),
           Container(color: Colors.black.withOpacity(0.3)),
           SafeArea(
             child: Padding(

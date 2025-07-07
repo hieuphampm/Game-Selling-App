@@ -1,5 +1,5 @@
-name: interview_application
-description: "Interview-Application"
+name: game_selling_app
+description: "Game Selling App"
 publish_to: 'none' 
 version: 1.0.0+1
 
@@ -19,5 +19,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/bg.jpg
+    - assets/images/
   

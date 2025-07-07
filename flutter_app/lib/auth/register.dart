@@ -45,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/bg.jpg', fit: BoxFit.cover),
+          Image.asset('assets/images/white_bg.jpg', fit: BoxFit.cover),
           Container(color: Colors.black.withOpacity(0.3)),
 
           SafeArea(
