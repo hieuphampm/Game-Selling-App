@@ -1,6 +1,6 @@
-# interview_application
+# game selling app
 
-Interview-Application
+Game Selling App
 
 ## Getting Started
 
