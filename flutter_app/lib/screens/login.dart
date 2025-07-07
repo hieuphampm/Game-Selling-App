@@ -1,18 +1,20 @@
+// lib/screens/login.dart
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
 import 'register.dart';
 import 'forgot_password.dart';
+// import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
+  const LoginScreen({super.key});
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
+  String _email = '', _password = '';
   bool _loading = false;
 
   void _submit() {
@@ -20,70 +22,184 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKey.currentState!.save();
     setState(() => _loading = true);
 
-    // TODO: Thay bằng API thật của bạn
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() => _loading = false);
-
-      // Nếu đăng nhập thành công, điều hướng vào HomeScreen
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final inputDecoration = InputDecoration(
+      filled: true,
+      fillColor: Colors.white70,
+      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+    );
+
     return Scaffold(
-      appBar: AppBar(title: Text('Đăng nhập')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (val) =>
-                    val!.contains('@') ? null : 'Email không hợp lệ',
-                onSaved: (val) => _email = val!.trim(),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Mật khẩu'),
-                obscureText: true,
-                validator: (val) =>
-                    val!.length >= 6 ? null : 'Mật khẩu ít nhất 6 ký tự',
-                onSaved: (val) => _password = val!.trim(),
-              ),
-              SizedBox(height: 24),
-              _loading
-                  ? CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _submit,
-                      child: Text('Đăng nhập'),
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset('assets/images/bg.jpg', fit: BoxFit.cover),
+          Container(color: Colors.black.withOpacity(0.3)),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 48),
+                    const Text(
+                      'Chào bạn!',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    child: Text('Quên mật khẩu?'),
-                    onPressed: () {
-                      Navigator.of(
-                        context,
-                      ).pushNamed(ForgotPasswordScreen.routeName);
-                    },
-                  ),
-                  TextButton(
-                    child: Text('Đăng ký'),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(RegisterScreen.routeName);
-                    },
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Hãy đăng nhập để tiếp tục!',
+                      style: TextStyle(fontSize: 18, color: Colors.white70),
+                    ),
+                    const SizedBox(height: 32),
+
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Tên đăng nhập hoặc email',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(height: 8),
+                          TextFormField(
+                            decoration: inputDecoration,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (v) => v != null && v.contains('@')
+                                ? null
+                                : 'Email không hợp lệ',
+                            onSaved: (v) => _email = v!.trim(),
+                          ),
+
+                          const SizedBox(height: 24),
+                          const Text(
+                            'Mật khẩu',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(height: 8),
+                          TextFormField(
+                            decoration: inputDecoration,
+                            obscureText: true,
+                            validator: (v) => v != null && v.length >= 6
+                                ? null
+                                : 'Mật khẩu ít nhất 6 ký tự',
+                            onSaved: (v) => _password = v!.trim(),
+                          ),
+
+                          const SizedBox(height: 32),
+                          _loading
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation(
+                                      Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(
+                                  width: double.infinity,
+                                  height: 48,
+                                  child: ElevatedButton(
+                                    onPressed: _submit,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).primaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Đăng nhập',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                          const SizedBox(height: 16),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () => Navigator.of(
+                                context,
+                              ).pushNamed(ForgotPasswordScreen.routeName),
+                              child: const Text(
+                                'Quên mật khẩu?',
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+                          Center(
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  const TextSpan(
+                                    text: 'Nếu bạn chưa có tài khoản hãy ',
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'đăng ký',
+                                    style: const TextStyle(
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.of(
+                                          context,
+                                        ).pushNamed(RegisterScreen.routeName);
+                                      },
+                                  ),
+                                  const TextSpan(
+                                    text: ' ngay',
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+
+                          const SizedBox(height: 48),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
