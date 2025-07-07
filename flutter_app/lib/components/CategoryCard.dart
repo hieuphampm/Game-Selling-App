@@ -4,7 +4,7 @@ class CategoryCard extends StatelessWidget {
   final String title;
   final IconData icon;
 
-  CategoryCard({required this.title, required this.icon});
+  const CategoryCard({super.key, required this.title, required this.icon});
 
   @override
   Widget build(BuildContext context) {

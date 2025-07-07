@@ -5,6 +5,8 @@ void main() {
 }
 
 class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
@@ -28,7 +30,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _nameController.text = "Demo";
     _emailController.text = "demo@example.com";
     _phoneController.text = "+1 234 567 8900";
-    _bioController.text = "Flutter developer passionate about creating beautiful mobile experiences.";
+    _bioController.text =
+        "Flutter developer passionate about creating beautiful mobile experiences.";
   }
 
   @override
@@ -346,6 +349,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
 // Usage in your main app
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

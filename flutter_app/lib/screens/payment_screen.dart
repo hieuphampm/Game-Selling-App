@@ -6,6 +6,8 @@ void main() {
 }
 
 class PaymentApp extends StatelessWidget {
+  const PaymentApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,11 +23,14 @@ class PaymentApp extends StatelessWidget {
 }
 
 class PaymentScreen extends StatefulWidget {
+  const PaymentScreen({super.key});
+
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateMixin {
+class _PaymentScreenState extends State<PaymentScreen>
+    with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _cardNumberController = TextEditingController();
   final _cardHolderController = TextEditingController();
@@ -165,7 +170,10 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
                             ),
                             SizedBox(height: 8),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(20),
@@ -198,7 +206,10 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: accentBlue.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(12),
@@ -220,15 +231,27 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
                       Row(
                         children: [
                           Expanded(
-                            child: _buildPaymentOption('card', 'Credit Card', Icons.credit_card),
+                            child: _buildPaymentOption(
+                              'card',
+                              'Credit Card',
+                              Icons.credit_card,
+                            ),
                           ),
                           SizedBox(width: 12),
                           Expanded(
-                            child: _buildPaymentOption('wallet', 'Wallet', Icons.account_balance_wallet),
+                            child: _buildPaymentOption(
+                              'wallet',
+                              'Wallet',
+                              Icons.account_balance_wallet,
+                            ),
                           ),
                           SizedBox(width: 12),
                           Expanded(
-                            child: _buildPaymentOption('bank', 'Bank', Icons.account_balance),
+                            child: _buildPaymentOption(
+                              'bank',
+                              'Bank',
+                              Icons.account_balance,
+                            ),
                           ),
                         ],
                       ),
@@ -333,7 +356,11 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
                                 color: accentBlue.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Icon(Icons.verified_user, color: accentBlue, size: 20),
+                              child: Icon(
+                                Icons.verified_user,
+                                color: accentBlue,
+                                size: 20,
+                              ),
                             ),
                             SizedBox(width: 16),
                             Expanded(
@@ -393,13 +420,15 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
             color: isSelected ? accentBlue : Colors.grey[700]!,
             width: isSelected ? 2 : 1,
           ),
-          boxShadow: isSelected ? [
-            BoxShadow(
-              color: accentBlue.withOpacity(0.2),
-              blurRadius: 10,
-              offset: Offset(0, 4),
-            ),
-          ] : [],
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: accentBlue.withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ]
+              : [],
         ),
         child: Column(
           children: [
@@ -407,7 +436,9 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
               duration: Duration(milliseconds: 200),
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: isSelected ? accentBlue.withOpacity(0.2) : Colors.transparent,
+                color: isSelected
+                    ? accentBlue.withOpacity(0.2)
+                    : Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -621,10 +652,7 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
             selectedPaymentMethod == 'wallet'
                 ? 'You will be redirected to complete the payment securely'
                 : 'Banking details will be provided after confirmation',
-            style: TextStyle(
-              color: subtextColor,
-              fontSize: 14,
-            ),
+            style: TextStyle(color: subtextColor, fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ],
@@ -695,17 +723,16 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [accentBlue.withOpacity(0.3), primaryPink.withOpacity(0.3)],
+                      colors: [
+                        accentBlue.withOpacity(0.3),
+                        primaryPink.withOpacity(0.3),
+                      ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    Icons.check_circle,
-                    color: accentBlue,
-                    size: 48,
-                  ),
+                  child: Icon(Icons.check_circle, color: accentBlue, size: 48),
                 ),
                 SizedBox(height: 24),
                 Text(
@@ -719,10 +746,7 @@ class _PaymentScreenState extends State<PaymentScreen> with TickerProviderStateM
                 SizedBox(height: 12),
                 Text(
                   'Your payment of \$124.99 has been processed successfully.',
-                  style: TextStyle(
-                    color: subtextColor,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: subtextColor, fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8),

@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'GameCard.dart';
 
 class PopularGamesSection extends StatelessWidget {
+  const PopularGamesSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +22,7 @@ class PopularGamesSection extends StatelessWidget {
           ),
         ),
         SizedBox(height: 12),
-        Container(
+        SizedBox(
           height: 200,
           child: ListView(
             scrollDirection: Axis.horizontal,

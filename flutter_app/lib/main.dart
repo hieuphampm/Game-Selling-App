@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_selling_app/screens/home_screen.dart';
 import 'auth/login.dart';
 import 'auth/register.dart';
 import 'auth/forgot_password.dart';
@@ -20,6 +21,7 @@ class GameSellingApp extends StatelessWidget {
         LoginScreen.routeName: (_) => LoginScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),
         ForgotPasswordScreen.routeName: (_) => ForgotPasswordScreen(),
+        HomeScreen.routeName: (_) => HomeScreen(),
       },
     );
   }

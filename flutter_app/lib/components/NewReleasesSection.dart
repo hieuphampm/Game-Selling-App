@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'GameCard.dart';
 
 class NewReleasesSection extends StatelessWidget {
+  const NewReleasesSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +22,7 @@ class NewReleasesSection extends StatelessWidget {
           ),
         ),
         SizedBox(height: 12),
-        Container(
+        SizedBox(
           height: 200,
           child: ListView(
             scrollDirection: Axis.horizontal,

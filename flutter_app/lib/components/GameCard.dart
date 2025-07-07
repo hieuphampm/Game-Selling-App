@@ -7,7 +7,8 @@ class GameCard extends StatelessWidget {
   final double rating;
   final Color imageColor;
 
-  GameCard({
+  const GameCard({
+    super.key,
     required this.title,
     required this.price,
     required this.rating,
@@ -34,11 +35,7 @@ class GameCard extends StatelessWidget {
               borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
             ),
             child: Center(
-              child: Icon(
-                Icons.videogame_asset,
-                color: imageColor,
-                size: 40,
-              ),
+              child: Icon(Icons.videogame_asset, color: imageColor, size: 40),
             ),
           ),
           Padding(
@@ -62,10 +59,7 @@ class GameCard extends StatelessWidget {
                     Icon(Icons.star, color: Color(0xFFFAB4E5), size: 16),
                     Text(
                       rating.toString(),
-                      style: TextStyle(
-                        color: Color(0xFF60D3F3),
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: Color(0xFF60D3F3), fontSize: 12),
                     ),
                   ],
                 ),

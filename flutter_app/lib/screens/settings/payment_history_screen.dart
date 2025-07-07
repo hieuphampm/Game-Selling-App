@@ -5,6 +5,8 @@ void main() {
 }
 
 class PaymentHistoryScreen extends StatefulWidget {
+  const PaymentHistoryScreen({super.key});
+
   @override
   _PaymentHistoryScreenState createState() => _PaymentHistoryScreenState();
 }
@@ -121,11 +123,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
               color: accentBlue.withOpacity(0.2),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(
-              Icons.games,
-              color: accentBlue,
-              size: 24,
-            ),
+            child: Icon(Icons.games, color: accentBlue, size: 24),
           ),
 
           SizedBox(width: 15),
@@ -146,10 +144,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                 SizedBox(height: 5),
                 Text(
                   transaction.date,
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Colors.grey[400], fontSize: 14),
                 ),
               ],
             ),
@@ -201,6 +196,8 @@ class Transaction {
 
 // Usage in your main app
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

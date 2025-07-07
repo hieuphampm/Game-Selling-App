@@ -1,13 +1,15 @@
-// lib/screens/login.dart
+// lib/auth/login.dart
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import 'register.dart';
 import 'forgot_password.dart';
-// import 'home_screen.dart';
+import '../screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
   const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -24,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Future.delayed(const Duration(seconds: 2), () {
       setState(() => _loading = false);
-      // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     });
   }
 

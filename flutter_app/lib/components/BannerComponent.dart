@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BannerComponent extends StatelessWidget {
+  const BannerComponent({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,11 +12,7 @@ class BannerComponent extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         gradient: LinearGradient(
-          colors: [
-            Color(0xFFFFD9F5),
-            Color(0xFFFAB4E5),
-            Color(0xFF60D3F3),
-          ],
+          colors: [Color(0xFFFFD9F5), Color(0xFFFAB4E5), Color(0xFF60D3F3)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

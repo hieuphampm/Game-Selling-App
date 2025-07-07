@@ -6,9 +6,10 @@ import '../components/FeaturedGamesSection.dart';
 import '../components/NewReleasesSection.dart';
 import '../components/PopularGamesSection.dart';
 
-
-
 class HomeScreen extends StatelessWidget {
+  static const routeName = '/home';
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,22 +71,10 @@ class HomeScreen extends StatelessWidget {
         selectedItemColor: Color(0xFFFFD9F5),
         unselectedItemColor: Color(0xFF60D3F3),
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.gamepad),
-            label: 'Games',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Wishlist',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: 'Games'),
+          BottomNavigationBarItem(icon: Icon(Icons.groups), label: 'Community'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );

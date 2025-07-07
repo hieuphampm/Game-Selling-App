@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'CategoryCard.dart';
 
 class CategoriesSection extends StatelessWidget {
+  const CategoriesSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +23,7 @@ class CategoriesSection extends StatelessWidget {
           ),
         ),
         SizedBox(height: 12),
-        Container(
+        SizedBox(
           height: 100,
           child: ListView(
             scrollDirection: Axis.horizontal,
