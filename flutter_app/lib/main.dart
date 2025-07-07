@@ -4,16 +4,16 @@ import 'auth/register.dart';
 import 'auth/forgot_password.dart';
 
 void main() {
-  runApp(InterviewApplication());
+  runApp(GameSellingApp());
 }
 
-class InterviewApplication extends StatelessWidget {
-  const InterviewApplication({super.key});
+class GameSellingApp extends StatelessWidget {
+  const GameSellingApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Interview-Application',
+      title: 'Game-Selling-App',
       theme: ThemeData(primarySwatch: Colors.grey),
       initialRoute: LoginScreen.routeName,
       routes: {
