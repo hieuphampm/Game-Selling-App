@@ -21,11 +21,29 @@ class _LoginScreenState extends State<LoginScreen> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
+
     setState(() => _loading = true);
 
     Future.delayed(const Duration(seconds: 2), () {
       setState(() => _loading = false);
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
+      if (_email == 'demo@gmail.com' && _password == 'demo123') {
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text('Đăng nhập thất bại'),
+            content: const Text('Email hoặc mật khẩu không đúng.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     });
   }
 
