@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:game_selling_app/screens/home_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'auth/login.dart';
-import 'auth/register.dart';
-import 'auth/forgot_password.dart';
+import 'screens/home_screen.dart';
 
-void main() {
-  runApp(GameSellingApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
 }
 
-class GameSellingApp extends StatelessWidget {
-  const GameSellingApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Game Selling App',
-      theme: ThemeData(primarySwatch: Colors.grey),
+      title: 'Firebase Login App',
+      theme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
       initialRoute: LoginScreen.routeName,
       routes: {
-        LoginScreen.routeName: (_) => LoginScreen(),
-        RegisterScreen.routeName: (_) => RegisterScreen(),
-        ForgotPasswordScreen.routeName: (_) => ForgotPasswordScreen(),
-        HomeScreen.routeName: (_) => HomeScreen(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
+        HomeScreen.routeName: (context) => const HomeScreen(),
       },
     );
   }
