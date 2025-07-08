@@ -1,9 +1,13 @@
 // screens/about_us_screen.dart
 import 'package:flutter/material.dart';
 
-class AboutUsScreen extends StatelessWidget {
-  const AboutUsScreen({super.key});
+class AboutUsScreen extends StatefulWidget {
+  static const routeName = '/about-us';
+  @override
+  _AboutUsScreenState createState() => _AboutUsScreenState();
+}
 
+class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,24 +163,19 @@ class AboutUsScreen extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       children: [
                         _buildTeamMember(
-                          name: 'John Smith',
+                          name: 'Pham Phuoc Minh Hieu',
                           role: 'CEO & Founder',
                           color: Colors.blue,
                         ),
                         _buildTeamMember(
-                          name: 'Sarah Johnson',
+                          name: 'Vo Huynh Thai Bao',
                           role: 'CTO',
                           color: Colors.pink,
                         ),
                         _buildTeamMember(
-                          name: 'Mike Chen',
+                          name: 'Cao Sy Sieu',
                           role: 'Head of Design',
                           color: Colors.green,
-                        ),
-                        _buildTeamMember(
-                          name: 'Lisa Brown',
-                          role: 'Community Manager',
-                          color: Colors.orange,
                         ),
                       ],
                     ),
