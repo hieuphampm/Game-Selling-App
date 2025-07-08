@@ -6,7 +6,7 @@ import '../screens/settings_screen.dart';
 
 class NavBar extends StatefulWidget {
   static const routeName = '/navbar';
-  const NavBar({Key? key}) : super(key: key);
+  const NavBar({super.key});
 
   @override
   _NavBarState createState() => _NavBarState();

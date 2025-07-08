@@ -12,7 +12,12 @@
           "package_name": "com.example.interview_application"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "797791806867-k17ci49hai0bh7li9lklsphvtab7ncg3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBMeRsTYzjsNXkX1F9BL0hmborua6M0N0g"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797791806867-k17ci49hai0bh7li9lklsphvtab7ncg3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "797791806867-4nvm75as27ea66s5ab1aofjom90o3pbs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.interviewApplication"
+              }
+            }
+          ]
         }
       }
     }

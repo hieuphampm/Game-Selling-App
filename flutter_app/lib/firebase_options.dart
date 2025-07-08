@@ -64,6 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '797791806867',
     projectId: 'gamesellingapp-f26b7',
     storageBucket: 'gamesellingapp-f26b7.firebasestorage.app',
+    iosClientId: '797791806867-4nvm75as27ea66s5ab1aofjom90o3pbs.apps.googleusercontent.com',
     iosBundleId: 'com.example.interviewApplication',
   );
 
@@ -73,6 +74,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '797791806867',
     projectId: 'gamesellingapp-f26b7',
     storageBucket: 'gamesellingapp-f26b7.firebasestorage.app',
+    iosClientId: '797791806867-4nvm75as27ea66s5ab1aofjom90o3pbs.apps.googleusercontent.com',
     iosBundleId: 'com.example.interviewApplication',
   );
 

@@ -1,9 +1,10 @@
 // screens/about_us_screen.dart
 import 'package:flutter/material.dart';
-import '../../components/navbar.dart';
 
 class AboutUsScreen extends StatefulWidget {
   static const routeName = '/about-us';
+
+  const AboutUsScreen({super.key});
   @override
   _AboutUsScreenState createState() => _AboutUsScreenState();
 }

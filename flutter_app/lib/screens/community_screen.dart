@@ -11,7 +11,7 @@ class CommunityScreen extends StatefulWidget {
     ActivitiesScreen.routeName: (_) => const ActivitiesScreen(),
   };
 
-  const CommunityScreen({Key? key}) : super(key: key);
+  const CommunityScreen({super.key});
 
   @override
   _CommunityScreenState createState() => _CommunityScreenState();
@@ -213,7 +213,7 @@ class _OptionCard extends StatelessWidget {
 
 class AddFriendScreen extends StatelessWidget {
   static const routeName = '/add-friend';
-  const AddFriendScreen({Key? key}) : super(key: key);
+  const AddFriendScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +264,7 @@ class AddFriendScreen extends StatelessWidget {
 
 class JoinGroupScreen extends StatelessWidget {
   static const routeName = '/join-group';
-  const JoinGroupScreen({Key? key}) : super(key: key);
+  const JoinGroupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -315,7 +315,7 @@ class JoinGroupScreen extends StatelessWidget {
 
 class GiftScreen extends StatelessWidget {
   static const routeName = '/gift';
-  const GiftScreen({Key? key}) : super(key: key);
+  const GiftScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +352,7 @@ class GiftScreen extends StatelessWidget {
 
 class ActivitiesScreen extends StatelessWidget {
   static const routeName = '/activities';
-  const ActivitiesScreen({Key? key}) : super(key: key);
+  const ActivitiesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
