@@ -3,9 +3,15 @@ import './settings/about_us_screen.dart';
 import './settings/edit_profile_screen.dart';
 import './settings/payment_history_screen.dart';
 
-class SettingScreen extends StatelessWidget {
-  const SettingScreen({super.key});
+class SettingsScreen extends StatefulWidget {
+  static const routeName = '/forgot-password';
 
+  const SettingsScreen({super.key});
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,9 +74,7 @@ class SettingScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => AboutUsScreen(),
-                  ),
+                  MaterialPageRoute(builder: (context) => AboutUsScreen()),
                 );
               },
             ),

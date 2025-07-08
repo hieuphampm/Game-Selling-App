@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'register.dart';
 import 'forgot_password.dart';
-import '../screens/home_screen.dart';
+import '../components/navbar.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Future.delayed(const Duration(seconds: 2), () {
       setState(() => _loading = false);
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(NavBar.routeName);
     });
   }
 

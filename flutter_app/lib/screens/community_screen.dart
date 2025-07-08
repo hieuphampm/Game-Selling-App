@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 
-class CommunityScreen extends StatelessWidget {
+class CommunityScreen extends StatefulWidget {
   static const routeName = '/community';
 
+  static Map<String, WidgetBuilder> routes = {
+    CommunityScreen.routeName: (_) => const CommunityScreen(),
+    AddFriendScreen.routeName: (_) => const AddFriendScreen(),
+    JoinGroupScreen.routeName: (_) => const JoinGroupScreen(),
+    GiftScreen.routeName: (_) => const GiftScreen(),
+    ActivitiesScreen.routeName: (_) => const ActivitiesScreen(),
+  };
+
+  const CommunityScreen({Key? key}) : super(key: key);
+
+  @override
+  _CommunityScreenState createState() => _CommunityScreenState();
+}
+
+class _CommunityScreenState extends State<CommunityScreen> {
   final _cardColors = const [
     Color(0xFFFFD9F5),
     Color(0xFF60D3F3),
@@ -15,7 +30,22 @@ class CommunityScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       appBar: AppBar(
-        title: const Text('Community'),
+        title: const Text(
+          'Community',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.1,
+            shadows: [
+              Shadow(
+                color: Colors.black45,
+                offset: Offset(1, 1),
+                blurRadius: 2,
+              ),
+            ],
+          ),
+        ),
         elevation: 0,
         backgroundColor: Colors.black,
       ),
@@ -50,7 +80,7 @@ class CommunityScreen extends StatelessWidget {
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 8,
-                          offset: const Offset(0, 4),
+                          offset: Offset(0, 4),
                         ),
                       ],
                     ),
@@ -65,24 +95,35 @@ class CommunityScreen extends StatelessWidget {
                     'Game Community',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 24,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black54,
+                          offset: Offset(2, 2),
+                          blurRadius: 4,
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 8),
                   const Text(
                     'This is where you can find people with the same hobby and desire!',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ],
               ),
             ),
-
             const SizedBox(height: 24),
-
             GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               crossAxisCount: 2,
               crossAxisSpacing: 16,
@@ -111,7 +152,7 @@ class CommunityScreen extends StatelessWidget {
                       Navigator.pushNamed(context, GiftScreen.routeName),
                 ),
                 _OptionCard(
-                  label: 'Activities with Friends!',
+                  label: 'Activities',
                   icon: Icons.emoji_events,
                   backgroundColor: _cardColors[3],
                   onTap: () =>
@@ -157,7 +198,10 @@ class _OptionCard extends StatelessWidget {
               Text(
                 label,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -169,13 +213,17 @@ class _OptionCard extends StatelessWidget {
 
 class AddFriendScreen extends StatelessWidget {
   static const routeName = '/add-friend';
+  const AddFriendScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       appBar: AppBar(
-        title: const Text('Community'),
+        title: const Text(
+          'Add friend',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         elevation: 0,
         backgroundColor: Colors.black,
       ),
@@ -183,15 +231,6 @@ class AddFriendScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              'Add friend',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
             const TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
@@ -205,11 +244,13 @@ class AddFriendScreen extends StatelessWidget {
               child: ListView.separated(
                 itemCount: 5,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemBuilder: (_, i) => Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
+                itemBuilder: (_, i) => Card(
+                  color: const Color(0xFF1A1A1A),
+                  child: ListTile(
+                    title: Text(
+                      'User \$i',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
@@ -223,13 +264,17 @@ class AddFriendScreen extends StatelessWidget {
 
 class JoinGroupScreen extends StatelessWidget {
   static const routeName = '/join-group';
+  const JoinGroupScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       appBar: AppBar(
-        title: const Text('Community'),
+        title: const Text(
+          'Join Group',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         elevation: 0,
         backgroundColor: Colors.black,
       ),
@@ -237,15 +282,6 @@ class JoinGroupScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              'Join Group',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
             const TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
@@ -259,11 +295,13 @@ class JoinGroupScreen extends StatelessWidget {
               child: ListView.separated(
                 itemCount: 5,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemBuilder: (_, i) => Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
+                itemBuilder: (_, i) => Card(
+                  color: const Color(0xFF1A1A1A),
+                  child: ListTile(
+                    title: Text(
+                      'Group \$i',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
@@ -277,13 +315,17 @@ class JoinGroupScreen extends StatelessWidget {
 
 class GiftScreen extends StatelessWidget {
   static const routeName = '/gift';
+  const GiftScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       appBar: AppBar(
-        title: const Text('Community'),
+        title: const Text(
+          'Gift',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         elevation: 0,
         backgroundColor: Colors.black,
       ),
@@ -291,15 +333,6 @@ class GiftScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              'Gift',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
             const TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
@@ -308,6 +341,8 @@ class GiftScreen extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
+            const SizedBox(height: 16),
+            ElevatedButton(onPressed: () {}, child: const Text('Redeem')),
           ],
         ),
       ),
@@ -317,43 +352,34 @@ class GiftScreen extends StatelessWidget {
 
 class ActivitiesScreen extends StatelessWidget {
   static const routeName = '/activities';
+  const ActivitiesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       appBar: AppBar(
-        title: const Text('Community'),
+        title: const Text(
+          'Activities',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         elevation: 0,
         backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              'Activities with Friends!',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+        child: ListView.separated(
+          itemCount: 5,
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          itemBuilder: (_, i) => Card(
+            color: const Color(0xFF1A1A1A),
+            child: ListTile(
+              title: Text(
+                'Activity \$i',
+                style: const TextStyle(color: Colors.white),
               ),
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView.separated(
-                itemCount: 5,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemBuilder: (_, i) => Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
