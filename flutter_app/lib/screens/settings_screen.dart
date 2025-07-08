@@ -4,7 +4,7 @@ import './settings/edit_profile_screen.dart';
 import './settings/payment_history_screen.dart';
 
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
