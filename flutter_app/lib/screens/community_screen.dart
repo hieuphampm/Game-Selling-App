@@ -16,7 +16,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(32, 0),
+              padding: const EdgeInsets.all(32.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
