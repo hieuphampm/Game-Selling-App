@@ -1,139 +1,292 @@
+// screens/about_us_screen.dart
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AboutUsScreen extends StatelessWidget {
-  static const routeName = '/about-us';
   const AboutUsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFF0D0D0D);
-    const pinkAccent = Color(0xFFFFD9F5);
-    const lightPinkAccent = Color(0xFFFAB4E5);
-
     return Scaffold(
-      backgroundColor: bgColor,
+      appBar: AppBar(title: const Text('About Us'), elevation: 0),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header with background image and title
-            Stack(
-              children: [
-                Container(
-                  height: 200,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/about_header.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+            // Header Section
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(32.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColor.withOpacity(0.7),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
-                Container(
-                  height: 200,
-                  color: Colors.black.withOpacity(0.5),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'About us',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 32),
-
-            // Introduction Section (updated for GameStore)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              ),
               child: Column(
                 children: [
-                  Text(
-                    'Welcome to GameStore!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: pinkAccent,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  // Logo
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.videogame_asset,
+                      size: 50,
+                      color: Colors.deepPurple,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    'GameStore is your one‑stop shop for the best PC and mobile games. '
-                    'Discover new releases, exclusive deals, and community favorites—all in one place. '
-                    'Join millions of gamers and level up your collection today!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  const Text(
+                    'Game Store',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const SizedBox(height: 24),
-
-                  // Feature Cards
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      _FeatureCard(
-                        icon: Icons.local_offer,
-                        title: 'Exclusive Deals',
-                        subtitle: 'Up to 70% off top titles.',
-                      ),
-                      _FeatureCard(
-                        icon: Icons.new_releases,
-                        title: 'New Releases',
-                        subtitle: 'Stay ahead with the latest games.',
-                      ),
-                      _FeatureCard(
-                        icon: Icons.people,
-                        title: 'Community Picks',
-                        subtitle: 'Top-rated by fellow gamers.',
-                      ),
-                    ],
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Your Ultimate Gaming Destination',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 32),
-
-            // Media Section
+            // About Content
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        'assets/images/team_photo.jpg',
-                        height: 160,
-                        fit: BoxFit.cover,
+                  // Mission Section
+                  _buildSection(
+                    context,
+                    icon: Icons.flag,
+                    title: 'Our Mission',
+                    content:
+                        'We strive to provide gamers with the best digital marketplace experience. Our platform offers a vast selection of games, competitive prices, and a vibrant community where gamers can connect and share their passion.',
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Vision Section
+                  _buildSection(
+                    context,
+                    icon: Icons.visibility,
+                    title: 'Our Vision',
+                    content:
+                        'To become the world\'s most trusted and innovative gaming platform, where every gamer finds their perfect adventure and builds lasting connections with fellow enthusiasts.',
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Stats Section
+                  const Text(
+                    'Our Impact',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildStatCard(
+                          context,
+                          number: '10M+',
+                          label: 'Active Users',
+                          icon: Icons.people,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _buildStatCard(
+                          context,
+                          number: '50K+',
+                          label: 'Games',
+                          icon: Icons.sports_esports,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildStatCard(
+                          context,
+                          number: '180+',
+                          label: 'Countries',
+                          icon: Icons.public,
+                          color: Colors.orange,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _buildStatCard(
+                          context,
+                          number: '24/7',
+                          label: 'Support',
+                          icon: Icons.support_agent,
+                          color: Colors.purple,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Team Section
+                  const Text(
+                    'Meet Our Team',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 200,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        _buildTeamMember(
+                          name: 'John Smith',
+                          role: 'CEO & Founder',
+                          color: Colors.blue,
+                        ),
+                        _buildTeamMember(
+                          name: 'Sarah Johnson',
+                          role: 'CTO',
+                          color: Colors.pink,
+                        ),
+                        _buildTeamMember(
+                          name: 'Mike Chen',
+                          role: 'Head of Design',
+                          color: Colors.green,
+                        ),
+                        _buildTeamMember(
+                          name: 'Lisa Brown',
+                          role: 'Community Manager',
+                          color: Colors.orange,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Contact Section
+                  const Text(
+                    'Get in Touch',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: const Icon(
+                              Icons.email,
+                              color: Colors.blue,
+                            ),
+                            title: const Text('Email'),
+                            subtitle: const Text('support@gamestore.com'),
+                            onTap: () {
+                              // Open email
+                            },
+                          ),
+                          const Divider(),
+                          ListTile(
+                            leading: const Icon(
+                              Icons.phone,
+                              color: Colors.green,
+                            ),
+                            title: const Text('Phone'),
+                            subtitle: const Text('+1 (555) 123-4567'),
+                            onTap: () {
+                              // Make phone call
+                            },
+                          ),
+                          const Divider(),
+                          ListTile(
+                            leading: const Icon(
+                              Icons.location_on,
+                              color: Colors.red,
+                            ),
+                            title: const Text('Address'),
+                            subtitle: const Text(
+                              '123 Gaming Street, Digital City, DC 12345',
+                            ),
+                            onTap: () {
+                              // Open maps
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Stack(
-                      alignment: Alignment.center,
+                  const SizedBox(height: 24),
+
+                  // Social Media Section
+                  const Text(
+                    'Follow Us',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildSocialButton(
+                        icon: Icons.facebook,
+                        color: Colors.blue[700]!,
+                        onTap: () {},
+                      ),
+                      _buildSocialButton(
+                        icon: Icons.camera_alt,
+                        color: Colors.purple,
+                        onTap: () {},
+                      ),
+                      _buildSocialButton(
+                        icon: Icons.videocam,
+                        color: Colors.red,
+                        onTap: () {},
+                      ),
+                      _buildSocialButton(
+                        icon: Icons.chat,
+                        color: Colors.lightBlue,
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Version Info
+                  Center(
+                    child: Column(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.asset(
-                            'assets/images/video_thumbnail.jpg',
-                            height: 160,
-                            fit: BoxFit.cover,
+                        Text(
+                          'Game Store v2.5.0',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black45,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.play_arrow,
-                            color: Colors.white,
-                            size: 48,
+                        const SizedBox(height: 4),
+                        Text(
+                          '© 2024 Game Store. All rights reserved.',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
                           ),
                         ),
                       ],
@@ -142,168 +295,149 @@ class AboutUsScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            const SizedBox(height: 48),
-
-            // Team Members Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  Text(
-                    'Team Members',
-                    style: TextStyle(
-                      color: pinkAccent,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
-                    children: const [
-                      _MemberCard(
-                        image: 'assets/images/member1.jpg',
-                        name: 'Pham Phuoc Minh Hieu',
-                        role: 'Head Developer, Director',
-                      ),
-                      _MemberCard(
-                        image: 'assets/images/member2.jpg',
-                        name: 'Vo Huynh Thai Bao (Peter)',
-                        role: 'Developer',
-                      ),
-                      _MemberCard(
-                        image: 'assets/images/member3.jpg',
-                        name: 'Cao Sy Sieu',
-                        role: 'Developer',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 48),
-
-            // Footer (simple)
-            Container(
-              color: Colors.white12,
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-              child: Column(
-                children: [
-                  Text(
-                    'www.DownloadNewThemes.com',
-                    style: TextStyle(color: lightPinkAccent),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '© 2025 GameStore. All rights reserved.',
-                    style: TextStyle(color: Colors.white38, fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
     );
   }
-}
 
-class _FeatureCard extends StatelessWidget {
-  final IconData icon;
-  final String title, subtitle;
-  const _FeatureCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const pinkAccent = Color(0xFFFFD9F5);
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
+  Widget _buildSection(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String content,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
-            Icon(icon, size: 32, color: pinkAccent),
-            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                icon,
+                color: Theme.of(context).primaryColor,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
             Text(
               title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Text(
+          content,
+          style: TextStyle(fontSize: 16, color: Colors.grey[700], height: 1.5),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatCard(
+    BuildContext context, {
+    required String number,
+    required String label,
+    required IconData icon,
+    required Color color,
+  }) {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 32),
+            const SizedBox(height: 8),
+            Text(
+              number,
+              style: TextStyle(
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: color,
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white70, fontSize: 12),
+              label,
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
           ],
         ),
       ),
     );
   }
-}
 
-class _MemberCard extends StatelessWidget {
-  final String image, name, role;
-  const _MemberCard({
-    required this.image,
-    required this.name,
-    required this.role,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 140,
-      child: Column(
-        children: [
-          ClipOval(
-            child: Image.asset(image, width: 96, height: 96, fit: BoxFit.cover),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            name,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            role,
-            style: const TextStyle(color: Colors.white70, fontSize: 12),
-          ),
-          const SizedBox(height: 8),
-          Row(
+  Widget _buildTeamMember({
+    required String name,
+    required String role,
+    required Color color,
+  }) {
+    return Container(
+      width: 150,
+      margin: const EdgeInsets.only(right: 16),
+      child: Card(
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              FaIcon(
-                FontAwesomeIcons.facebookF,
-                size: 16,
-                color: Color(0xFF60D3F3),
+            children: [
+              CircleAvatar(
+                radius: 40,
+                backgroundColor: color.withOpacity(0.2),
+                child: Text(
+                  name.split(' ').map((e) => e[0]).join(),
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              SizedBox(width: 8),
-              FaIcon(FontAwesomeIcons.x, size: 16, color: Color(0xFF60D3F3)),
-              SizedBox(width: 8),
-              FaIcon(
-                FontAwesomeIcons.linkedinIn,
-                size: 16,
-                color: Color(0xFFFAB4E5),
+              const SizedBox(height: 12),
+              Text(
+                name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                role,
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                textAlign: TextAlign.center,
               ),
             ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSocialButton({
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(50),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: color, size: 30),
       ),
     );
   }
