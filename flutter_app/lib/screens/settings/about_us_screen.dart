@@ -87,7 +87,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Mission Section (icon larger, colored circle background)
+                  // Mission Section
                   _buildSection(
                     context,
                     icon: Icons.flag,
@@ -175,33 +175,21 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       children: [
                         _buildTeamMember(
                           imagePath: 'assets/images/member1.jpg',
-                          name: 'Phạm Phước Minh Hiếu',
-                          role: 'CEO & Founder',
-                          githubUsername: 'hieuphampm',
+                          name: 'Axel',
+                          role: 'CEO, Junior Developer & Founder',
                           githubUrl: 'https://github.com/hieuphampm',
-                          nameFontSize: 14,
-                          roleFontSize: 14,
-                          githubFontSize: 13,
                         ),
                         _buildTeamMember(
                           imagePath: 'assets/images/member2.jpg',
-                          name: 'Võ Huỳnh Thái Bảo',
-                          role: 'CTO',
-                          githubUsername: 'vina123baov',
+                          name: 'Peter-san🦅',
+                          role: 'CTO, Junior Developer & Co-founder',
                           githubUrl: 'https://github.com/vina123baov',
-                          nameFontSize: 14,
-                          roleFontSize: 14,
-                          githubFontSize: 13,
                         ),
                         _buildTeamMember(
                           imagePath: 'assets/images/member3.jpg',
-                          name: 'Cao Sỹ Siêu',
-                          role: 'Head of Design',
-                          githubUsername: 'saintsl4y3r',
+                          name: 'Sieuuuuuuuuuuu',
+                          role: 'COO, Junior Developer & Co-founder',
                           githubUrl: 'https://github.com/saintsl4y3r',
-                          nameFontSize: 14,
-                          roleFontSize: 14,
-                          githubFontSize: 13,
                         ),
                       ],
                     ),
@@ -392,11 +380,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Widget _buildTeamMember({
     required String imagePath,
     required String name,
-    required int nameFontSize,
     required String role,
-    required int roleFontSize,
-    required String githubUsername,
-    required int githubFontSize,
     required String githubUrl,
   }) {
     return Container(
@@ -436,23 +420,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               const SizedBox(height: 8),
               InkWell(
                 onTap: () => _launchUrl(githubUrl),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      'assets/images/github_logo.png',
-                      width: 20,
-                      height: 20,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      githubUsername,
-                      style: const TextStyle(
-                        color: Colors.blueAccent,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ],
+                child: Image.asset(
+                  'assets/images/github_logo.png',
+                  width: 24,
+                  height: 24,
                 ),
               ),
             ],
