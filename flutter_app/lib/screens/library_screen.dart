@@ -198,7 +198,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 class GameCard extends StatelessWidget {
   final Game game;
 
-  const GameCard({Key? key, required this.game}) : super(key: key);
+  const GameCard({super.key, required this.game});
 
   @override
   Widget build(BuildContext context) {
