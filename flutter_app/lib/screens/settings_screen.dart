@@ -5,7 +5,7 @@ import './settings/payment_history_screen.dart';
 import './settings/achievement_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
-  static const routeName = '/forgot-password';
+  static const routeName = '/settings';
 
   const SettingsScreen({super.key});
   @override
@@ -13,17 +13,58 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  void _logout() {
+    // TODO: Implement your logout logic here, e.g. FirebaseAuth.instance.signOut();
+    // Then navigate to your login screen:
+    Navigator.of(context).pushReplacementNamed('/login');
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Logged out')));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text('Profile'),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
+          const SizedBox(height: 24),
+          // User info header
+          Center(
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage('assets/avatar_placeholder.png'),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Demo',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton.icon(
+                  onPressed: _logout,
+                  icon: const Icon(Icons.logout),
+                  label: const Text('Log Out'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 32),
+
           // Edit Profile
           Card(
             elevation: 2,
@@ -62,7 +103,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 12),
 
-          // Payment History
           Card(
             elevation: 2,
             child: ListTile(
@@ -82,7 +122,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 12),
 
-          // About Us
           Card(
             elevation: 2,
             child: ListTile(
@@ -93,7 +132,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AboutUsScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const AboutUsScreen(),
+                  ),
                 );
               },
             ),

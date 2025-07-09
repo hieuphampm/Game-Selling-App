@@ -2,52 +2,52 @@ import 'package:flutter/material.dart';
 
 class AchievementScreen extends StatelessWidget {
   static const routeName = '/achievement';
-  AchievementScreen({super.key});
+  const AchievementScreen({super.key});
 
-  final List<Map<String, dynamic>> achievements = [
+  final List<Map<String, dynamic>> achievements = const [
     {
-      'title': 'Chiến Thắng Đầu Tiên',
-      'description': 'Thắng trận đấu đầu tiên',
+      'title': 'First Victory',
+      'description': 'Win your first match',
       'icon': Icons.emoji_events,
       'completed': true,
       'progress': 100,
       'reward': '50 XP',
     },
     {
-      'title': 'Nhà Sưu Tầm',
-      'description': 'Mua 10 trò chơi',
+      'title': 'Collector',
+      'description': 'Purchase 10 games',
       'icon': Icons.shopping_bag,
       'completed': true,
       'progress': 100,
       'reward': '100 XP',
     },
     {
-      'title': 'Bướm Xã Hội',
-      'description': 'Thêm 20 bạn bè',
+      'title': 'Social Butterfly',
+      'description': 'Add 20 friends',
       'icon': Icons.people,
       'completed': true,
       'progress': 100,
       'reward': '75 XP',
     },
     {
-      'title': 'Game Thủ Marathon',
-      'description': 'Chơi tổng cộng 100 giờ',
+      'title': 'Marathon Gamer',
+      'description': 'Play a total of 100 hours',
       'icon': Icons.access_time_filled,
       'completed': false,
       'progress': 65,
       'reward': '200 XP',
     },
     {
-      'title': 'Bậc Thầy Đánh Giá',
-      'description': 'Viết 5 bài đánh giá trò chơi',
+      'title': 'Review Master',
+      'description': 'Write 5 game reviews',
       'icon': Icons.rate_review,
       'completed': false,
       'progress': 40,
       'reward': '150 XP',
     },
     {
-      'title': 'Người Chơi Huyền Thoại',
-      'description': 'Đạt cấp độ 50',
+      'title': 'Legendary Player',
+      'description': 'Reach level 50',
       'icon': Icons.star,
       'completed': false,
       'progress': 20,
@@ -58,6 +58,10 @@ class AchievementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Achievements'),
+        leading: const BackButton(),
+      ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -68,13 +72,13 @@ class AchievementScreen extends StatelessWidget {
         ),
         itemCount: achievements.length,
         itemBuilder: (context, index) {
-          final achievement = achievements[index];
+          final ach = achievements[index];
           return InkWell(
-            onTap: () => _showAchievementDetail(context, achievement),
+            onTap: () => _showAchievementDetail(context, ach),
             borderRadius: BorderRadius.circular(16),
             child: Container(
               decoration: BoxDecoration(
-                gradient: achievement['completed']
+                gradient: ach['completed']
                     ? LinearGradient(
                         colors: [Colors.amber.shade300, Colors.amber.shade100],
                         begin: Alignment.topLeft,
@@ -86,11 +90,11 @@ class AchievementScreen extends StatelessWidget {
                         end: Alignment.bottomRight,
                       ),
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
-                    offset: const Offset(2, 4),
+                    offset: Offset(2, 4),
                   ),
                 ],
               ),
@@ -104,25 +108,25 @@ class AchievementScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: achievement['completed']
+                        color: ach['completed']
                             ? Colors.white.withOpacity(0.2)
                             : Colors.grey.withOpacity(0.15),
                       ),
                       child: Icon(
-                        achievement['icon'],
+                        ach['icon'],
                         size: 48,
-                        color: achievement['completed']
+                        color: ach['completed']
                             ? Colors.amber.shade800
                             : Colors.grey,
                       ),
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      achievement['title'],
+                      ach['title'],
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: achievement['completed']
+                        color: ach['completed']
                             ? Colors.black87
                             : Colors.grey[600],
                       ),
@@ -132,14 +136,14 @@ class AchievementScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      achievement['description'],
+                      ach['description'],
                       style: TextStyle(fontSize: 12, color: Colors.grey[500]),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
-                    if (!achievement['completed']) ...[
+                    if (!ach['completed']) ...[
                       LinearProgressIndicator(
-                        value: achievement['progress'] / 100,
+                        value: ach['progress'] / 100,
                         backgroundColor: Colors.grey[300],
                         valueColor: AlwaysStoppedAnimation<Color>(
                           Colors.blue.shade400,
@@ -148,7 +152,7 @@ class AchievementScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${achievement['progress']}%',
+                        '${ach['progress']}%',
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ] else
@@ -163,7 +167,7 @@ class AchievementScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Text(
-                          'Hoàn Thành',
+                          'Completed',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -173,7 +177,7 @@ class AchievementScreen extends StatelessWidget {
                       ),
                     const SizedBox(height: 8),
                     Text(
-                      achievement['reward'],
+                      ach['reward'],
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.purple[700],
@@ -196,7 +200,7 @@ class AchievementScreen extends StatelessWidget {
   ) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
@@ -225,7 +229,7 @@ class AchievementScreen extends StatelessWidget {
             const SizedBox(height: 16),
             if (!achievement['completed']) ...[
               const Text(
-                'Tiến Độ',
+                'Progress',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -234,14 +238,14 @@ class AchievementScreen extends StatelessWidget {
                 minHeight: 8,
               ),
               const SizedBox(height: 4),
-              Text('${achievement['progress']}% Hoàn Thành'),
+              Text('${achievement['progress']}% completed'),
             ] else ...[
               Row(
                 children: [
                   Icon(Icons.check_circle, color: Colors.green[700]),
                   const SizedBox(width: 8),
                   Text(
-                    'Đã Mở Khóa Thành Tựu!',
+                    'Achievement Unlocked!',
                     style: TextStyle(
                       color: Colors.green[700],
                       fontWeight: FontWeight.bold,
@@ -255,7 +259,7 @@ class AchievementScreen extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Phần Thưởng: ',
+                  'Reward: ',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
@@ -271,8 +275,8 @@ class AchievementScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Đóng'),
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Close'),
           ),
         ],
       ),

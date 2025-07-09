@@ -57,7 +57,8 @@ class _AIChatState extends State<AIChat> {
         await loadGemini();
       }
 
-      final prompt = '''
+      final prompt =
+          '''
 You are an AI game expert and reviewer. The user is asking about: "$userInput"
 
 Please provide a helpful response about the game(s) they mentioned. If they're asking for:
@@ -123,10 +124,7 @@ Be informative, engaging, and helpful in your response.
                     const SizedBox(height: 8),
                     const Text(
                       'Examples: "Tell me about Elden Ring", "Games similar to Stardew Valley", "Best RPGs of 2023"',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF0d0d0d),
-                      ),
+                      style: TextStyle(fontSize: 14, color: Color(0xFF0d0d0d)),
                     ),
                     const SizedBox(height: 16),
                     TextField(
@@ -136,9 +134,15 @@ Be informative, engaging, and helpful in your response.
                         hintText: 'Enter your game question or game name...',
                         hintStyle: TextStyle(color: Color(0xFF0d0d0d)),
                         border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.search, color: Color(0xFF0d0d0d)),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Color(0xFF0d0d0d),
+                        ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF60d3f3), width: 2),
+                          borderSide: BorderSide(
+                            color: Color(0xFF60d3f3),
+                            width: 2,
+                          ),
                         ),
                       ),
                       maxLines: 2,
@@ -166,13 +170,16 @@ Be informative, engaging, and helpful in your response.
                   children: [
                     CircularProgressIndicator(color: Color(0xFF60d3f3)),
                     SizedBox(height: 20),
-                    Text('AI is thinking...', style: TextStyle(color: Color(0xFFffd9f5))),
+                    Text(
+                      'AI is thinking...',
+                      style: TextStyle(color: Color(0xFFffd9f5)),
+                    ),
                   ],
                 ),
               )
             else if (result.isNotEmpty)
               Expanded(
-                child:                 Card(
+                child: Card(
                   elevation: 4,
                   color: const Color(0xFFfab4e5),
                   child: Padding(
@@ -198,7 +205,10 @@ Be informative, engaging, and helpful in your response.
                           child: SingleChildScrollView(
                             child: Text(
                               result,
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
