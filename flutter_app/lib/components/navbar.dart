@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/home_screen.dart';
-// import '../screens/library_screen.dart';
+import '../screens/library_screen.dart';
 import '../screens/community_screen.dart';
 import '../screens/settings_screen.dart';
 
@@ -16,7 +16,7 @@ class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
   final _pages = const [
     HomeScreen(),
-    // LibraryScreen(),
+    LibraryScreen(),
     CommunityScreen(),
     SettingsScreen(),
   ];
@@ -39,7 +39,7 @@ class _NavBarState extends State<NavBar> {
         onTap: (i) => setState(() => _selectedIndex = i),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          // BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Library'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Library'),
           BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
