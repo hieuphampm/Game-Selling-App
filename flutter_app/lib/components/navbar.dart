@@ -3,6 +3,7 @@ import '../screens/home_screen.dart';
 import '../screens/library_screen.dart';
 import '../screens/community_screen.dart';
 import '../screens/settings_screen.dart';
+import '../screens/ai_chat.dart';
 
 class NavBar extends StatefulWidget {
   static const routeName = '/navbar';
@@ -40,6 +41,7 @@ class _NavBarState extends State<NavBar> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Library'),
+          // BottomNavigationBarItem(icon: Icon(Icons.person_2), label: 'AI'),
           BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],

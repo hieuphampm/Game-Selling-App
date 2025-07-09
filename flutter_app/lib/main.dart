@@ -11,6 +11,7 @@ import 'screens/community_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/wishlist_screen.dart';
 import 'screens/settings/achievement_screen.dart';
+import 'screens/ai_chat.dart';
 import 'firebase_options.dart';
 
 void main() async {
