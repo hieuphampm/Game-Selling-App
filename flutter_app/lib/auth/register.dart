@@ -14,15 +14,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _email = '', _password = '', _confirmPassword = '';
   bool _loading = false;
 
+  static const Color colorTextMain = Color(0xFFFFD9F5);
+  static const Color colorButton = Color(0xFF60D3F3);
+  static const Color colorAccent = Color(0xFFFAB4E5);
+  static const Color colorBackground = Color(0xFF0D0D0D);
+
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
     setState(() => _loading = true);
 
-    // TODO: gọi API đăng ký
+    // TODO: call register API
     Future.delayed(const Duration(seconds: 2), () {
       setState(() => _loading = false);
-      // Điều hướng sang Login và thay thế màn này
       Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
     });
   }
@@ -31,11 +35,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final inputDecoration = InputDecoration(
       filled: true,
-      fillColor: Colors.white70,
+      fillColor: Colors.white.withOpacity(0.05),
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-      border: OutlineInputBorder(
+      labelStyle: const TextStyle(
+        color: colorTextMain,
+        fontWeight: FontWeight.bold,
+      ),
+      enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: const BorderSide(color: colorButton, width: 2.5),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: colorAccent, width: 3.0),
       ),
     );
 
@@ -45,9 +57,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/white_bg.jpg', fit: BoxFit.cover),
+          Image.asset('assets/images/dark_bg.png', fit: BoxFit.cover),
           Container(color: Colors.black.withOpacity(0.3)),
-
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -57,20 +68,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     const SizedBox(height: 48),
                     const Text(
-                      'Chào bạn!',
+                      'Welcome!',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: colorTextMain,
                       ),
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      'Hãy đăng ký để tiếp tục!',
-                      style: TextStyle(fontSize: 18, color: Colors.white70),
+                      'Please register to continue.',
+                      style: TextStyle(fontSize: 18, color: colorAccent),
                     ),
                     const SizedBox(height: 32),
-
                     Form(
                       key: _formKey,
                       child: Column(
@@ -78,45 +88,66 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children: [
                           const Text(
                             'Email',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: colorTextMain,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
                             decoration: inputDecoration,
                             keyboardType: TextInputType.emailAddress,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                             validator: (v) => v != null && v.contains('@')
                                 ? null
-                                : 'Email không hợp lệ',
+                                : 'Invalid email',
                             onSaved: (v) => _email = v!.trim(),
                           ),
 
                           const SizedBox(height: 24),
                           const Text(
-                            'Mật khẩu',
-                            style: TextStyle(color: Colors.white),
+                            'Password',
+                            style: TextStyle(
+                              color: colorTextMain,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
                             decoration: inputDecoration,
                             obscureText: true,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                             validator: (v) => v != null && v.length >= 6
                                 ? null
-                                : 'Mật khẩu ít nhất 6 ký tự',
+                                : 'At least 6 characters',
                             onSaved: (v) => _password = v!.trim(),
                           ),
 
                           const SizedBox(height: 24),
                           const Text(
-                            'Xác nhận mật khẩu',
-                            style: TextStyle(color: Colors.white),
+                            'Confirm Password',
+                            style: TextStyle(
+                              color: colorTextMain,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
                             decoration: inputDecoration,
                             obscureText: true,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                             validator: (v) => v != null && v == _password
                                 ? null
-                                : 'Không khớp mật khẩu',
+                                : 'Passwords do not match',
                             onSaved: (v) => _confirmPassword = v!.trim(),
                           ),
 
@@ -135,18 +166,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   child: ElevatedButton(
                                     onPressed: _submit,
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(
-                                        context,
-                                      ).primaryColor,
+                                      backgroundColor: colorButton,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
                                     child: const Text(
-                                      'Đăng ký',
+                                      'Register',
                                       style: TextStyle(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: colorBackground,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
@@ -159,8 +189,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 context,
                               ).pushReplacementNamed(LoginScreen.routeName),
                               child: const Text(
-                                'Đã có tài khoản? Đăng nhập',
-                                style: TextStyle(color: Colors.white70),
+                                'Already have an account? Login',
+                                style: TextStyle(
+                                  color: colorAccent,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
