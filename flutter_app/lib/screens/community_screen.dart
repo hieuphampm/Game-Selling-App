@@ -8,7 +8,7 @@ class CommunityScreen extends StatefulWidget {
     AddFriendScreen.routeName: (_) => const AddFriendScreen(),
     JoinGroupScreen.routeName: (_) => const JoinGroupScreen(),
     GiftScreen.routeName: (_) => const GiftScreen(),
-    ActivitiesScreen.routeName: (_) => const ActivitiesScreen(),
+    QuestScreen.routeName: (_) => const QuestScreen(),
   };
 
   const CommunityScreen({super.key});
@@ -53,7 +53,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Header
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24.0),
@@ -123,7 +122,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ),
             const SizedBox(height: 24),
             GridView.count(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               crossAxisCount: 2,
               crossAxisSpacing: 16,
@@ -131,14 +130,14 @@ class _CommunityScreenState extends State<CommunityScreen> {
               childAspectRatio: 1,
               children: [
                 _OptionCard(
-                  label: 'Add friend',
+                  label: 'Add Friend',
                   icon: Icons.person_add_alt_1,
                   backgroundColor: _cardColors[0],
                   onTap: () =>
                       Navigator.pushNamed(context, AddFriendScreen.routeName),
                 ),
                 _OptionCard(
-                  label: 'Join group',
+                  label: 'Join Group',
                   icon: Icons.group_add,
                   backgroundColor: _cardColors[1],
                   onTap: () =>
@@ -152,11 +151,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       Navigator.pushNamed(context, GiftScreen.routeName),
                 ),
                 _OptionCard(
-                  label: 'Activities',
+                  label: 'Quests',
                   icon: Icons.emoji_events,
                   backgroundColor: _cardColors[3],
                   onTap: () =>
-                      Navigator.pushNamed(context, ActivitiesScreen.routeName),
+                      Navigator.pushNamed(context, QuestScreen.routeName),
                 ),
               ],
             ),
@@ -215,13 +214,21 @@ class AddFriendScreen extends StatelessWidget {
   static const routeName = '/add-friend';
   const AddFriendScreen({super.key});
 
+  final List<String> friends = const [
+    'Alice',
+    'Bob',
+    'Charlie',
+    'Diana',
+    'Eve',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       appBar: AppBar(
         title: const Text(
-          'Add friend',
+          'Add Friend',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0,
@@ -234,7 +241,7 @@ class AddFriendScreen extends StatelessWidget {
             const TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: 'Enter User ID',
+                labelText: 'Search Friends',
                 labelStyle: TextStyle(color: Colors.white54),
                 border: OutlineInputBorder(),
               ),
@@ -242,14 +249,19 @@ class AddFriendScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Expanded(
               child: ListView.separated(
-                itemCount: 5,
+                itemCount: friends.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
                 itemBuilder: (_, i) => Card(
                   color: const Color(0xFF1A1A1A),
                   child: ListTile(
                     title: Text(
-                      'User \$i',
+                      friends[i],
                       style: const TextStyle(color: Colors.white),
+                    ),
+                    trailing: const Icon(
+                      Icons.circle,
+                      color: Colors.green,
+                      size: 12,
                     ),
                   ),
                 ),
@@ -265,6 +277,15 @@ class AddFriendScreen extends StatelessWidget {
 class JoinGroupScreen extends StatelessWidget {
   static const routeName = '/join-group';
   const JoinGroupScreen({super.key});
+
+  // Sample list of joined groups
+  final List<String> groups = const [
+    'Flutter Knights',
+    'Kotlin Lovers',
+    'Swift Play',
+    'Firebase Buddies',
+    'COCOAPODS Fans',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +306,7 @@ class JoinGroupScreen extends StatelessWidget {
             const TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: 'Enter Groupname',
+                labelText: 'Search Groups',
                 labelStyle: TextStyle(color: Colors.white54),
                 border: OutlineInputBorder(),
               ),
@@ -293,13 +314,13 @@ class JoinGroupScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Expanded(
               child: ListView.separated(
-                itemCount: 5,
+                itemCount: groups.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
                 itemBuilder: (_, i) => Card(
                   color: const Color(0xFF1A1A1A),
                   child: ListTile(
                     title: Text(
-                      'Group \$i',
+                      groups[i],
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
@@ -316,6 +337,12 @@ class JoinGroupScreen extends StatelessWidget {
 class GiftScreen extends StatelessWidget {
   static const routeName = '/gift';
   const GiftScreen({super.key});
+
+  final List<String> redeemedGifts = const [
+    'SUMMER2025',
+    'WELCOME50',
+    'FLUTTERLOVE',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -336,13 +363,38 @@ class GiftScreen extends StatelessWidget {
             const TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: 'Enter Giftcode',
+                labelText: 'Enter Gift Code',
                 labelStyle: TextStyle(color: Colors.white54),
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
-            ElevatedButton(onPressed: () {}, child: const Text('Redeem')),
+            ElevatedButton(
+              onPressed: () {
+                /* TODO: redeem logic */
+              },
+              child: const Text('Redeem'),
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: ListView.separated(
+                itemCount: redeemedGifts.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (_, i) => Card(
+                  color: const Color(0xFF1A1A1A),
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.check_circle,
+                      color: Colors.white70,
+                    ),
+                    title: Text(
+                      redeemedGifts[i],
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -350,9 +402,49 @@ class GiftScreen extends StatelessWidget {
   }
 }
 
-class ActivitiesScreen extends StatelessWidget {
-  static const routeName = '/activities';
-  const ActivitiesScreen({super.key});
+class Quest {
+  final String title;
+  final String description;
+  final bool requiresFriend;
+
+  const Quest({
+    required this.title,
+    required this.description,
+    this.requiresFriend = false,
+  });
+}
+
+class QuestScreen extends StatelessWidget {
+  static const routeName = '/quests';
+  const QuestScreen({super.key});
+
+  final List<Quest> quests = const [
+    Quest(
+      title: 'Daily Login Bonus',
+      description: 'Log in every day to receive 50 coins.',
+      requiresFriend: false,
+    ),
+    Quest(
+      title: 'Win 3 Matches',
+      description: 'Win 3 solo matches in any mode.',
+      requiresFriend: false,
+    ),
+    Quest(
+      title: 'Invite a Friend',
+      description: 'Invite a friend to the game for mutual rewards.',
+      requiresFriend: true,
+    ),
+    Quest(
+      title: 'Post in Community',
+      description: 'Share a tip or question in the community group.',
+      requiresFriend: false,
+    ),
+    Quest(
+      title: 'Team Battle',
+      description: 'Join and win a team match with friends.',
+      requiresFriend: true,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -360,7 +452,7 @@ class ActivitiesScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF0D0D0D),
       appBar: AppBar(
         title: const Text(
-          'Activities',
+          'Quests',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0,
@@ -369,17 +461,36 @@ class ActivitiesScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.separated(
-          itemCount: 5,
+          itemCount: quests.length,
           separatorBuilder: (_, __) => const SizedBox(height: 12),
-          itemBuilder: (_, i) => Card(
-            color: const Color(0xFF1A1A1A),
-            child: ListTile(
-              title: Text(
-                'Activity \$i',
-                style: const TextStyle(color: Colors.white),
+          itemBuilder: (_, i) {
+            final quest = quests[i];
+            return Card(
+              color: const Color(0xFF1A1A1A),
+              child: ListTile(
+                title: Text(
+                  quest.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  quest.description,
+                  style: const TextStyle(color: Colors.white70),
+                ),
+                trailing: Icon(
+                  quest.requiresFriend ? Icons.group : Icons.person,
+                  color: quest.requiresFriend
+                      ? Colors.blueAccent
+                      : Colors.greenAccent,
+                ),
+                onTap: () {
+                  // TODO: handle quest selection
+                },
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
