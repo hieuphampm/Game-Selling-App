@@ -5,14 +5,15 @@ import 'auth/login.dart';
 import 'auth/register.dart';
 import 'auth/forgot_password.dart';
 import 'screens/home_screen.dart';
-import './components/navbar.dart';
+import 'components/navbar.dart';
 // import 'screens/library_screen.dart';
 import 'screens/community_screen.dart';
 import 'screens/settings_screen.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const GameSellingApp());
 }
 
