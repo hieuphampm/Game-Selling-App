@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class WishlistScreen extends StatefulWidget {
+  static var routeName;
+
   const WishlistScreen({super.key});
 
   @override
