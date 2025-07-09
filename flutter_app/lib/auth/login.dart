@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../components/navbar.dart';
 import 'register.dart';
-import 'forgot_password.dart'; // đảm bảo đúng import
+import 'forgot_password.dart';
 import '../firebase_options.dart';
 
 class LoginScreen extends StatefulWidget {
