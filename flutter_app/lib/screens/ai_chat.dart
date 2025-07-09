@@ -3,6 +3,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 
 class AIChat extends StatefulWidget {
+  static const String routeName = '/ai-chat';
+
+  static Route<void> route() {
+    return MaterialPageRoute<void>(
+      settings: const RouteSettings(name: routeName),
+      builder: (_) => const AIChat(),
+    );
+  }
+
   const AIChat({super.key});
 
   @override
@@ -42,9 +51,12 @@ class _AIChatState extends State<AIChat> {
     });
 
     try {
-      if (gemini == null) await loadGemini();
+      if (gemini == null) {
+        await loadGemini();
+      }
 
-      final prompt = '''
+      final prompt =
+          '''
 You are an AI game reviewer. Please summarize the following games into a short paragraph, highlighting their genre, gameplay, and style:
 
 ${games.join('\n')}
@@ -58,9 +70,11 @@ ${games.join('\n')}
       setState(() {
         result = 'Error: $e';
       });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
-
-    setState(() => isLoading = false);
   }
 
   @override
@@ -70,22 +84,20 @@ ${games.join('\n')}
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ElevatedButton.icon(
-              onPressed: summarizeGames,
+              onPressed: isLoading ? null : summarizeGames,
               icon: const Icon(Icons.auto_awesome),
               label: const Text("Summarize Games"),
             ),
             const SizedBox(height: 20),
             if (isLoading)
-              const CircularProgressIndicator()
-            else
+              const Center(child: CircularProgressIndicator())
+            else if (result.isNotEmpty)
               Expanded(
                 child: SingleChildScrollView(
-                  child: Text(
-                    result,
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                  child: Text(result, style: const TextStyle(fontSize: 16)),
                 ),
               ),
           ],

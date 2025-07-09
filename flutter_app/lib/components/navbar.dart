@@ -18,6 +18,7 @@ class _NavBarState extends State<NavBar> {
   final _pages = const [
     HomeScreen(),
     LibraryScreen(),
+    AIChat(),
     CommunityScreen(),
     SettingsScreen(),
   ];
@@ -41,7 +42,7 @@ class _NavBarState extends State<NavBar> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Library'),
-          // BottomNavigationBarItem(icon: Icon(Icons.person_2), label: 'AI'),
+          BottomNavigationBarItem(icon: Icon(Icons.smart_toy), label: 'AI'),
           BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
