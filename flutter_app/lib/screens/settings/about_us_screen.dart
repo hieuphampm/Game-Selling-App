@@ -176,7 +176,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         _buildTeamMember(
                           imagePath: 'assets/images/member1.jpg',
                           name: 'Phạm Phước Minh Hiếu',
-                          role: 'CEO & Founder',
+                          role: 'CEO, Junior Developer & Founder',
                           githubUsername: 'hieuphampm',
                           githubUrl: 'https://github.com/hieuphampm',
                           nameFontSize: 14,
@@ -186,7 +186,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         _buildTeamMember(
                           imagePath: 'assets/images/member2.jpg',
                           name: 'Võ Huỳnh Thái Bảo',
-                          role: 'CTO',
+                          role: 'CTO, Junior Developer & CoFounder',
                           githubUsername: 'vina123baov',
                           githubUrl: 'https://github.com/vina123baov',
                           nameFontSize: 14,
@@ -196,7 +196,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         _buildTeamMember(
                           imagePath: 'assets/images/member3.jpg',
                           name: 'Cao Sỹ Siêu',
-                          role: 'Head of Design',
+                          role: 'COO, Junior Developer & CoFounder',
                           githubUsername: 'saintsl4y3r',
                           githubUrl: 'https://github.com/saintsl4y3r',
                           nameFontSize: 14,
