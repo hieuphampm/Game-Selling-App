@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "797791806867",
+    "project_id": "gamesellingapp-f26b7",
+    "storage_bucket": "gamesellingapp-f26b7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797791806867:android:5d46a8fd9251e28cda7466",
+        "android_client_info": {
+          "package_name": "com.example.interview_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797791806867-k17ci49hai0bh7li9lklsphvtab7ncg3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMeRsTYzjsNXkX1F9BL0hmborua6M0N0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797791806867-k17ci49hai0bh7li9lklsphvtab7ncg3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "797791806867-4nvm75as27ea66s5ab1aofjom90o3pbs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.interviewApplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
