@@ -4,7 +4,7 @@ import './settings/edit_profile_screen.dart';
 import './settings/payment_history_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
-  static const routeName = '/forgot-password';
+  static const routeName = '/settings';
 
   const SettingsScreen({super.key});
   @override
