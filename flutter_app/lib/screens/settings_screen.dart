@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import './settings/about_us_screen.dart';
 import './settings/edit_profile_screen.dart';
 import './settings/payment_history_screen.dart';
+import './settings/achievement_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
-  static const routeName = '/settings';
+  static const routeName = '/forgot-password';
 
   const SettingsScreen({super.key});
   @override
@@ -37,6 +38,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   MaterialPageRoute(
                     builder: (context) => const EditProfileScreen(),
                   ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Achievements
+          Card(
+            elevation: 2,
+            child: ListTile(
+              leading: const Icon(Icons.emoji_events_outlined),
+              title: const Text('Achievements'),
+              subtitle: const Text('View your game milestones'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AchievementScreen()),
                 );
               },
             ),
