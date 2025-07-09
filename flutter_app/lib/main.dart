@@ -6,10 +6,11 @@ import 'auth/register.dart';
 import 'auth/forgot_password.dart';
 import 'screens/home_screen.dart';
 import 'components/navbar.dart';
-  import 'screens/library_screen.dart';
+import 'screens/library_screen.dart';
 import 'screens/community_screen.dart';
 import 'screens/settings_screen.dart';
 import 'firebase_options.dart';
+import 'screens/wishlist_screen.dart'; // 👈 THÊM DÒNG NÀY
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +41,8 @@ class GameSellingApp extends StatelessWidget {
         LibraryScreen.routeName: (_) => const LibraryScreen(),
         CommunityScreen.routeName: (_) => const CommunityScreen(),
         SettingsScreen.routeName: (_) => const SettingsScreen(),
+        '/library': (_) => const LibraryScreen(),
+        '/wishlist': (_) => const WishlistScreen(),
         ...CommunityScreen.routes,
       },
     );
