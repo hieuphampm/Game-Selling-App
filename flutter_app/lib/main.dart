@@ -9,8 +9,9 @@ import 'components/navbar.dart';
 import 'screens/library_screen.dart';
 import 'screens/community_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/wishlist_screen.dart';
+import 'screens/settings/achievement_screen.dart';
 import 'firebase_options.dart';
-import 'screens/wishlist_screen.dart'; // 👈 THÊM DÒNG NÀY
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ class GameSellingApp extends StatelessWidget {
         brightness: Brightness.dark,
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: const Color(0xFF0D0D0D),
+        useMaterial3: true,
       ),
       initialRoute: LoginScreen.routeName,
       routes: {
@@ -41,6 +43,8 @@ class GameSellingApp extends StatelessWidget {
         LibraryScreen.routeName: (_) => const LibraryScreen(),
         CommunityScreen.routeName: (_) => const CommunityScreen(),
         SettingsScreen.routeName: (_) => const SettingsScreen(),
+        WishlistScreen.routeName: (_) => const WishlistScreen(),
+        AchievementScreen.routeName: (_) => AchievementScreen(),
         '/library': (_) => const LibraryScreen(),
         '/wishlist': (_) => const WishlistScreen(),
         ...CommunityScreen.routes,

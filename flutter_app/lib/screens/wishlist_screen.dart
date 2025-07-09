@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class WishlistScreen extends StatefulWidget {
-  static var routeName;
+  static const routeName = '/wishlist';
 
   const WishlistScreen({super.key});
 
