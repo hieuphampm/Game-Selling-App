@@ -50,17 +50,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // 1. Background image
-          Image.asset('assets/images/white_bg.jpg', fit: BoxFit.cover),
-          // 2. Overlay mờ
+          Image.asset('assets/images/dark_bg.png', fit: BoxFit.cover),
           Container(color: Colors.black.withOpacity(0.3)),
-
-          // 3. Nội dung
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: _sent
-                  // Trạng thái "Đã gửi"
                   ? Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -72,7 +67,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Chúng tôi đã gửi email hướng dẫn đặt lại mật khẩu đến\n$_email.',
+                            'We’ve sent a password reset email to\n$_email.',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 16,
@@ -94,7 +89,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 ),
                               ),
                               child: const Text(
-                                'Quay về Đăng nhập',
+                                'Return to Login',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -105,14 +100,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ],
                       ),
                     )
-                  // Trạng thái "Chưa gửi"
                   : SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 48),
                           const Text(
-                            'Quên mật khẩu',
+                            'Forgot Password',
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
@@ -121,7 +115,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            'Nhập email để nhận link đặt lại mật khẩu',
+                            'Enter your email to receive a password reset link.',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white70,
@@ -145,7 +139,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   validator: (val) =>
                                       val != null && val.contains('@')
                                       ? null
-                                      : 'Email không hợp lệ',
+                                      : 'Invalid Email',
                                   onSaved: (val) => _email = val!.trim(),
                                 ),
 
@@ -174,7 +168,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                             ),
                                           ),
                                           child: const Text(
-                                            'Gửi',
+                                            'Send',
                                             style: TextStyle(
                                               fontSize: 16,
                                               color: Colors.white,
@@ -192,7 +186,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                           LoginScreen.routeName,
                                         ),
                                     child: const Text(
-                                      'Quay về Đăng nhập',
+                                      'Return to Login',
                                       style: TextStyle(color: Colors.white70),
                                     ),
                                   ),

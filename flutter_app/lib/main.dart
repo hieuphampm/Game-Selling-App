@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:game_selling_app/screens/home_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import 'auth/login.dart';
 import 'auth/register.dart';
 import 'auth/forgot_password.dart';
+import 'screens/home_screen.dart';
+import 'components/navbar.dart';
+  import 'screens/library_screen.dart';
+import 'screens/community_screen.dart';
+import 'screens/settings_screen.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(GameSellingApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const GameSellingApp());
 }
 
 class GameSellingApp extends StatelessWidget {
@@ -15,13 +24,23 @@ class GameSellingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Game Selling App',
-      theme: ThemeData(primarySwatch: Colors.grey),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.deepPurple,
+        scaffoldBackgroundColor: const Color(0xFF0D0D0D),
+      ),
       initialRoute: LoginScreen.routeName,
       routes: {
-        LoginScreen.routeName: (_) => LoginScreen(),
-        RegisterScreen.routeName: (_) => RegisterScreen(),
-        ForgotPasswordScreen.routeName: (_) => ForgotPasswordScreen(),
-        HomeScreen.routeName: (_) => HomeScreen(),
+        LoginScreen.routeName: (_) => const LoginScreen(),
+        RegisterScreen.routeName: (_) => const RegisterScreen(),
+        ForgotPasswordScreen.routeName: (_) => const ForgotPasswordScreen(),
+        HomeScreen.routeName: (_) => const HomeScreen(),
+        NavBar.routeName: (_) => const NavBar(),
+        LibraryScreen.routeName: (_) => const LibraryScreen(),
+        CommunityScreen.routeName: (_) => const CommunityScreen(),
+        SettingsScreen.routeName: (_) => const SettingsScreen(),
+        ...CommunityScreen.routes,
       },
     );
   }
