@@ -1,6 +1,7 @@
 // screens/about_us_screen.dart
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class AboutUsScreen extends StatefulWidget {
   static const routeName = '/about-us';
@@ -255,22 +256,22 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _buildSocialButton(
-                        icon: Icons.facebook,
+                        icon: HugeIcons.strokeRoundedFacebook01,
                         color: Colors.blue[700]!,
                         onTap: () {},
                       ),
                       _buildSocialButton(
-                        icon: Icons.tiktok_outlined,
+                        icon: HugeIcons.strokeRoundedTiktok,
                         color: Colors.purple,
                         onTap: () {},
                       ),
                       _buildSocialButton(
-                        icon: Icons.videocam,
+                        icon: HugeIcons.strokeRoundedDiscord,
                         color: Colors.red,
                         onTap: () {},
                       ),
                       _buildSocialButton(
-                        icon: Icons.gpp_good_sharp,
+                        icon: HugeIcons.strokeRoundedLinkedin02,
                         color: Colors.lightBlue,
                         onTap: () {},
                       ),

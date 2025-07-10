@@ -17,6 +17,7 @@ dependencies:
   url_launcher: ^6.1.7
   flutter_gemini: ^3.0.0
   flutter_dotenv: ^5.2.1
+  hugeicons: ^0.0.9
 
 dev_dependencies:
   flutter_test:
