@@ -260,7 +260,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         onTap: () {},
                       ),
                       _buildSocialButton(
-                        icon: Icons.camera_alt,
+                        icon: Icons.tiktok_outlined,
                         color: Colors.purple,
                         onTap: () {},
                       ),
@@ -270,7 +270,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         onTap: () {},
                       ),
                       _buildSocialButton(
-                        icon: Icons.chat,
+                        icon: Icons.gpp_good_sharp,
                         color: Colors.lightBlue,
                         onTap: () {},
                       ),
@@ -291,7 +291,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '© 2024 Game Store. All rights reserved.',
+                          '© 2025 Game Store. All rights reserved.',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 12,
