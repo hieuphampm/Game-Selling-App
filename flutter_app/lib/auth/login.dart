@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       children: [
                         Text(
-                          'Welcome to GameShop!',
+                          'Welcome to GameShop',
                           style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
