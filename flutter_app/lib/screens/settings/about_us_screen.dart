@@ -1,5 +1,6 @@
 // screens/about_us_screen.dart
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutUsScreen extends StatefulWidget {
   static const routeName = '/about-us';
@@ -13,19 +14,28 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('About Us'), elevation: 0),
+      backgroundColor: const Color(0xFF0D0D0D),
+      appBar: AppBar(
+        title: const Text('About Us'),
+        elevation: 0,
+        backgroundColor: Colors.black,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header Section
+            // Header Section with background image
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(32.0),
+              padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/about_header.jpg'),
+                  fit: BoxFit.cover,
+                ),
                 gradient: LinearGradient(
                   colors: [
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor.withOpacity(0.7),
+                    Colors.black.withOpacity(0.6),
+                    Colors.black.withOpacity(0.3),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -33,7 +43,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               ),
               child: Column(
                 children: [
-                  // Logo
                   Container(
                     width: 100,
                     height: 100,
@@ -72,9 +81,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               ),
             ),
 
-            // About Content
+            // Main Content
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -160,28 +169,32 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
-                    height: 200,
+                    height: 240,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
                         _buildTeamMember(
-                          name: 'Pham Phuoc Minh Hieu',
-                          role: 'CEO & Founder',
-                          color: Colors.blue,
+                          imagePath: 'assets/images/member1.jpg',
+                          name: 'Axel',
+                          role: 'CEO, Junior Developer & Founder',
+                          githubUrl: 'https://github.com/hieuphampm',
                         ),
                         _buildTeamMember(
-                          name: 'Vo Huynh Thai Bao',
-                          role: 'CTO',
-                          color: Colors.pink,
+                          imagePath: 'assets/images/member2.jpg',
+                          name: 'Peter-san🦅',
+                          role: 'CTO, Junior Developer & Co-founder',
+                          githubUrl: 'https://github.com/vina123baov',
                         ),
                         _buildTeamMember(
-                          name: 'Cao Sy Sieu',
-                          role: 'Head of Design',
-                          color: Colors.green,
+                          imagePath: 'assets/images/member3.jpg',
+                          name: 'Sieuuuuuuuuuuu',
+                          role: 'COO, Junior Developer & Co-founder',
+                          githubUrl: 'https://github.com/saintsl4y3r',
                         ),
                       ],
                     ),
                   ),
+
                   const SizedBox(height: 32),
 
                   // Contact Section
@@ -192,7 +205,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   const SizedBox(height: 16),
                   Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
                           ListTile(
@@ -202,9 +215,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                             ),
                             title: const Text('Email'),
                             subtitle: const Text('support@gamestore.com'),
-                            onTap: () {
-                              // Open email
-                            },
+                            onTap: () {},
                           ),
                           const Divider(),
                           ListTile(
@@ -214,9 +225,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                             ),
                             title: const Text('Phone'),
                             subtitle: const Text('+1 (555) 123-4567'),
-                            onTap: () {
-                              // Make phone call
-                            },
+                            onTap: () {},
                           ),
                           const Divider(),
                           ListTile(
@@ -228,9 +237,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                             subtitle: const Text(
                               '123 Gaming Street, Digital City, DC 12345',
                             ),
-                            onTap: () {
-                              // Open maps
-                            },
+                            onTap: () {},
                           ),
                         ],
                       ),
@@ -308,22 +315,17 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     required String title,
     required String content,
   }) {
+    final primary = Theme.of(context).primaryColor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                icon,
-                color: Theme.of(context).primaryColor,
-                size: 24,
-              ),
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(color: primary, shape: BoxShape.circle),
+              child: Icon(icon, color: Colors.white, size: 28),
             ),
             const SizedBox(width: 12),
             Text(
@@ -335,7 +337,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         const SizedBox(height: 12),
         Text(
           content,
-          style: TextStyle(fontSize: 16, color: Colors.grey[700], height: 1.5),
+          style: TextStyle(fontSize: 16, color: Colors.grey[300], height: 1.5),
         ),
       ],
     );
@@ -351,7 +353,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Icon(icon, color: color, size: 32),
@@ -376,46 +378,53 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   }
 
   Widget _buildTeamMember({
+    required String imagePath,
     required String name,
     required String role,
-    required Color color,
+    required String githubUrl,
   }) {
     return Container(
-      width: 150,
+      width: 160,
       margin: const EdgeInsets.only(right: 16),
       child: Card(
         elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        color: const Color(0xFF1A1A1A),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: color.withOpacity(0.2),
-                child: Text(
-                  name.split(' ').map((e) => e[0]).join(),
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              CircleAvatar(radius: 50, backgroundImage: AssetImage(imagePath)),
               const SizedBox(height: 12),
-              Text(
-                name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              Expanded(
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 4),
               Text(
                 role,
-                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
                 textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              InkWell(
+                onTap: () => _launchUrl(githubUrl),
+                child: Image.asset(
+                  'assets/images/github_logo.png',
+                  width: 24,
+                  height: 24,
+                ),
               ),
             ],
           ),
@@ -441,5 +450,12 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         child: Icon(icon, color: color, size: 30),
       ),
     );
+  }
+
+  void _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 }
