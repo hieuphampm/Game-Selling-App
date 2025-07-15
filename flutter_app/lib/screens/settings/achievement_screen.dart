@@ -6,48 +6,48 @@ class AchievementScreen extends StatelessWidget {
 
   final List<Map<String, dynamic>> achievements = [
     {
-      'title': 'Chiến Thắng Đầu Tiên',
-      'description': 'Thắng trận đấu đầu tiên',
+      'title': 'First Victory',
+      'description': 'Win your first match',
       'icon': Icons.emoji_events,
       'completed': true,
       'progress': 100,
       'reward': '50 XP',
     },
     {
-      'title': 'Nhà Sưu Tầm',
-      'description': 'Mua 10 trò chơi',
+      'title': 'Collector',
+      'description': 'Purchase 10 games',
       'icon': Icons.shopping_bag,
       'completed': true,
       'progress': 100,
       'reward': '100 XP',
     },
     {
-      'title': 'Bướm Xã Hội',
-      'description': 'Thêm 20 bạn bè',
+      'title': 'Social Butterfly',
+      'description': 'Add 20 friends',
       'icon': Icons.people,
       'completed': true,
       'progress': 100,
       'reward': '75 XP',
     },
     {
-      'title': 'Game Thủ Marathon',
-      'description': 'Chơi tổng cộng 100 giờ',
+      'title': 'Marathon Gamer',
+      'description': 'Play for a total of 100 hours',
       'icon': Icons.access_time_filled,
       'completed': false,
       'progress': 65,
       'reward': '200 XP',
     },
     {
-      'title': 'Bậc Thầy Đánh Giá',
-      'description': 'Viết 5 bài đánh giá trò chơi',
+      'title': 'Review Master',
+      'description': 'Write 5 game reviews',
       'icon': Icons.rate_review,
       'completed': false,
       'progress': 40,
       'reward': '150 XP',
     },
     {
-      'title': 'Người Chơi Huyền Thoại',
-      'description': 'Đạt cấp độ 50',
+      'title': 'Legendary Player',
+      'description': 'Reach level 50',
       'icon': Icons.star,
       'completed': false,
       'progress': 20,
@@ -163,7 +163,7 @@ class AchievementScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Text(
-                          'Hoàn Thành',
+                          'Completed',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -225,7 +225,7 @@ class AchievementScreen extends StatelessWidget {
             const SizedBox(height: 16),
             if (!achievement['completed']) ...[
               const Text(
-                'Tiến Độ',
+                'Progress',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -234,14 +234,14 @@ class AchievementScreen extends StatelessWidget {
                 minHeight: 8,
               ),
               const SizedBox(height: 4),
-              Text('${achievement['progress']}% Hoàn Thành'),
+              Text('${achievement['progress']}% Complete'),
             ] else ...[
               Row(
                 children: [
                   Icon(Icons.check_circle, color: Colors.green[700]),
                   const SizedBox(width: 8),
                   Text(
-                    'Đã Mở Khóa Thành Tựu!',
+                    'Achievement Unlocked!',
                     style: TextStyle(
                       color: Colors.green[700],
                       fontWeight: FontWeight.bold,
@@ -255,7 +255,7 @@ class AchievementScreen extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Phần Thưởng: ',
+                  'Reward: ',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
@@ -272,7 +272,7 @@ class AchievementScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Đóng'),
+            child: const Text('Close'),
           ),
         ],
       ),
