@@ -1,0 +1,321 @@
+{
+  "game_01": {
+    "name": "Microsoft Flight Simulator (2020)",
+    "price": 49,
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fmfs.jpg?alt=media&token=ab591f54-82a5-45f5-b566-1dbad227461d",
+    "category": [
+      "simulator"
+    ],
+    "requirements": [
+      "Windows 10",
+      " Intel i5-4460 | AMD Ryzen 3 1200",
+      "8 GB RAM",
+      "NVIDIA GTX 770 | AMD Radeon RX 570",
+      "150 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "mfsA9K3X2T",
+      "mfsB7YQ1NZ",
+      "mfsL4W8V0E",
+      "mfsT3RM6PA",
+      "mfsC2Z8DNL",
+      "mfsX1QWER9",
+      "mfsU5VBNM2",
+      "mfsK8HJ7TR",
+      "mfsZ6PLM3A",
+      "mfsD9XC4YU"
+    ]
+  },
+  "game_02": {
+    "name": "Forza Horizon 5",
+    "price": 35,
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fforza.jpg?alt=media&token=ae6d25a4-1ca1-4fb0-abc0-de9c0cc6542e",
+    "category": [
+      "simulator",
+      "racing",
+      "sport"
+    ],
+    "requirements": [
+      "Windows 10",
+      "Intel i5-4460 or AMD Ryzen 3 1200",
+      "8 GB RAM",
+      "NVidia GTX 970, AMD RX 470, OR Intel Arc A380",
+      "110 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "fhA7X9T2PQ",
+      "fhM3L8WZ1E",
+      "fhK5Q2N7YD",
+      "fhZ6RP1XMB",
+      "fhB8VC3JNL",
+      "fhD9YU4TWE",
+      "fhL1MK7ZQA",
+      "fhU2XN9EPV",
+      "fhC3WQ6RBT",
+      "fhT0JZ8MLN"
+    ]
+  },
+  "game_03": {
+    "name": "Left 4 Dead 2",
+    "price": 5,
+    "category": [
+      "zombie",
+      "shooting",
+      "action"
+    ],
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fl4d2.jpg?alt=media&token=a357d830-8458-4a76-a27e-47b167071a16",
+    "requirements": [
+      "Windows® 7 32/64-bit / Vista 32/64 / XP",
+      "Pentium 4 3.0GHz",
+      "2 GB RAM",
+      "Video card with 128 MB, Shader model 2.0. ATI X800, NVidia 6600 or better",
+      "13 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "lfdtX9A7Q1",
+      "lfdtM3BZ8K",
+      "lfdtT6Y2WP",
+      "lfdtC7VNX0",
+      "lfdtL4QEM9",
+      "lfdtD1KJZ5",
+      "lfdtU8RPNW",
+      "lfdtZ3XCV6",
+      "lfdtB5WQTA",
+      "lfdtY0MLN2"
+    ]
+  },
+  "game_04": {
+    "name": "Grand Theft Auto V",
+    "price": 18,
+    "category": [
+      "action",
+      "adventure"
+    ],
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fgta.jpg?alt=media&token=81cb7a37-4fb4-4fa2-a5b4-79e7dc17691c",
+    "requirements": [
+      " Windows 10",
+      "Intel® Core™ i7-4770 | AMD FX™-9590",
+      "8 GB RAM",
+      "NVIDIA GeForce® GTX 1630 (4GB VRAM) | AMD Radeon™ RX 6400",
+      "105 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "gtaX7P2M9L",
+      "gtaL4WQ8ZK",
+      "gtaT1CVN6YE",
+      "gtaM3BZ5XQA",
+      "gtaY9JRL2NT",
+      "gtaB6WEM0KZ",
+      "gtaD8XCNV1P",
+      "gtaU2LZQ7WB",
+      "gtaZ5MKJE4T",
+      "gtaC3YPT9XN"
+    ]
+  },
+  "game_05": {
+    "name": "Ready or Not",
+    "price": 15,
+    "category": [
+      "action",
+      "adventure"
+    ],
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Frot.jpg?alt=media&token=68489711-4c4b-4131-9d1e-994155fb0063",
+    "requirements": [
+      "Windows 10, Windows 11",
+      "Intel Core i5-4430 / AMD FX-6300",
+      "8 GB RAM",
+      "NVIDIA GeForce GTX 960 2GB / AMD Radeon R7 370 2GB",
+      "60 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "rotA7X2M9Q",
+      "rotL8WZ1KJ",
+      "rotT3PNV6C",
+      "rotM9QE5XB",
+      "rotY2CJK7L",
+      "rotB6WTA0NZ",
+      "rotX1VRD8P",
+      "rotD4MLQZ5E",
+      "rotU3NEK9WY",
+      "rotZ5XC7BTL"
+    ]
+  },
+  "game_06": {
+    "name": "Euro Truck Simulator 2",
+    "price": 2,
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fets.jpg?alt=media&token=502b6992-3127-4137-960b-58546d38c5d1",
+    "category": [
+      "simulator"
+    ],
+    "requirements": [
+      "Windows 10",
+      "Intel Core i5-6400 or AMD Ryzen 3 1200 or similar",
+      "8 GB RAM",
+      "NVIDIA GeForce GTX 660 or AMD Radeon RX 460 or Intel HD 630",
+      "25 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "etsX9L2MQA",
+      "etsB7WZ1TVC",
+      "etsK5JPN8RY",
+      "etsL3QXEM0D",
+      "etsT6YCB9WN",
+      "etsM2ZRJ4KP",
+      "etsD1VXQ7NE",
+      "etsU8PLMW3X",
+      "etsC4WBTY9N",
+      "etsZ0NKJE5A"
+    ]
+  },
+  "game_07": {
+    "name": "Cyberpunk 2077",
+    "price": 37,
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fcp.jpg?alt=media&token=3e4abd39-8f9c-4f35-94b8-444ff84c5279",
+    "category": [
+      "RPG",
+      "action"
+    ],
+    "requirements": [
+      "Windows 10",
+      "Core i7-6700 or Ryzen 5 1600",
+      "12 GB RAM",
+      "GeForce GTX 1060 6GB or Radeon RX 580 8GB or Arc A380",
+      "70 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "cpX7L9MA2Q",
+      "cpT3WZ1VKC",
+      "cpB6QPN8RYD",
+      "cpM5XEL0JNT",
+      "cpY2CVBN9WA",
+      "cpD8ZRJ4KXE",
+      "cpU1WQTY7LM",
+      "cpZ4PMJN3VX",
+      "cpK9XNE5LTA",
+      "cpC0BTYW6MQ"
+    ]
+  },
+  "game_08": {
+    "name": "Hollow Knight",
+    "price": 6,
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fhk.jpg?alt=media&token=f1ad979c-5523-4ef8-9b3f-974172ad9754",
+    "category": [
+      "action",
+      "adventure"
+    ],
+    "requirements": [
+      "Windows 7",
+      "Intel Core 2 Duo E5200",
+      "4 GB RAM",
+      "GeForce 9800GTX+",
+      "9 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "hkA9X7M2QL",
+      "hkT4WZ1CBK",
+      "hkL8PNV6YQ",
+      "hkM3QE5XND",
+      "hkB6JRKZ0W",
+      "hkY2CVTN9PA",
+      "hkD1XEM7QLK",
+      "hkU5WQZ3NYX",
+      "hkZ0PLMJ4TE",
+      "hkC7BTYVX9N"
+    ]
+  },
+  "game_09": {
+    "name": "Blasphemous",
+    "price": 19,
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fbla.jpg?alt=media&token=aa212c26-4cba-4f09-8db0-b457352519e1",
+    "category": [
+      "action",
+      "adventure"
+    ],
+    "requirements": [
+      "Windows 7",
+      "Intel Core2 Duo E8400 or AMD Phenom II x2 550",
+      "4 GB RAM",
+      "GeForce GTX 260 or Radeon HD 4850",
+      "4 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "blaX7M2Q9L",
+      "blaT4Z1WCKE",
+      "blaL8PNV6YQ",
+      "blaM3XE5QND",
+      "blaB6JR0KZW",
+      "blaY2CV9TNA",
+      "blaD1EM7XLK",
+      "blaU5WQ3ZNY",
+      "blaZ0PMJ4TE",
+      "blaC7BTVX9N"
+    ]
+  },
+  "game_10": {
+    "name": "Alien: Isolation",
+    "price": 26,
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fas.jpg?alt=media&token=94c87cc3-914f-40fc-bcc6-c38514cae5f6",
+    "category": [
+      "action"
+    ],
+    "requirements": [
+      "Windows 7",
+      "3.16Ghz Intel Core 2 Duo E8500",
+      "4 GB RAM",
+      "AMD Radeon HD 5550 or Nvidia GeForce GT 430",
+      "35 GB"
+    ],
+    "modes": [
+      "Single Player",
+      "Multiplayer"
+    ],
+    "codes": [
+      "asX9M2QL7T",
+      "asT4WZC1BK",
+      "asL8PNY6QV",
+      "asM3QE0XND",
+      "asB6JRKZW9",
+      "asY2CVTNA5",
+      "asD1EMX7LK",
+      "asU5WQZ3NY",
+      "asZ0PM4JTE",
+      "asC7BT9VXN"
+    ]
+  }
+}
