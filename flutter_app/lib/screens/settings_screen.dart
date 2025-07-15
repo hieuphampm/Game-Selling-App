@@ -13,6 +13,36 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                _logout(); // Perform logout
+              },
+              child: const Text(
+                'Logout',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _logout() {
     // TODO: Implement your logout logic here, e.g. FirebaseAuth.instance.signOut();
     // Then navigate to your login screen:
@@ -34,7 +64,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: const EdgeInsets.all(16.0),
         children: [
           const SizedBox(height: 24),
-          // User info header
           Center(
             child: Column(
               children: [
@@ -49,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const SizedBox(height: 8),
                 ElevatedButton.icon(
-                  onPressed: _logout,
+                  onPressed: _showLogoutDialog, // Changed from _logout to _showLogoutDialog
                   icon: const Icon(Icons.logout),
                   label: const Text('Log Out'),
                   style: ElevatedButton.styleFrom(
