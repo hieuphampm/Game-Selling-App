@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class GameDetailScreen extends StatelessWidget {
+class GameDetailScreen extends StatefulWidget {
   final String title;
   final String price;
   final double rating;
@@ -13,6 +15,78 @@ class GameDetailScreen extends StatelessWidget {
     required this.rating,
     required this.imageColor,
   });
+
+  @override
+  State<GameDetailScreen> createState() => _GameDetailScreenState();
+}
+
+class _GameDetailScreenState extends State<GameDetailScreen> {
+  String _aiSummary = '';
+  bool _isLoadingSummary = false;
+  bool _showAiSummary = false;
+
+  // Gemini API configuration
+  static const String _apiKey = 'AIzaSyChgARKLloeKbo4UsWcYyDdDS7wKe7hpCs';
+  static const String _apiUrl =
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$_apiKey';
+
+  Future<void> _generateAiSummary() async {
+    setState(() {
+      _isLoadingSummary = true;
+      _showAiSummary = true;
+    });
+
+    try {
+      final gameDescription =
+          '''
+      Game: ${widget.title}
+      Price: ${widget.price}
+      Rating: ${widget.rating}/5.0
+      Genre: Action RPG
+      Description: Embark on an epic adventure in this stunning game that combines breathtaking visuals with immersive gameplay. Experience a rich storyline, dynamic combat system, and explore vast open worlds filled with mysteries and challenges.
+      ''';
+
+      final requestBody = {
+        'contents': [
+          {
+            'parts': [
+              {
+                'text':
+                    'Please provide a comprehensive summary of this game in Vietnamese. Include gameplay features, what makes it unique, and who would enjoy playing it. Here\'s the game information:\n\n$gameDescription',
+              },
+            ],
+          },
+        ],
+        'generationConfig': {'temperature': 0.7, 'maxOutputTokens': 500},
+      };
+
+      final response = await http.post(
+        Uri.parse(_apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final summary = data['candidates'][0]['content']['parts'][0]['text'];
+
+        setState(() {
+          _aiSummary = summary;
+          _isLoadingSummary = false;
+        });
+      } else {
+        setState(() {
+          _aiSummary = 'Không thể tạo tóm tắt. Vui lòng thử lại sau.';
+          _isLoadingSummary = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _aiSummary = 'Đã xảy ra lỗi: $e';
+        _isLoadingSummary = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +120,8 @@ class GameDetailScreen extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      imageColor.withOpacity(0.8),
-                      imageColor.withOpacity(0.4),
+                      widget.imageColor.withOpacity(0.8),
+                      widget.imageColor.withOpacity(0.4),
                     ],
                   ),
                 ),
@@ -95,7 +169,7 @@ class GameDetailScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          title,
+                          widget.title,
                           style: TextStyle(
                             color: Color(0xFFFFD9F5),
                             fontSize: 28,
@@ -104,7 +178,7 @@ class GameDetailScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        price,
+                        widget.price,
                         style: TextStyle(
                           color: Color(0xFF60D3F3),
                           fontSize: 24,
@@ -121,7 +195,7 @@ class GameDetailScreen extends StatelessWidget {
                       Icon(Icons.star, color: Colors.amber, size: 20),
                       SizedBox(width: 4),
                       Text(
-                        rating.toString(),
+                        widget.rating.toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -147,6 +221,105 @@ class GameDetailScreen extends StatelessWidget {
                       _buildInfoCard('Age', '16+'),
                     ],
                   ),
+                  SizedBox(height: 24),
+
+                  // AI Summary Button
+                  Container(
+                    width: double.infinity,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF8B5CF6), Color(0xFF7C3AED)],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: TextButton.icon(
+                      onPressed: _isLoadingSummary ? null : _generateAiSummary,
+                      icon: Icon(
+                        Icons.auto_awesome,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      label: Text(
+                        _isLoadingSummary
+                            ? 'Đang tạo tóm tắt...'
+                            : 'Tóm tắt bằng AI',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // AI Summary Section
+                  if (_showAiSummary) ...[
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF8B5CF6).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Color(0xFF8B5CF6).withOpacity(0.3),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.auto_awesome,
+                                color: Color(0xFF8B5CF6),
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'AI Summary',
+                                style: TextStyle(
+                                  color: Color(0xFF8B5CF6),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.close,
+                                  color: Colors.white54,
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showAiSummary = false;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          if (_isLoadingSummary)
+                            Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFF8B5CF6),
+                              ),
+                            )
+                          else
+                            Text(
+                              _aiSummary,
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14,
+                                height: 1.5,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+
                   SizedBox(height: 24),
 
                   // Description
@@ -192,8 +365,8 @@ class GameDetailScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                             gradient: LinearGradient(
                               colors: [
-                                imageColor.withOpacity(0.3),
-                                imageColor.withOpacity(0.1),
+                                widget.imageColor.withOpacity(0.3),
+                                widget.imageColor.withOpacity(0.1),
                               ],
                             ),
                           ),
