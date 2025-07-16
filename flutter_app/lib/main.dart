@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'auth/login.dart';
 import 'auth/register.dart';
@@ -13,9 +14,23 @@ import 'screens/wishlist_screen.dart';
 import 'screens/settings/achievement_screen.dart';
 import 'firebase_options.dart';
 
+// Thêm dòng này để gọi seed
+import 'utils/firebase_seed.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Load env (nếu dùng dotenv cho Gemini API)
+  await dotenv.load(fileName: '.env');
+
+  // Init Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Chạy seed 1 lần duy nhất (rồi có thể comment lại)
+  //await seedGamesToFirestore();
+
   runApp(const GameSellingApp());
 }
 

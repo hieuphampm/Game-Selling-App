@@ -4,20 +4,31 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.5.0
 
 dependencies:
   flutter:
     sdk: flutter
+  http: ^1.2.2
   cupertino_icons: ^1.0.8
-  font_awesome_flutter: ^10.4.0
-  firebase_core: ^2.32.0
-  firebase_auth: ^4.17.8
-  google_sign_in: ^6.2.1
-  url_launcher: ^6.1.7
+  font_awesome_flutter: ^10.7.0
+  firebase_core: ^3.8.0
+  firebase_auth: ^5.3.3
+  cloud_firestore: ^5.5.0
+  google_sign_in: ^6.2.2
+  url_launcher: ^6.3.1
   flutter_gemini: ^3.0.0
   flutter_dotenv: ^5.2.1
+<<<<<<< Updated upstream
   hugeicons: ^0.0.9
+=======
+  
+  # Additional useful packages for a game selling app
+  cached_network_image: ^3.4.1
+  provider: ^6.1.2
+  shared_preferences: ^2.3.3
+  intl: ^0.19.0
+>>>>>>> Stashed changes
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +41,10 @@ flutter:
     - assets/images/
     - .env
   
+  # You can add custom fonts here if needed
+  # fonts:
+  #   - family: GameFont
+  #     fonts:
+  #       - asset: assets/fonts/GameFont-Regular.ttf
+  #       - asset: assets/fonts/GameFont-Bold.ttf
+  #         weight: 700

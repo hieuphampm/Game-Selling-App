@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream
 
 class GameDetailScreen extends StatelessWidget {
   final String title;
   final String price;
   final double rating;
   final Color imageColor;
+=======
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 
-  const GameDetailScreen({
-    super.key,
-    required this.title,
-    required this.price,
-    required this.rating,
-    required this.imageColor,
-  });
+class GameDetailScreen extends StatefulWidget {
+  final String documentId;
+>>>>>>> Stashed changes
+
+  const GameDetailScreen({super.key, required this.documentId});
 
   @override
+<<<<<<< Updated upstream
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF0A0E21),
@@ -80,19 +84,129 @@ class GameDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
+=======
+  State<GameDetailScreen> createState() => _GameDetailScreenState();
+}
+
+class _GameDetailScreenState extends State<GameDetailScreen> {
+  Map<String, dynamic>? gameData;
+  bool isLoading = true;
+  bool isWishlisted = false;
+  String _aiSummary = '';
+  bool _isLoadingSummary = false;
+  bool _showAiSummary = false;
+  Gemini? gemini;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchGameData();
+  }
+
+  Future<void> fetchGameData() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('game')
+          .doc(widget.documentId)
+          .get();
+
+      if (doc.exists) {
+        setState(() {
+          gameData = doc.data();
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> loadGemini() async {
+    if (!dotenv.isInitialized) await dotenv.load(fileName: ".env");
+
+    final apiKey = dotenv.env['API_KEY'];
+    if (apiKey == null || apiKey.isEmpty) {
+      throw Exception("API key not found in .env file");
+    }
+
+    gemini = Gemini.init(apiKey: apiKey);
+  }
+
+  Future<void> _generateAiSummary() async {
+    setState(() {
+      _isLoadingSummary = true;
+      _showAiSummary = true;
+    });
+
+    try {
+      if (gemini == null) await loadGemini();
+
+      final prompt = '''
+Viết một đoạn mô tả hấp dẫn bằng tiếng Việt cho game này:
+Tên: ${gameData?['title'] ?? ''}
+Giá: \$${gameData?['price'] ?? ''}
+Chế độ chơi: ${(gameData?['modes'] as List<dynamic>?)?.join(', ') ?? ''}
+Yêu cầu hệ thống: ${(gameData?['requirements'] as List<dynamic>?)?.join(', ') ?? ''}
+''';
+
+      final response = await gemini!.text(prompt);
+      setState(() {
+        _aiSummary = response?.output ?? 'Không có phản hồi từ AI.';
+      });
+    } catch (e) {
+      setState(() {
+        _aiSummary = 'Lỗi: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoadingSummary = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF0D0D0D),
+      appBar: AppBar(
+        title:
+            const Text("Game Details", style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF0D0D0D),
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isWishlisted ? Icons.favorite : Icons.favorite_border,
+              color: isWishlisted ? Colors.pinkAccent : Colors.white,
+>>>>>>> Stashed changes
             ),
+            onPressed: () {
+              setState(() {
+                isWishlisted = !isWishlisted;
+              });
+              // TODO: Lưu vào Firestore wishlist nếu cần
+            },
           ),
-          // Game Details
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Title and Price Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ],
+      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator(color: Colors.cyan))
+          : gameData == null
+              ? const Center(
+                  child: Text("Không tìm thấy game",
+                      style: TextStyle(color: Colors.white)))
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+<<<<<<< Updated upstream
                       Expanded(
                         child: Text(
                           title,
@@ -100,17 +214,44 @@ class GameDetailScreen extends StatelessWidget {
                             color: Color(0xFFFFD9F5),
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
+=======
+                      Hero(
+                        tag: widget.documentId,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.network(
+                            gameData!['thumbnail'] ?? '',
+                            width: double.infinity,
+                            height: 200,
+                            fit: BoxFit.cover,
+>>>>>>> Stashed changes
                           ),
                         ),
                       ),
+                      const SizedBox(height: 16),
                       Text(
+<<<<<<< Updated upstream
                         price,
                         style: TextStyle(
-                          color: Color(0xFF60D3F3),
-                          fontSize: 24,
+=======
+                        gameData!['title'] ?? '',
+                        style: const TextStyle(
+                          fontSize: 26,
+                          color: Color(0xFFFFD9F5),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      const SizedBox(height: 6),
+                      Text(
+                        "\$${gameData!['price']}",
+                        style: const TextStyle(
+                          fontSize: 20,
+>>>>>>> Stashed changes
+                          color: Color(0xFF60D3F3),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+<<<<<<< Updated upstream
                     ],
                   ),
                   SizedBox(height: 12),
@@ -188,165 +329,113 @@ class GameDetailScreen extends StatelessWidget {
                         return Container(
                           width: 280,
                           margin: EdgeInsets.only(right: 12),
+=======
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(Icons.star, color: Colors.amber, size: 20),
+                          const SizedBox(width: 4),
+                          Text(
+                            "${gameData?['rating'] ?? '4.5'} / 5",
+                            style: const TextStyle(color: Colors.white70),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      if ((gameData?['description'] ?? '').isNotEmpty) ...[
+                        _buildSectionTitle('📝 Mô tả'),
+                        Text(
+                          gameData!['description'],
+                          style: const TextStyle(
+                              color: Colors.white70, fontSize: 14, height: 1.5),
+                        ),
+                      ],
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('🎮 Chế độ chơi'),
+                      _buildListItems(gameData!['modes']),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('💻 Yêu cầu hệ thống'),
+                      _buildListItems(gameData!['requirements']),
+                      const SizedBox(height: 24),
+                      ElevatedButton.icon(
+                        onPressed:
+                            _isLoadingSummary ? null : _generateAiSummary,
+                        icon: const Icon(Icons.auto_awesome),
+                        label: Text(_isLoadingSummary
+                            ? 'Đang tạo tóm tắt...'
+                            : '✨ Tóm tắt bằng AI'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8B5CF6),
+                          foregroundColor: Colors.white,
+                          minimumSize: const Size.fromHeight(45),
+                        ),
+                      ),
+                      if (_showAiSummary) ...[
+                        const SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+>>>>>>> Stashed changes
                           decoration: BoxDecoration(
+                            color: Colors.white12,
                             borderRadius: BorderRadius.circular(12),
+<<<<<<< Updated upstream
                             gradient: LinearGradient(
                               colors: [
                                 imageColor.withOpacity(0.3),
                                 imageColor.withOpacity(0.1),
                               ],
                             ),
+=======
+>>>>>>> Stashed changes
                           ),
-                          child: Center(
-                            child: Icon(
-                              Icons.image,
-                              size: 50,
-                              color: Colors.white24,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                          child: _isLoadingSummary
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                      color: Colors.purple))
+                              : Text(
+                                  _aiSummary,
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 15,
+                                    height: 1.5,
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ],
                   ),
-                  SizedBox(height: 24),
+                ),
+    );
+  }
 
-                  // System Requirements
-                  Text(
-                    'System Requirements',
-                    style: TextStyle(
-                      color: Color(0xFFFFD9F5),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  _buildRequirementRow('OS', 'Windows 10/11 64-bit'),
-                  _buildRequirementRow('Processor', 'Intel Core i5-8400'),
-                  _buildRequirementRow('Memory', '8 GB RAM'),
-                  _buildRequirementRow('Graphics', 'NVIDIA GTX 1060'),
-                  _buildRequirementRow('Storage', '50 GB available space'),
-
-                  SizedBox(height: 100), // Space for bottom buttons
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-
-      // Bottom Action Buttons
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Color(0xFF0A0E21),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              offset: Offset(0, -2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            // Add to Cart Button
-            Expanded(
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xFF60D3F3)),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Add to Cart',
-                    style: TextStyle(
-                      color: Color(0xFF60D3F3),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: 12),
-            // Buy Now Button
-            Expanded(
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFFFAB4E5), Color(0xFF60D3F3)],
-                  ),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Buy Now',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        color: Color(0xFFFAB4E5),
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
       ),
     );
   }
 
-  Widget _buildInfoCard(String label, String value) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white10,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Text(label, style: TextStyle(color: Colors.white54, fontSize: 12)),
-            SizedBox(height: 4),
-            Text(
-              value,
-              style: TextStyle(
-                color: Color(0xFFFFD9F5),
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget _buildListItems(List<dynamic>? items) {
+    if (items == null || items.isEmpty) {
+      return const Text('Không có dữ liệu',
+          style: TextStyle(color: Colors.white54));
+    }
 
-  Widget _buildRequirementRow(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 100,
-            child: Text(
-              label,
-              style: TextStyle(color: Colors.white54, fontSize: 14),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(color: Colors.white70, fontSize: 14),
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: items
+          .map((e) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text(
+                  "• $e",
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+              ))
+          .toList(),
     );
   }
 }

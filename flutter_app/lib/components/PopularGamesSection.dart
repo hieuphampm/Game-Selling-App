@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-
 import 'GameCard.dart';
 
 class PopularGamesSection extends StatelessWidget {
@@ -27,25 +26,10 @@ class PopularGamesSection extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              GameCard(
-                title: 'Neon Racer',
-                price: '\$29.99',
-                rating: 4.7,
-                imageColor: Color(0xFF60D3F3),
-              ),
-              GameCard(
-                title: 'Mystic Legends',
-                price: '\$44.99',
-                rating: 4.5,
-                imageColor: Color(0xFFFAB4E5),
-              ),
-              GameCard(
-                title: 'Battle Royale X',
-                price: '\$19.99',
-                rating: 4.8,
-                imageColor: Color(0xFFFFD9F5),
-              ),
+            children: const [
+              GameCard(documentId: 'gta_v'),
+              GameCard(documentId: 'euro_truck_simulator_2'),
+              GameCard(documentId: 'hollow_knight'),
             ],
           ),
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-
 import 'GameCard.dart';
 
 class FeaturedGamesSection extends StatelessWidget {
@@ -27,25 +26,10 @@ class FeaturedGamesSection extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              GameCard(
-                title: 'Cyber Quest 2024',
-                price: '\$59.99',
-                rating: 4.8,
-                imageColor: Color(0xFFFFD9F5),
-              ),
-              GameCard(
-                title: 'Space Warriors',
-                price: '\$49.99',
-                rating: 4.6,
-                imageColor: Color(0xFF60D3F3),
-              ),
-              GameCard(
-                title: 'Dragon Tales',
-                price: '\$39.99',
-                rating: 4.9,
-                imageColor: Color(0xFFFAB4E5),
-              ),
+            children: const [
+              GameCard(documentId: 'cyberpunk_2077'),
+              GameCard(documentId: 'microsoft_flight_simulator'),
+              GameCard(documentId: 'forza_horizon_5'),
             ],
           ),
         ),
