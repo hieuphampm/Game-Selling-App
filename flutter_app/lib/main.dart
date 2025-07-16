@@ -14,7 +14,6 @@ import 'screens/wishlist_screen.dart';
 import 'screens/settings/achievement_screen.dart';
 import 'firebase_options.dart';
 
-// Thêm dòng này để gọi seed
 import 'utils/firebase_seed.dart';
 
 void main() async {
@@ -24,12 +23,10 @@ void main() async {
   await dotenv.load(fileName: '.env');
 
   // Init Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Chạy seed 1 lần duy nhất (rồi có thể comment lại)
-  //await seedGamesToFirestore();
+  await seedGamesToFirestore();
 
   runApp(const GameSellingApp());
 }

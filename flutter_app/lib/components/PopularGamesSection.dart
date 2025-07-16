@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'GameCard.dart';
 
 class PopularGamesSection extends StatelessWidget {
@@ -9,7 +9,7 @@ class PopularGamesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'Popular Games',
@@ -20,16 +20,37 @@ class PopularGamesSection extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         SizedBox(
-          height: 200,
+          height: 220,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             children: const [
-              GameCard(documentId: 'gta_v'),
-              GameCard(documentId: 'euro_truck_simulator_2'),
-              GameCard(documentId: 'hollow_knight'),
+              GameCard(
+                documentId: 'gta_v',
+                title: 'GTA V',
+                price: '\$29.99',
+                rating: 4.9,
+                thumbnailUrl:
+                    'https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg',
+              ),
+              GameCard(
+                documentId: 'euro_truck_simulator_2',
+                title: 'Euro Truck 2',
+                price: '\$19.99',
+                rating: 4.7,
+                thumbnailUrl:
+                    'https://cdn.cloudflare.steamstatic.com/steam/apps/227300/header.jpg',
+              ),
+              GameCard(
+                documentId: 'hollow_knight',
+                title: 'Hollow Knight',
+                price: '\$14.99',
+                rating: 4.8,
+                thumbnailUrl:
+                    'https://cdn.cloudflare.steamstatic.com/steam/apps/367520/header.jpg',
+              ),
             ],
           ),
         ),

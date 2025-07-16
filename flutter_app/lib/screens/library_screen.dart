@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-// ✅ Nhớ đổi đường dẫn nếu cần
-=======
->>>>>>> 94eb40f2555b78e61fd6ef7e809a3ca13f5727e8
 
 class LibraryScreen extends StatefulWidget {
   static const routeName = '/library';

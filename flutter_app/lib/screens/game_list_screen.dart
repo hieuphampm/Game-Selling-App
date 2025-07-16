@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../components/GameCard.dart';
 
 class GameListScreen extends StatelessWidget {
   const GameListScreen({super.key});
@@ -46,7 +45,10 @@ class GameListScreen extends StatelessWidget {
                           height: 100,
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => Container(
-                              width: 100, height: 100, color: Colors.grey),
+                            width: 100,
+                            height: 100,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ),
@@ -76,13 +78,17 @@ class GameListScreen extends StatelessWidget {
                             const SizedBox(height: 6),
                             Row(
                               children: [
-                                const Icon(Icons.star,
-                                    size: 16, color: Color(0xFFFAB4E5)),
+                                const Icon(
+                                  Icons.star,
+                                  size: 16,
+                                  color: Color(0xFFFAB4E5),
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
                                   data['rating']?.toString() ?? 'N/A',
-                                  style:
-                                      const TextStyle(color: Color(0xFF60D3F3)),
+                                  style: const TextStyle(
+                                    color: Color(0xFF60D3F3),
+                                  ),
                                 ),
                               ],
                             ),
@@ -91,14 +97,16 @@ class GameListScreen extends StatelessWidget {
                               data['description'] ??
                                   'Một tựa game hấp dẫn đang chờ bạn khám phá...',
                               style: const TextStyle(
-                                  fontSize: 12, color: Colors.white70),
+                                fontSize: 12,
+                                color: Colors.white70,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               );

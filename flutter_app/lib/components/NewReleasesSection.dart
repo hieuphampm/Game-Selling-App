@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'GameCard.dart';
 
 class NewReleasesSection extends StatelessWidget {
@@ -9,7 +9,7 @@ class NewReleasesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'New Releases',
@@ -20,16 +20,37 @@ class NewReleasesSection extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         SizedBox(
-          height: 200,
+          height: 220,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             children: const [
-              GameCard(documentId: 'quantum_shift'),
-              GameCard(documentId: 'ocean_depths'),
-              GameCard(documentId: 'galaxy_heroes'),
+              GameCard(
+                documentId: 'quantum_shift',
+                title: 'Quantum Shift',
+                price: '\$34.99',
+                rating: 4.5,
+                thumbnailUrl:
+                    'https://placehold.co/600x200/000/FFF?text=Quantum+Shift',
+              ),
+              GameCard(
+                documentId: 'ocean_depths',
+                title: 'Ocean Depths',
+                price: '\$24.99',
+                rating: 4.3,
+                thumbnailUrl:
+                    'https://placehold.co/600x200/003366/FFF?text=Ocean+Depths',
+              ),
+              GameCard(
+                documentId: 'galaxy_heroes',
+                title: 'Galaxy Heroes',
+                price: '\$29.99',
+                rating: 4.6,
+                thumbnailUrl:
+                    'https://placehold.co/600x200/0f0f0f/FFF?text=Galaxy+Heroes',
+              ),
             ],
           ),
         ),
