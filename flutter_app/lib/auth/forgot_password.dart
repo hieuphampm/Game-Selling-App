@@ -28,7 +28,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       _sent = false;
     });
 
-    // TODO: Gọi API gửi email lấy lại mật khẩu
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         _loading = false;
@@ -41,6 +40,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     final inputDecoration = InputDecoration(
       filled: true,
+      // ignore: deprecated_member_use
       fillColor: Colors.white.withOpacity(0.05),
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       labelStyle: const TextStyle(

@@ -35,7 +35,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 ),
                 gradient: LinearGradient(
                   colors: [
+                    // ignore: deprecated_member_use
                     Colors.black.withOpacity(0.6),
+                    // ignore: deprecated_member_use
                     Colors.black.withOpacity(0.3),
                   ],
                   begin: Alignment.topCenter,
@@ -445,6 +447,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
+          // ignore: deprecated_member_use
           color: color.withOpacity(0.1),
           shape: BoxShape.circle,
         ),
