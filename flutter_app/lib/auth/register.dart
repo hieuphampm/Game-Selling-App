@@ -22,9 +22,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
-    setState(() => _loading = true);
 
-    // TODO: call register API
+    // So sánh sau khi onSaved đã chạy
+    if (_password != _confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
+      return;
+    }
+
+    setState(() => _loading = true);
+    debugPrint('Registering with email: $_email');
+
     Future.delayed(const Duration(seconds: 2), () {
       setState(() => _loading = false);
       Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
@@ -101,9 +110,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
-                            validator: (v) => v != null && v.contains('@')
-                                ? null
-                                : 'Invalid email',
+                            validator: (v) =>
+                                v != null && v.contains('@') ? null : 'Invalid email',
                             onSaved: (v) => _email = v!.trim(),
                           ),
 
@@ -123,9 +131,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
-                            validator: (v) => v != null && v.length >= 6
-                                ? null
-                                : 'At least 6 characters',
+                            validator: (v) =>
+                                v != null && v.length >= 6 ? null : 'At least 6 characters',
                             onSaved: (v) => _password = v!.trim(),
                           ),
 
@@ -145,9 +152,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
-                            validator: (v) => v != null && v == _password
-                                ? null
-                                : 'Passwords do not match',
+                            validator: (v) =>
+                                v == null || v.isEmpty ? 'Please confirm your password' : null,
                             onSaved: (v) => _confirmPassword = v!.trim(),
                           ),
 
@@ -185,9 +191,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           const SizedBox(height: 16),
                           Center(
                             child: TextButton(
-                              onPressed: () => Navigator.of(
-                                context,
-                              ).pushReplacementNamed(LoginScreen.routeName),
+                              onPressed: () => Navigator.of(context)
+                                  .pushReplacementNamed(LoginScreen.routeName),
                               child: const Text(
                                 'Already have an account? Login',
                                 style: TextStyle(
