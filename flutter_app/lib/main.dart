@@ -57,8 +57,6 @@ class GameSellingApp extends StatelessWidget {
         SettingsScreen.routeName: (_) => const SettingsScreen(),
         WishlistScreen.routeName: (_) => const WishlistScreen(),
         AchievementScreen.routeName: (_) => AchievementScreen(),
-        '/library': (_) => const LibraryScreen(),
-        '/wishlist': (_) => const WishlistScreen(),
         ...CommunityScreen.routes,
       },
     );
