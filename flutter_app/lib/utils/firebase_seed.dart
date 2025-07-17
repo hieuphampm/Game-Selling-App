@@ -7,8 +7,7 @@ Future<void> seedGamesToFirestore() async {
       'title': 'Microsoft Flight Simulator (2020)',
       'price': '\$59.99',
       'rating': 4.8,
-      'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/2/2d/Microsoft_Flight_Simulator_Cover_Art.jpg',
+      'thumbnail': 'https://i.ytimg.com/vi/BTETsm79D3A/maxresdefault.jpg',
       'description':
           'Fly around the world in stunning detail with realistic aircraft.'
     },
@@ -18,7 +17,7 @@ Future<void> seedGamesToFirestore() async {
       'price': '\$49.99',
       'rating': 4.7,
       'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/7/76/Forza_Horizon_5_cover_art.jpg',
+          'https://venturebeat.com/wp-content/uploads/2021/11/forzahorizon5-1.jpg',
       'description':
           'Race through the vibrant open world of Mexico with powerful cars.'
     },
@@ -28,7 +27,7 @@ Future<void> seedGamesToFirestore() async {
       'price': '\$9.99',
       'rating': 4.5,
       'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/8/8e/Left4Dead2.jpg',
+          'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/12/tai-left-4-dead-2-mien-phi-thumbnail.jpg',
       'description': 'Survive the zombie apocalypse with your friends.'
     },
     {
@@ -55,7 +54,7 @@ Future<void> seedGamesToFirestore() async {
       'price': '\$24.99',
       'rating': 4.4,
       'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/5/5c/Euro_Truck_Simulator_2_cover_art.jpg',
+          'https://cdn.tgdd.vn/GameApp/4/251526/Screentshots/tai-euro-truck-simulator-2-game-mo-phong-quan-ly-doi-29-09-2021-1.jpg',
       'description':
           'Drive trucks across Europe delivering cargo and exploring roads.'
     },
@@ -74,7 +73,7 @@ Future<void> seedGamesToFirestore() async {
       'price': '\$14.99',
       'rating': 4.9,
       'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/3/32/Hollow_Knight_cover.jpg',
+          'https://c4.wallpaperflare.com/wallpaper/610/849/167/video-game-hollow-knight-wallpaper-preview.jpg',
       'description': 'Explore the ancient underground world of Hallownest.'
     },
     {
