@@ -77,10 +77,10 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       final prompt = '''
 Bạn là chuyên gia đánh giá game. Hãy viết một đoạn tóm tắt tiếng Việt thật hấp dẫn cho trò chơi này, bao gồm thể loại, điểm đặc trưng, lối chơi, đồ họa, và đối tượng yêu thích.
 
-Tên: ${gameData?['title'] ?? ''}
-Giá: ${gameData?['price'] ?? ''}
-Mô tả: ${gameData?['description'] ?? ''}
-Đánh giá: ${gameData?['rating'] ?? ''}/5
+Tên: ${gameData?['name'] ?? ''}
+Giá: \$${gameData?['price'] ?? ''}
+Thể loại: ${gameData?['category']?.join(', ') ?? ''}
+Yêu cầu hệ thống: ${gameData?['requirements']?.join(', ') ?? ''}
 ''';
 
       final response = await gemini!.text(prompt);
@@ -104,10 +104,8 @@ Mô tả: ${gameData?['description'] ?? ''}
     return Scaffold(
       backgroundColor: const Color(0xFF0A0E21),
       appBar: AppBar(
-        title: const Text(
-          "Game Details",
-          style: TextStyle(color: Colors.white),
-        ),
+        title:
+            const Text("Game Details", style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF0A0E21),
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
@@ -116,18 +114,15 @@ Mô tả: ${gameData?['description'] ?? ''}
           ? const Center(child: CircularProgressIndicator(color: Colors.cyan))
           : gameData == null
               ? const Center(
-                  child: Text(
-                    "Không tìm thấy game",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  child: Text("Không tìm thấy game",
+                      style: TextStyle(color: Colors.white)),
                 )
               : SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Game thumbnail image
-                      if (gameData!['thumbnail'] != null)
+                      if (gameData!['image_url'] != null)
                         Container(
                           width: double.infinity,
                           height: 200,
@@ -145,7 +140,7 @@ Mô tả: ${gameData?['description'] ?? ''}
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: Image.network(
-                              gameData!['thumbnail'],
+                              gameData!['image_url'],
                               fit: BoxFit.cover,
                               loadingBuilder:
                                   (context, child, loadingProgress) {
@@ -170,18 +165,15 @@ Mô tả: ${gameData?['description'] ?? ''}
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   color: Colors.white10,
-                                  child: const Icon(
-                                    Icons.image_not_supported,
-                                    color: Colors.white54,
-                                    size: 50,
-                                  ),
+                                  child: const Icon(Icons.image_not_supported,
+                                      color: Colors.white54, size: 50),
                                 );
                               },
                             ),
                           ),
                         ),
                       Text(
-                        gameData!['title'] ?? '',
+                        gameData!['name'] ?? '',
                         style: const TextStyle(
                           color: Color(0xFFFFD9F5),
                           fontSize: 28,
@@ -189,54 +181,18 @@ Mô tả: ${gameData?['description'] ?? ''}
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Text(
-                            gameData!['price'] ?? '',
-                            style: const TextStyle(
-                              color: Color(0xFF60D3F3),
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          if (gameData!['rating'] != null)
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  '${gameData!['rating']}/5',
-                                  style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                        ],
+                      Text(
+                        "\$${gameData!['price'].toString()}",
+                        style: const TextStyle(
+                          color: Color(0xFF60D3F3),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 16),
-                      if (gameData!['description'] != null) ...[
-                        _buildSectionTitle('Mô tả'),
-                        Text(
-                          gameData!['description'],
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            height: 1.5,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                      ],
-                      // Only show these sections if the data exists
-                      if (gameData!['modes'] != null) ...[
-                        _buildSectionTitle('Chế độ chơi'),
-                        _buildListItems(gameData!['modes']),
+                      if (gameData!['category'] != null) ...[
+                        _buildSectionTitle('Thể loại'),
+                        _buildListItems(gameData!['category']),
                         const SizedBox(height: 20),
                       ],
                       if (gameData!['requirements'] != null) ...[
@@ -244,7 +200,11 @@ Mô tả: ${gameData?['description'] ?? ''}
                         _buildListItems(gameData!['requirements']),
                         const SizedBox(height: 20),
                       ],
-                      const SizedBox(height: 24),
+                      if (gameData!['modes'] != null) ...[
+                        _buildSectionTitle('Chế độ chơi'),
+                        _buildListItems(gameData!['modes']),
+                        const SizedBox(height: 20),
+                      ],
                       ElevatedButton.icon(
                         onPressed:
                             _isLoadingSummary ? null : _generateAiSummary,
@@ -271,16 +231,13 @@ Mô tả: ${gameData?['description'] ?? ''}
                           child: _isLoadingSummary
                               ? const Center(
                                   child: CircularProgressIndicator(
-                                    color: Colors.purple,
-                                  ),
-                                )
+                                      color: Colors.purple))
                               : Text(
                                   _aiSummary,
                                   style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 14,
-                                    height: 1.5,
-                                  ),
+                                      color: Colors.white70,
+                                      fontSize: 14,
+                                      height: 1.5),
                                 ),
                         ),
                       ],
@@ -303,10 +260,8 @@ Mô tả: ${gameData?['description'] ?? ''}
 
   Widget _buildListItems(List<dynamic>? items) {
     if (items == null || items.isEmpty) {
-      return const Text(
-        'Không có dữ liệu',
-        style: TextStyle(color: Colors.white54),
-      );
+      return const Text('Không có dữ liệu',
+          style: TextStyle(color: Colors.white54));
     }
 
     return Column(
@@ -315,10 +270,8 @@ Mô tả: ${gameData?['description'] ?? ''}
           .map(
             (e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(
-                "• $e",
-                style: const TextStyle(color: Colors.white70, fontSize: 14),
-              ),
+              child: Text("• $e",
+                  style: const TextStyle(color: Colors.white70, fontSize: 14)),
             ),
           )
           .toList(),

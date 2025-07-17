@@ -3,102 +3,69 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 Future<void> seedGamesToFirestore() async {
   final List<Map<String, dynamic>> games = [
     {
-      'id': 'microsoft_flight_simulator',
-      'title': 'Microsoft Flight Simulator (2020)',
-      'price': '\$59.99',
-      'rating': 4.8,
-      'thumbnail': 'https://i.ytimg.com/vi/BTETsm79D3A/maxresdefault.jpg',
-      'description':
-          'Fly around the world in stunning detail with realistic aircraft.'
+      'id': 'game_01',
+      'name': 'Microsoft Flight Simulator (2020)',
+      'price': 49,
+      'image_url':
+          'https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fmfs.jpg?alt=media&token=ab591f54-82a5-45f5-b566-1dbad227461d',
+      'category': ['simulator'],
+      'requirements': [
+        'Windows 10',
+        'Intel i5-4460 | AMD Ryzen 3 1200',
+        '8 GB RAM',
+        'NVIDIA GTX 770 | AMD Radeon RX 570',
+        '150 GB'
+      ],
+      'modes': ['Single Player', 'Multiplayer'],
+      'codes': [
+        'mfsA9K3X2T',
+        'mfsB7YQ1NZ',
+        'mfsL4W8V0E',
+        'mfsT3RM6PA',
+        'mfsC2Z8DNL',
+        'mfsX1QWER9',
+        'mfsU5VBNM2',
+        'mfsK8HJ7TR',
+        'mfsZ6PLM3A',
+        'mfsD9XC4YU'
+      ]
     },
     {
-      'id': 'forza_horizon_5',
-      'title': 'Forza Horizon 5',
-      'price': '\$49.99',
-      'rating': 4.7,
-      'thumbnail':
-          'https://venturebeat.com/wp-content/uploads/2021/11/forzahorizon5-1.jpg',
-      'description':
-          'Race through the vibrant open world of Mexico with powerful cars.'
+      'id': 'game_02',
+      'name': 'Forza Horizon 5',
+      'price': 35,
+      'image_url':
+          'https://firebasestorage.googleapis.com/v0/b/computer-shop-management-a2cdd.appspot.com/o/Game%2Fforza.jpg?alt=media&token=ae6d25a4-1ca1-4fb0-abc0-de9c0cc6542e',
+      'category': ['simulator', 'racing', 'sport'],
+      'requirements': [
+        'Windows 10',
+        'Intel i5-4460 or AMD Ryzen 3 1200',
+        '8 GB RAM',
+        'NVidia GTX 970, AMD RX 470, OR Intel Arc A380',
+        '110 GB'
+      ],
+      'modes': ['Single Player', 'Multiplayer'],
+      'codes': [
+        'fhA7X9T2PQ',
+        'fhM3L8WZ1E',
+        'fhK5Q2N7YD',
+        'fhZ6RP1XMB',
+        'fhB8VC3JNL',
+        'fhD9YU4TWE',
+        'fhL1MK7ZQA',
+        'fhU2XN9EPV',
+        'fhC3WQ6RBT',
+        'fhT0JZ8MLN'
+      ]
     },
-    {
-      'id': 'left_4_dead_2',
-      'title': 'Left 4 Dead 2',
-      'price': '\$9.99',
-      'rating': 4.5,
-      'thumbnail':
-          'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/12/tai-left-4-dead-2-mien-phi-thumbnail.jpg',
-      'description': 'Survive the zombie apocalypse with your friends.'
-    },
-    {
-      'id': 'gta_v',
-      'title': 'Grand Theft Auto V',
-      'price': '\$29.99',
-      'rating': 4.9,
-      'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png',
-      'description': 'Explore the criminal underworld of Los Santos.'
-    },
-    {
-      'id': 'ready_or_not',
-      'title': 'Ready or Not',
-      'price': '\$39.99',
-      'rating': 4.6,
-      'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/e/e4/Ready_or_Not_cover.jpg',
-      'description': 'Tactical FPS game where you lead SWAT missions.'
-    },
-    {
-      'id': 'euro_truck_simulator_2',
-      'title': 'Euro Truck Simulator 2',
-      'price': '\$24.99',
-      'rating': 4.4,
-      'thumbnail':
-          'https://cdn.tgdd.vn/GameApp/4/251526/Screentshots/tai-euro-truck-simulator-2-game-mo-phong-quan-ly-doi-29-09-2021-1.jpg',
-      'description':
-          'Drive trucks across Europe delivering cargo and exploring roads.'
-    },
-    {
-      'id': 'cyberpunk_2077',
-      'title': 'Cyberpunk 2077',
-      'price': '\$59.99',
-      'rating': 4.2,
-      'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg',
-      'description': 'Experience a futuristic open world in Night City.'
-    },
-    {
-      'id': 'hollow_knight',
-      'title': 'Hollow Knight',
-      'price': '\$14.99',
-      'rating': 4.9,
-      'thumbnail':
-          'https://c4.wallpaperflare.com/wallpaper/610/849/167/video-game-hollow-knight-wallpaper-preview.jpg',
-      'description': 'Explore the ancient underground world of Hallownest.'
-    },
-    {
-      'id': 'blasphemous',
-      'title': 'Blasphemous',
-      'price': '\$19.99',
-      'rating': 4.6,
-      'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/0/0d/Blasphemous_art.jpg',
-      'description': 'Dark and brutal metroidvania with religious themes.'
-    },
-    {
-      'id': 'alien_isolation',
-      'title': 'Alien: Isolation',
-      'price': '\$29.99',
-      'rating': 4.7,
-      'thumbnail':
-          'https://upload.wikimedia.org/wikipedia/en/f/f1/Alien_Isolation.jpg',
-      'description': 'Hide from the terrifying Xenomorph in deep space.'
-    },
+    // 🎮 Thêm game_03 đến game_10 tương tự tại đây (copy từ JSON)
   ];
 
   for (final gameData in games) {
-    final id = gameData['id']?.toString() ?? 'unknown_id';
-    await FirebaseFirestore.instance.collection('game').doc(id).set(gameData);
+    final id = gameData['id'] ?? 'unknown_id';
+    final game = Map<String, dynamic>.from(gameData);
+    game.remove('id'); // Firestore key sẽ là `id`, không lưu lặp trong nội dung
+    await FirebaseFirestore.instance.collection('game').doc(id).set(game);
   }
 
   print('✅ Seeded all games to Firestore.');

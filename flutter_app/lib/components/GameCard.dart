@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../screens/game_detail_screen.dart';
 
 class GameCard extends StatelessWidget {
-  final String documentId; // 🔑 Firestore doc ID
+  final String documentId;
   final String title;
   final String price;
-  final double rating;
+  final double? rating;
   final String thumbnailUrl;
 
   const GameCard({
@@ -24,7 +24,7 @@ class GameCard extends StatelessWidget {
         Navigator.push(
           context,
           PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 400),
+            transitionDuration: const Duration(milliseconds: 400),
             pageBuilder: (_, __, ___) =>
                 GameDetailScreen(documentId: documentId),
           ),
@@ -41,33 +41,25 @@ class GameCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Thumbnail with Hero Animation
+            // ✅ Thumbnail with safe fallback
             ClipRRect(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(12)),
               child: Hero(
                 tag: 'thumbnail_$documentId',
-                child: Image.network(
-                  thumbnailUrl,
-                  height: 100,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    height: 100,
-                    color: Colors.grey[800],
-                    child: const Icon(Icons.broken_image, color: Colors.white),
-                  ),
-                  loadingBuilder: (_, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
-                      height: 100,
-                      color: Colors.grey[900],
-                      child: const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    );
-                  },
-                ),
+                child: thumbnailUrl.isNotEmpty
+                    ? Image.network(
+                        thumbnailUrl,
+                        height: 100,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => _buildImageError(),
+                        loadingBuilder: (_, child, progress) {
+                          if (progress == null) return child;
+                          return _buildImageLoading();
+                        },
+                      )
+                    : _buildImageError(),
               ),
             ),
 
@@ -88,20 +80,21 @@ class GameCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.star,
-                          color: Color(0xFFFAB4E5), size: 16),
-                      const SizedBox(width: 4),
-                      Text(
-                        rating.toString(),
-                        style: const TextStyle(
-                          color: Color(0xFF60D3F3),
-                          fontSize: 12,
+                  if (rating != null)
+                    Row(
+                      children: [
+                        const Icon(Icons.star,
+                            color: Color(0xFFFAB4E5), size: 16),
+                        const SizedBox(width: 4),
+                        Text(
+                          rating!.toStringAsFixed(1),
+                          style: const TextStyle(
+                            color: Color(0xFF60D3F3),
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   const SizedBox(height: 8),
                   Text(
                     price,
@@ -119,4 +112,20 @@ class GameCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildImageLoading() => Container(
+        height: 100,
+        width: double.infinity,
+        color: Colors.grey[900],
+        child: const Center(
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      );
+
+  Widget _buildImageError() => Container(
+        height: 100,
+        width: double.infinity,
+        color: Colors.grey[800],
+        child: const Icon(Icons.broken_image, color: Colors.white),
+      );
 }

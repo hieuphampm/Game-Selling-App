@@ -26,7 +26,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Chạy seed 1 lần duy nhất (rồi có thể comment lại)
-  await seedGamesToFirestore();
+  // await seedGamesToFirestore();
 
   runApp(const GameSellingApp());
 }
