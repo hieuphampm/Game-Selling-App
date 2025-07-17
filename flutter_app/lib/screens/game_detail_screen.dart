@@ -75,22 +75,22 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       }
 
       final prompt = '''
-Bạn là chuyên gia đánh giá game. Hãy viết một đoạn tóm tắt tiếng Việt thật hấp dẫn cho trò chơi này, bao gồm thể loại, điểm đặc trưng, lối chơi, đồ họa, và đối tượng yêu thích.
+      You are a game review expert. Write a compelling Vietnamese summary for this game, including genre, features, gameplay, graphics, and target audience.
 
-Tên: ${gameData?['name'] ?? ''}
-Giá: \$${gameData?['price'] ?? ''}
-Thể loại: ${gameData?['category']?.join(', ') ?? ''}
-Yêu cầu hệ thống: ${gameData?['requirements']?.join(', ') ?? ''}
-''';
+      Name: ${gameData?['name'] ?? ''}
+      Category: ${gameData?['category']?.join(', ') ?? ''}
+      System requirements: ${gameData?['requirements']?.join(', ') ?? ''}
+      Play modes: ${gameData?['modes']?.join(', ') ?? ''}
+      ''';
 
       final response = await gemini!.text(prompt);
 
       setState(() {
-        _aiSummary = response?.output ?? 'Không có phản hồi từ AI.';
+        _aiSummary = response?.output ?? 'AI not responding.';
       });
     } catch (e) {
       setState(() {
-        _aiSummary = 'Lỗi: $e';
+        _aiSummary = 'Error: $e';
       });
     } finally {
       setState(() {
@@ -190,6 +190,23 @@ Yêu cầu hệ thống: ${gameData?['requirements']?.join(', ') ?? ''}
                         ),
                       ),
                       const SizedBox(height: 16),
+                      if (gameData!['description'] != null &&
+                          gameData!['description']
+                              .toString()
+                              .trim()
+                              .isNotEmpty) ...[
+                        _buildSectionTitle('Description'),
+                        const SizedBox(height: 8),
+                        Text(
+                          gameData!['description'],
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                       if (gameData!['category'] != null) ...[
                         _buildSectionTitle('Category'),
                         _buildListItems(gameData!['category']),
@@ -211,11 +228,11 @@ Yêu cầu hệ thống: ${gameData?['requirements']?.join(', ') ?? ''}
                         icon: const Icon(Icons.auto_awesome),
                         label: Text(
                           _isLoadingSummary
-                              ? 'Đang tạo tóm tắt...'
-                              : 'Tóm tắt bằng AI',
+                              ? 'Creating summary...'
+                              : 'Summary with AI',
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF8B5CF6),
+                          backgroundColor: const Color(0xFF60D3F3 ),
                           foregroundColor: Colors.white,
                           minimumSize: const Size.fromHeight(45),
                         ),
