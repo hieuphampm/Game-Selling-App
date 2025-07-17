@@ -185,23 +185,23 @@ Yêu cầu hệ thống: ${gameData?['requirements']?.join(', ') ?? ''}
                         "\$${gameData!['price'].toString()}",
                         style: const TextStyle(
                           color: Color(0xFF60D3F3),
-                          fontSize: 22,
+                          fontSize: 42,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 16),
                       if (gameData!['category'] != null) ...[
-                        _buildSectionTitle('Thể loại'),
+                        _buildSectionTitle('Category'),
                         _buildListItems(gameData!['category']),
                         const SizedBox(height: 20),
                       ],
                       if (gameData!['requirements'] != null) ...[
-                        _buildSectionTitle('Yêu cầu hệ thống'),
+                        _buildSectionTitle('System Requirements'),
                         _buildListItems(gameData!['requirements']),
                         const SizedBox(height: 20),
                       ],
                       if (gameData!['modes'] != null) ...[
-                        _buildSectionTitle('Chế độ chơi'),
+                        _buildSectionTitle('Play modes'),
                         _buildListItems(gameData!['modes']),
                         const SizedBox(height: 20),
                       ],
