@@ -1,29 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
-  runApp(PaymentApp());
-}
-
-class PaymentApp extends StatelessWidget {
-  const PaymentApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Payment UI',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: PaymentScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+  final Map<String, dynamic> gameData;
+  
+  const PaymentScreen({super.key, required this.gameData});
 
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
@@ -43,7 +24,7 @@ class _PaymentScreenState extends State<PaymentScreen>
   late Animation<double> _fadeAnimation;
 
   // Color scheme
-  final Color darkBackground = Color(0xFF0d0d0d);
+  final Color darkBackground = Color(0xFF0A0E21);
   final Color primaryPink = Color(0xFFFFD9F5);
   final Color accentBlue = Color(0xFF60D3F3);
   final Color secondaryPink = Color(0xFFFAB4E5);
@@ -124,6 +105,104 @@ class _PaymentScreenState extends State<PaymentScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Game Information Section
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: cardBackground,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.grey[800]!,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            // Game Image
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.white10,
+                              ),
+                              child: widget.gameData['image_url'] != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        widget.gameData['image_url'],
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Icon(
+                                            Icons.videogame_asset,
+                                            color: Colors.white54,
+                                            size: 30,
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : Icon(
+                                      Icons.videogame_asset,
+                                      color: Colors.white54,
+                                      size: 30,
+                                    ),
+                            ),
+                            SizedBox(width: 16),
+                            // Game Details
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.gameData['name'] ?? 'Unknown Game',
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4),
+                                  if (widget.gameData['category'] != null && 
+                                      widget.gameData['category'].isNotEmpty)
+                                    Text(
+                                      widget.gameData['category'].first,
+                                      style: TextStyle(
+                                        color: accentBlue,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  SizedBox(height: 8),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: primaryPink.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      'Digital Download',
+                                      style: TextStyle(
+                                        color: primaryPink,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: 24),
+
                       // Enhanced Amount Section
                       Container(
                         width: double.infinity,
@@ -161,7 +240,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                             ),
                             SizedBox(height: 8),
                             Text(
-                              '\$124.99',
+                              '\$${widget.gameData['price']?.toString() ?? '0.00'}',
                               style: TextStyle(
                                 fontSize: 42,
                                 fontWeight: FontWeight.bold,
@@ -179,7 +258,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                'Premium Plan',
+                                'Game Purchase',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[700],
@@ -323,7 +402,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                               Icon(Icons.lock, color: Colors.white, size: 20),
                               SizedBox(width: 8),
                               Text(
-                                'Pay \$124.99',
+                                'Pay \$${widget.gameData['price']?.toString() ?? '0.00'}',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -745,13 +824,13 @@ class _PaymentScreenState extends State<PaymentScreen>
                 ),
                 SizedBox(height: 12),
                 Text(
-                  'Your payment of \$124.99 has been processed successfully.',
+                  'Your payment of \$${widget.gameData['price']?.toString() ?? '0.00'} for ${widget.gameData['name'] ?? 'the game'} has been processed successfully.',
                   style: TextStyle(color: subtextColor, fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Transaction ID: #TXN123456789',
+                  'Transaction ID: #TXN${DateTime.now().millisecondsSinceEpoch}',
                   style: TextStyle(
                     color: accentBlue,
                     fontSize: 12,
@@ -772,7 +851,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(); // Close dialog
+                      Navigator.of(context).pop(); // Go back to game detail
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,

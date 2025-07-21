@@ -18,6 +18,8 @@ Color code:
 - #ffd9f5
 - #60d3f3
 - #fab4e5
+- #71cffe - 0xFF71CFFE
+- #ffb3d9 - 0xFFFFB3D9
 - suggest background #0d0d0d
 
 

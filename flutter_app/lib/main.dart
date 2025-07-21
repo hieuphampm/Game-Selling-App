@@ -14,7 +14,7 @@ import 'screens/wishlist_screen.dart';
 import 'screens/settings/achievement_screen.dart';
 import 'firebase_options.dart';
 
-import 'utils/firebase_seed.dart';
+// import 'utils/firebase_seed.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

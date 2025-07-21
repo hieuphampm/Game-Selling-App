@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'payment_screen.dart'; // Add this import
 
 class GameDetailScreen extends StatefulWidget {
   final String documentId;
@@ -18,6 +19,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   String _aiSummary = '';
   bool _isLoadingSummary = false;
   bool _showAiSummary = false;
+  bool _isAddingToCart = false;
+  bool _isBuying = false;
   Gemini? gemini;
 
   @override
@@ -75,7 +78,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       }
 
       final prompt = '''
-      You are a game review expert. Write a compelling Vietnamese summary for this game, including genre, features, gameplay, graphics, and target audience.
+      You are a game review expert. Write a compelling English summary for this game, including genre, features, gameplay, graphics, and target audience.
 
       Name: ${gameData?['name'] ?? ''}
       Category: ${gameData?['category']?.join(', ') ?? ''}
@@ -96,6 +99,102 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       setState(() {
         _isLoadingSummary = false;
       });
+    }
+  }
+
+  Future<void> _addToCart() async {
+    setState(() {
+      _isAddingToCart = true;
+    });
+
+    try {
+      // Add your cart logic here
+      // Example: Add to Firestore cart collection
+      await FirebaseFirestore.instance.collection('cart').add({
+        'gameId': widget.documentId,
+        'gameName': gameData!['name'],
+        'price': gameData!['price'],
+        'imageUrl': gameData!['image_url'],
+        'addedAt': FieldValue.serverTimestamp(),
+        // Add user ID when you implement authentication
+        // 'userId': currentUserId,
+      });
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${gameData!['name']} added to cart!'),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      // Show error message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Cannot add to cart: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAddingToCart = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _buyNow() async {
+    setState(() {
+      _isBuying = true;
+    });
+
+    try {
+      // Add your purchase logic here
+      // Example: Create order in Firestore
+      await FirebaseFirestore.instance.collection('orders').add({
+        'gameId': widget.documentId,
+        'gameName': gameData!['name'],
+        'price': gameData!['price'],
+        'imageUrl': gameData!['image_url'],
+        'orderDate': FieldValue.serverTimestamp(),
+        'status': 'pending',
+        // Add user ID when you implement authentication
+        // 'userId': currentUserId,
+      });
+
+      // Navigate to payment screen
+      if (mounted) {
+        Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => PaymentScreen(gameData: gameData!)
+          )
+        );
+      }
+    } catch (e) {
+      // Show error message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error when buy game: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isBuying = false;
+        });
+      }
     }
   }
 
@@ -189,7 +288,65 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
+                      
+                      // Buy and Add to Cart buttons
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: _isBuying ? null : _buyNow,
+                              icon: _isBuying
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Icon(Icons.shopping_bag),
+                              label: Text(_isBuying ? 'Processing...' : 'Buy Now'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF71CFFE),
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size.fromHeight(50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: _isAddingToCart ? null : _addToCart,
+                              icon: _isAddingToCart
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Icon(Icons.add_shopping_cart),
+                              label: Text(_isAddingToCart ? 'Adding...' : 'Add to Cart'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFFFB3D9),
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size.fromHeight(50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      const SizedBox(height: 20),
+                      
                       if (gameData!['description'] != null &&
                           gameData!['description']
                               .toString()
@@ -277,7 +434,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
 
   Widget _buildListItems(List<dynamic>? items) {
     if (items == null || items.isEmpty) {
-      return const Text('Không có dữ liệu',
+      return const Text('No Data',
           style: TextStyle(color: Colors.white54));
     }
 
