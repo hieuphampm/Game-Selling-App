@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
-import 'payment_screen.dart'; // Add this import
+import 'package:provider/provider.dart';
+import '../utils/cart_provider.dart';
+import 'payment_screen.dart';
 
 class GameDetailScreen extends StatefulWidget {
   final String documentId;
@@ -108,19 +110,30 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     });
 
     try {
-      // Add your cart logic here
-      // Example: Add to Firestore cart collection
+      // Create Game object from gameData
+      final game = Game(
+        id: widget.documentId,
+        name: gameData!['name'],
+        price: (gameData!['price'] is int)
+            ? (gameData!['price'] as int).toDouble()
+            : gameData!['price'].toDouble(),
+        image_url: gameData!['image_url'],
+        category: gameData!['category']?.join(', '),
+        description: gameData!['description'],
+      );
+
+      // Add to cart using CartProvider
+      Provider.of<CartProvider>(context, listen: false).addItem(game);
+
+      // Optional: Also save to Firestore if you want to persist cart data
       await FirebaseFirestore.instance.collection('cart').add({
         'gameId': widget.documentId,
         'gameName': gameData!['name'],
         'price': gameData!['price'],
         'imageUrl': gameData!['image_url'],
         'addedAt': FieldValue.serverTimestamp(),
-        // Add user ID when you implement authentication
-        // 'userId': currentUserId,
       });
 
-      // Show success message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -131,7 +144,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         );
       }
     } catch (e) {
-      // Show error message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -156,8 +168,19 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     });
 
     try {
-      // Add your purchase logic here
-      // Example: Create order in Firestore
+      // Create Game object
+      final game = Game(
+        id: widget.documentId,
+        name: gameData!['name'],
+        price: (gameData!['price'] is int)
+            ? (gameData!['price'] as int).toDouble()
+            : gameData!['price'].toDouble(),
+        image_url: gameData!['image_url'],
+        category: gameData!['category']?.join(', '),
+        description: gameData!['description'],
+      );
+
+      // Save order to Firestore
       await FirebaseFirestore.instance.collection('orders').add({
         'gameId': widget.documentId,
         'gameName': gameData!['name'],
@@ -165,21 +188,18 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         'imageUrl': gameData!['image_url'],
         'orderDate': FieldValue.serverTimestamp(),
         'status': 'pending',
-        // Add user ID when you implement authentication
-        // 'userId': currentUserId,
       });
 
-      // Navigate to payment screen
       if (mounted) {
+        // Navigate to payment with single item
         Navigator.push(
-          context, 
+          context,
           MaterialPageRoute(
-            builder: (context) => PaymentScreen(gameData: gameData!)
-          )
+            builder: (context) => PaymentScreen(cartItems: [game]),
+          ),
         );
       }
     } catch (e) {
-      // Show error message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -200,6 +220,10 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final isInCart =
+        gameData != null ? cartProvider.isInCart(widget.documentId) : false;
+
     return Scaffold(
       backgroundColor: const Color(0xFF0A0E21),
       appBar: AppBar(
@@ -213,7 +237,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           ? const Center(child: CircularProgressIndicator(color: Colors.cyan))
           : gameData == null
               ? const Center(
-                  child: Text("Không tìm thấy game",
+                  child: Text("Game not found",
                       style: TextStyle(color: Colors.white)),
                 )
               : SingleChildScrollView(
@@ -244,35 +268,26 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                               loadingBuilder:
                                   (context, child, loadingProgress) {
                                 if (loadingProgress == null) return child;
-                                return Container(
-                                  color: Colors.white10,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                      color: Colors.cyan,
-                                    ),
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                    color: Colors.cyan,
                                   ),
                                 );
                               },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.white10,
-                                  child: const Icon(Icons.image_not_supported,
-                                      color: Colors.white54, size: 50),
-                                );
-                              },
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Icon(Icons.broken_image,
+                                      color: Colors.white),
                             ),
                           ),
                         ),
                       Text(
-                        gameData!['name'] ?? '',
+                        gameData!['name'],
                         style: const TextStyle(
                           color: Color(0xFFFFD9F5),
                           fontSize: 28,
@@ -289,8 +304,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      
-                      // Buy and Add to Cart buttons
+
+                      // ✅ Buy Now & Add to Cart Buttons
                       Row(
                         children: [
                           Expanded(
@@ -298,98 +313,76 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                               onPressed: _isBuying ? null : _buyNow,
                               icon: _isBuying
                                   ? const SizedBox(
-                                      width: 16,
-                                      height: 16,
+                                      width: 20,
+                                      height: 20,
                                       child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
+                                          strokeWidth: 2, color: Colors.white))
                                   : const Icon(Icons.shopping_bag),
-                              label: Text(_isBuying ? 'Processing...' : 'Buy Now'),
+                              label:
+                                  Text(_isBuying ? 'Processing...' : 'Buy Now'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF71CFFE),
                                 foregroundColor: Colors.white,
-                                minimumSize: const Size.fromHeight(50),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                                minimumSize: const Size.fromHeight(48),
                               ),
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: ElevatedButton.icon(
-                              onPressed: _isAddingToCart ? null : _addToCart,
+                              onPressed: (isInCart || _isAddingToCart)
+                                  ? null
+                                  : _addToCart,
                               icon: _isAddingToCart
                                   ? const SizedBox(
-                                      width: 16,
-                                      height: 16,
+                                      width: 20,
+                                      height: 20,
                                       child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Icon(Icons.add_shopping_cart),
-                              label: Text(_isAddingToCart ? 'Adding...' : 'Add to Cart'),
+                                          strokeWidth: 2, color: Colors.white))
+                                  : Icon(isInCart
+                                      ? Icons.check
+                                      : Icons.add_shopping_cart),
+                              label: Text(_isAddingToCart
+                                  ? 'Adding...'
+                                  : isInCart
+                                      ? 'In Cart'
+                                      : 'Add to Cart'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFFFB3D9),
+                                backgroundColor: isInCart
+                                    ? Colors.grey
+                                    : const Color(0xFFFFB3D9),
                                 foregroundColor: Colors.white,
-                                minimumSize: const Size.fromHeight(50),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                                minimumSize: const Size.fromHeight(48),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      
+
                       const SizedBox(height: 20),
-                      
-                      if (gameData!['description'] != null &&
-                          gameData!['description']
-                              .toString()
-                              .trim()
-                              .isNotEmpty) ...[
-                        _buildSectionTitle('Description'),
-                        const SizedBox(height: 8),
-                        Text(
-                          gameData!['description'],
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            height: 1.5,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                      ],
-                      if (gameData!['category'] != null) ...[
-                        _buildSectionTitle('Category'),
-                        _buildListItems(gameData!['category']),
-                        const SizedBox(height: 20),
-                      ],
-                      if (gameData!['requirements'] != null) ...[
-                        _buildSectionTitle('System Requirements'),
-                        _buildListItems(gameData!['requirements']),
-                        const SizedBox(height: 20),
-                      ],
-                      if (gameData!['modes'] != null) ...[
-                        _buildSectionTitle('Play modes'),
-                        _buildListItems(gameData!['modes']),
-                        const SizedBox(height: 20),
-                      ],
+
+                      if (gameData!['description'] != null)
+                        _buildSectionTitle(
+                            'Description', gameData!['description']),
+                      if (gameData!['category'] != null)
+                        _buildListSection('Category', gameData!['category']),
+                      if (gameData!['requirements'] != null)
+                        _buildListSection(
+                            'System Requirements', gameData!['requirements']),
+                      if (gameData!['modes'] != null)
+                        _buildListSection('Play Modes', gameData!['modes']),
+
+                      const SizedBox(height: 20),
+
                       ElevatedButton.icon(
                         onPressed:
                             _isLoadingSummary ? null : _generateAiSummary,
                         icon: const Icon(Icons.auto_awesome),
-                        label: Text(
-                          _isLoadingSummary
-                              ? 'Creating summary...'
-                              : 'Summary with AI',
-                        ),
+                        label: Text(_isLoadingSummary
+                            ? 'Creating summary...'
+                            : 'Summary with AI'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF60D3F3 ),
+                          backgroundColor: const Color(0xFF60D3F3),
                           foregroundColor: Colors.white,
                           minimumSize: const Size.fromHeight(45),
                         ),
@@ -406,13 +399,11 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                               ? const Center(
                                   child: CircularProgressIndicator(
                                       color: Colors.purple))
-                              : Text(
-                                  _aiSummary,
+                              : Text(_aiSummary,
                                   style: const TextStyle(
                                       color: Colors.white70,
                                       fontSize: 14,
-                                      height: 1.5),
-                                ),
+                                      height: 1.5)),
                         ),
                       ],
                     ],
@@ -421,34 +412,43 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        color: Color(0xFFFFD9F5),
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
+  Widget _buildSectionTitle(String title, String content) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Color(0xFFFFD9F5),
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          content,
+          style: const TextStyle(color: Colors.white70, fontSize: 14),
+        ),
+        const SizedBox(height: 20),
+      ],
     );
   }
 
-  Widget _buildListItems(List<dynamic>? items) {
-    if (items == null || items.isEmpty) {
-      return const Text('No Data',
-          style: TextStyle(color: Colors.white54));
-    }
-
+  Widget _buildListSection(String title, List<dynamic> items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: items
-          .map(
-            (e) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text("• $e",
-                  style: const TextStyle(color: Colors.white70, fontSize: 14)),
-            ),
-          )
-          .toList(),
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Color(0xFFFFD9F5),
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        ...items.map((e) => Text("• $e",
+            style: const TextStyle(color: Colors.white70, fontSize: 14))),
+        const SizedBox(height: 20),
+      ],
     );
   }
 }

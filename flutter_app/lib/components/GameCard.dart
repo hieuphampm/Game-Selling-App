@@ -41,7 +41,6 @@ class GameCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔹 Image section
             ClipRRect(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(12)),
@@ -62,14 +61,11 @@ class GameCard extends StatelessWidget {
                     : _buildImageError(),
               ),
             ),
-
-            // 🔹 Info section
             Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 🔸 Title
                   Text(
                     title,
                     maxLines: 1,
@@ -80,8 +76,6 @@ class GameCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-
-                  // 🔸 Rating (if any)
                   if (rating != null) ...[
                     const SizedBox(height: 4),
                     Row(
@@ -99,10 +93,7 @@ class GameCard extends StatelessWidget {
                       ],
                     ),
                   ],
-
                   const SizedBox(height: 8),
-
-                  // 🔸 Price
                   Text(
                     price,
                     style: const TextStyle(

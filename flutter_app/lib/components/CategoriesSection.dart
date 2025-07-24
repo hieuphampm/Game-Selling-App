@@ -11,7 +11,7 @@ class CategoriesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'Categories',
@@ -22,33 +22,43 @@ class CategoriesSection extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         SizedBox(
           height: 100,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
               CategoryCard(
-                  title: 'Action',
-                  icon: Icons.flash_on,
-                  onTap: () => onCategorySelected('action')),
+                title: 'All',
+                icon: Icons.apps,
+                onTap: () => onCategorySelected('all'),
+              ),
               CategoryCard(
-                  title: 'Adventure',
-                  icon: Icons.explore,
-                  onTap: () => onCategorySelected('adventure')),
+                title: 'Action',
+                icon: Icons.flash_on,
+                onTap: () => onCategorySelected('action'),
+              ),
               CategoryCard(
-                  title: 'RPG',
-                  icon: Icons.shield,
-                  onTap: () => onCategorySelected('rpg')),
+                title: 'Adventure',
+                icon: Icons.explore,
+                onTap: () => onCategorySelected('adventure'),
+              ),
               CategoryCard(
-                  title: 'Strategy',
-                  icon: Icons.psychology,
-                  onTap: () => onCategorySelected('strategy')),
+                title: 'RPG',
+                icon: Icons.shield,
+                onTap: () => onCategorySelected('rpg'),
+              ),
               CategoryCard(
-                  title: 'Sports',
-                  icon: Icons.sports_soccer,
-                  onTap: () => onCategorySelected('sport')),
+                title: 'Strategy',
+                icon: Icons.psychology,
+                onTap: () => onCategorySelected('strategy'),
+              ),
+              CategoryCard(
+                title: 'Sports',
+                icon: Icons.sports_soccer,
+                onTap: () => onCategorySelected('sport'),
+              ),
             ],
           ),
         ),

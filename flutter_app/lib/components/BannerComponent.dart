@@ -41,18 +41,6 @@ class BannerComponent extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0D0D0D),
-                    foregroundColor: Color(0xFFFFD9F5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  child: Text('Shop Now'),
-                ),
               ],
             ),
           ),

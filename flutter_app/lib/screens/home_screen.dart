@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../components/BannerComponent.dart';
 import '../components/CategoriesSection.dart';
 import '../components/FeaturedGamesSection.dart';
 import '../components/NewReleasesSection.dart';
 import '../components/PopularGamesSection.dart';
+import '../screens/search_screen.dart';
+import '../screens/cart_screen.dart';
+import '../utils/cart_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -19,12 +24,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onCategorySelected(String category) {
     setState(() {
-      selectedCategory = category.toLowerCase();
+      if (category.toLowerCase() == 'all') {
+        selectedCategory = null;
+      } else {
+        selectedCategory = category.toLowerCase();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<CartProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -41,11 +52,44 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Color(0xFF60D3F3)),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SearchScreen()),
+              );
+            },
           ),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart, color: Color(0xFFFAB4E5)),
-            onPressed: () {},
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart, color: Color(0xFFFAB4E5)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const CartScreen()),
+                  );
+                },
+              ),
+              if (cart.itemCount > 0)
+                Positioned(
+                  right: 6,
+                  top: 6,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.redAccent,
+                    ),
+                    child: Text(
+                      '${cart.itemCount}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ],
       ),
@@ -63,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
             PopularGamesSection(category: selectedCategory),
             const SizedBox(height: 20),
             NewReleasesSection(category: selectedCategory),
+            const SizedBox(height: 40),
           ],
         ),
       ),
