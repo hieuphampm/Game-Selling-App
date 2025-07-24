@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'CategoryCard.dart';
 
 class CategoriesSection extends StatelessWidget {
-  const CategoriesSection({super.key});
+  final void Function(String) onCategorySelected;
+
+  const CategoriesSection({super.key, required this.onCategorySelected});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +29,26 @@ class CategoriesSection extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 16),
             children: [
-              CategoryCard(title: 'Action', icon: Icons.flash_on),
-              CategoryCard(title: 'Adventure', icon: Icons.explore),
-              CategoryCard(title: 'RPG', icon: Icons.shield),
-              CategoryCard(title: 'Strategy', icon: Icons.psychology),
-              CategoryCard(title: 'Sports', icon: Icons.sports_soccer),
+              CategoryCard(
+                  title: 'Action',
+                  icon: Icons.flash_on,
+                  onTap: () => onCategorySelected('action')),
+              CategoryCard(
+                  title: 'Adventure',
+                  icon: Icons.explore,
+                  onTap: () => onCategorySelected('adventure')),
+              CategoryCard(
+                  title: 'RPG',
+                  icon: Icons.shield,
+                  onTap: () => onCategorySelected('rpg')),
+              CategoryCard(
+                  title: 'Strategy',
+                  icon: Icons.psychology,
+                  onTap: () => onCategorySelected('strategy')),
+              CategoryCard(
+                  title: 'Sports',
+                  icon: Icons.sports_soccer,
+                  onTap: () => onCategorySelected('sport')),
             ],
           ),
         ),
