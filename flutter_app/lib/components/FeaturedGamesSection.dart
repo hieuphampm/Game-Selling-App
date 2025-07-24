@@ -25,15 +25,14 @@ class FeaturedGamesSection extends StatelessWidget {
         games.add({
           'documentId': doc.id,
           'name': data['name'] ?? '',
-          'price': data['price']?.toString() ?? '',
+          'price': (data['price'] ?? 0).toString(),
           'image_url': data['image_url'] ?? '',
         });
       }
     }
 
-    // Nếu không lọc category thì chỉ lấy 4 game cuối
-    if (category == null) {
-      return games.skip(games.length - 4).toList();
+    if (category == null && games.length > 4) {
+      return games.sublist(games.length - 4);
     }
 
     return games;
@@ -54,51 +53,53 @@ class FeaturedGamesSection extends StatelessWidget {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Padding(
             padding: EdgeInsets.all(16),
-            child: Text(
-              'Không có game phù hợp.',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text('Không có game phù hợp.',
+                style: TextStyle(color: Colors.white)),
           );
         }
 
         final games = snapshot.data!;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Featured Games',
-                style: TextStyle(
-                  color: Color(0xFFFFD9F5),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 220,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: games.length,
-                itemBuilder: (context, index) {
-                  final game = games[index];
-                  return GameCard(
-                    documentId: game['documentId'],
-                    title: game['name'],
-                    price: '\$${game['price']}',
-                    rating: null,
-                    thumbnailUrl: game['image_url'],
-                  );
-                },
-              ),
-            ),
-          ],
-        );
+        return _buildGameSection("Featured Games", games);
       },
+    );
+  }
+
+  Widget _buildGameSection(String title, List<Map<String, dynamic>> games) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Color(0xFFFFD9F5),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 220,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: games.length,
+            itemBuilder: (context, index) {
+              final game = games[index];
+              return GameCard(
+                documentId: game['documentId'],
+                title: game['name'],
+                price: '\$${game['price']}',
+                rating: null,
+                thumbnailUrl: game['image_url'],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

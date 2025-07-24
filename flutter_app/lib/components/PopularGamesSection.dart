@@ -7,7 +7,7 @@ class PopularGamesSection extends StatelessWidget {
 
   const PopularGamesSection({super.key, this.category});
 
-  Future<List<Map<String, dynamic>>> fetchPopularGames() async {
+  Future<List<Map<String, dynamic>>> fetchGames() async {
     final snapshot = await FirebaseFirestore.instance.collection('game').get();
 
     final allGames = snapshot.docs;
@@ -28,7 +28,7 @@ class PopularGamesSection extends StatelessWidget {
           return {
             'documentId': doc.id,
             'name': data['name'] ?? '',
-            'price': data['price']?.toString() ?? '',
+            'price': (data['price'] ?? 0).toString(),
             'image_url': data['image_url'] ?? '',
           };
         })
@@ -40,7 +40,7 @@ class PopularGamesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: fetchPopularGames(),
+      future: fetchGames(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Padding(
@@ -59,42 +59,46 @@ class PopularGamesSection extends StatelessWidget {
 
         final games = snapshot.data!;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Popular Games',
-                style: TextStyle(
-                  color: Color(0xFFFFD9F5),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 220,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: games.length,
-                itemBuilder: (context, index) {
-                  final game = games[index];
-                  return GameCard(
-                    documentId: game['documentId'],
-                    title: game['name'],
-                    price: '\$${game['price']}',
-                    rating: null,
-                    thumbnailUrl: game['image_url'],
-                  );
-                },
-              ),
-            ),
-          ],
-        );
+        return _buildGameSection("Popular Games", games);
       },
+    );
+  }
+
+  Widget _buildGameSection(String title, List<Map<String, dynamic>> games) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Color(0xFFFFD9F5),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 220,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: games.length,
+            itemBuilder: (context, index) {
+              final game = games[index];
+              return GameCard(
+                documentId: game['documentId'],
+                title: game['name'],
+                price: '\$${game['price']}',
+                rating: null,
+                thumbnailUrl: game['image_url'],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
