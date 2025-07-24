@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 import '../components/BannerComponent.dart';
@@ -25,7 +24,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onCategorySelected(String category) {
     setState(() {
-      selectedCategory = category.toLowerCase();
+      if (category.toLowerCase() == 'all') {
+        selectedCategory = null;
+      } else {
+        selectedCategory = category.toLowerCase();
+      }
     });
   }
 
@@ -63,10 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          const CartScreen(), // Đã sửa: không truyền parameters
-                    ),
+                    MaterialPageRoute(builder: (_) => const CartScreen()),
                   );
                 },
               ),
