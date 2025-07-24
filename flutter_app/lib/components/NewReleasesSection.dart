@@ -3,21 +3,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'GameCard.dart';
 
 class NewReleasesSection extends StatelessWidget {
-  const NewReleasesSection({super.key});
+  final String? category;
+
+  const NewReleasesSection({super.key, this.category});
 
   Future<List<Map<String, dynamic>>> fetchNewReleases() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('game').limit(3).get();
+    final snapshot = await FirebaseFirestore.instance.collection('game').get();
 
-    return snapshot.docs.map((doc) {
-      final data = doc.data();
-      return {
-        'documentId': doc.id,
-        'name': data['name'] ?? '',
-        'price': data['price']?.toString() ?? '',
-        'image_url': data['image_url'] ?? '',
-      };
-    }).toList();
+    final allGames = snapshot.docs;
+
+    final games = allGames
+        .where((doc) {
+          final data = doc.data();
+          final categories = List<String>.from(data['category'] ?? []);
+          if (category == null) return true;
+          return categories
+              .map((e) => e.toLowerCase())
+              .contains(category!.toLowerCase());
+        })
+        .take(3)
+        .map((doc) {
+          final data = doc.data();
+          return {
+            'documentId': doc.id,
+            'name': data['name'] ?? '',
+            'price': data['price']?.toString() ?? '',
+            'image_url': data['image_url'] ?? '',
+          };
+        })
+        .toList();
+
+    return games;
   }
 
   @override

@@ -3,25 +3,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'GameCard.dart';
 
 class PopularGamesSection extends StatelessWidget {
-  const PopularGamesSection({super.key});
+  final String? category;
+
+  const PopularGamesSection({super.key, this.category});
 
   Future<List<Map<String, dynamic>>> fetchPopularGames() async {
     final snapshot = await FirebaseFirestore.instance.collection('game').get();
 
     final allGames = snapshot.docs;
 
-    // Lấy từ vị trí thứ 4 đến 6 (3 game tiếp theo)
-    final popularGames = allGames.skip(3).take(3).map((doc) {
-      final data = doc.data();
-      return {
-        'documentId': doc.id,
-        'name': data['name'] ?? '',
-        'price': data['price']?.toString() ?? '',
-        'image_url': data['image_url'] ?? '',
-      };
-    }).toList();
+    final games = allGames
+        .where((doc) {
+          final data = doc.data();
+          final categories = List<String>.from(data['category'] ?? []);
+          if (category == null) return true;
+          return categories
+              .map((e) => e.toLowerCase())
+              .contains(category!.toLowerCase());
+        })
+        .skip(3)
+        .take(3)
+        .map((doc) {
+          final data = doc.data();
+          return {
+            'documentId': doc.id,
+            'name': data['name'] ?? '',
+            'price': data['price']?.toString() ?? '',
+            'image_url': data['image_url'] ?? '',
+          };
+        })
+        .toList();
 
-    return popularGames;
+    return games;
   }
 
   @override

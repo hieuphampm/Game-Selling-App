@@ -3,31 +3,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'GameCard.dart';
 
 class FeaturedGamesSection extends StatelessWidget {
-  const FeaturedGamesSection({super.key});
+  final String? category;
 
-  Future<List<Map<String, dynamic>>> fetchFeaturedGames() async {
+  const FeaturedGamesSection({super.key, this.category});
+
+  Future<List<Map<String, dynamic>>> fetchGames() async {
     final snapshot = await FirebaseFirestore.instance.collection('game').get();
-
     final allGames = snapshot.docs;
 
-    // Lấy 4 game cuối cùng (game_07 -> game_10)
-    final featuredGames = allGames.skip(6).take(4).map((doc) {
-      final data = doc.data();
-      return {
-        'documentId': doc.id,
-        'name': data['name'] ?? '',
-        'price': data['price']?.toString() ?? '',
-        'image_url': data['image_url'] ?? '',
-      };
-    }).toList();
+    List<Map<String, dynamic>> games = [];
 
-    return featuredGames;
+    for (final doc in allGames) {
+      final data = doc.data();
+      final categories = List<String>.from(data['category'] ?? []);
+      final shouldInclude = category == null ||
+          categories
+              .map((e) => e.toLowerCase())
+              .contains(category!.toLowerCase());
+
+      if (shouldInclude) {
+        games.add({
+          'documentId': doc.id,
+          'name': data['name'] ?? '',
+          'price': data['price']?.toString() ?? '',
+          'image_url': data['image_url'] ?? '',
+        });
+      }
+    }
+
+    // Nếu không lọc category thì chỉ lấy 4 game cuối
+    if (category == null) {
+      return games.skip(games.length - 4).toList();
+    }
+
+    return games;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: fetchFeaturedGames(),
+      future: fetchGames(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Padding(
@@ -39,8 +54,10 @@ class FeaturedGamesSection extends StatelessWidget {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Padding(
             padding: EdgeInsets.all(16),
-            child: Text('Không có game nổi bật.',
-                style: TextStyle(color: Colors.white)),
+            child: Text(
+              'Không có game phù hợp.',
+              style: TextStyle(color: Colors.white),
+            ),
           );
         }
 
