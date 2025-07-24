@@ -86,7 +86,7 @@ class CartScreen extends StatelessWidget {
                           Text(
                             "\$${totalPrice.toStringAsFixed(2)}",
                             style: const TextStyle(
-                                color: Colors.cyanAccent,
+                                color: Color(0xFF60D3F3),
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -106,7 +106,7 @@ class CartScreen extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.cyanAccent,
+                            backgroundColor: Color(0xFFFFB3D9),
                             padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
                           icon: const Icon(Icons.payment, color: Colors.black),
@@ -126,3 +126,4 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
+  
