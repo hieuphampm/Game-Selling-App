@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../utils/cart_provider.dart'; // Import Game class
 
 class PaymentScreen extends StatefulWidget {
-  final Map<String, dynamic> gameData;
-  
-  const PaymentScreen({super.key, required this.gameData});
+  final List<Game> cartItems; // Changed from gameData to cartItems
+
+  const PaymentScreen({super.key, required this.cartItems});
 
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
@@ -31,6 +32,15 @@ class _PaymentScreenState extends State<PaymentScreen>
   final Color cardBackground = Color(0xFF1a1a1a);
   final Color textColor = Color(0xFFffffff);
   final Color subtextColor = Color(0xFFb0b0b0);
+
+  // Calculate total price
+  double get totalPrice {
+    double total = 0;
+    for (var item in widget.cartItems) {
+      total += item.price;
+    }
+    return total;
+  }
 
   @override
   void initState() {
@@ -105,7 +115,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Game Information Section
+                      // Games Information Section
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.all(20.0),
@@ -117,86 +127,140 @@ class _PaymentScreenState extends State<PaymentScreen>
                             width: 1,
                           ),
                         ),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Game Image
-                            Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.white10,
-                              ),
-                              child: widget.gameData['image_url'] != null
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.network(
-                                        widget.gameData['image_url'],
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return Icon(
-                                            Icons.videogame_asset,
-                                            color: Colors.white54,
-                                            size: 30,
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  : Icon(
-                                      Icons.videogame_asset,
-                                      color: Colors.white54,
-                                      size: 30,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Order Summary',
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: primaryPink.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    '${widget.cartItems.length} ${widget.cartItems.length == 1 ? 'item' : 'items'}',
+                                    style: TextStyle(
+                                      color: primaryPink,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
                                     ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(width: 16),
-                            // Game Details
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(height: 16),
+                            // List of games
+                            ...widget.cartItems
+                                .map((game) => Padding(
+                                      padding: EdgeInsets.only(bottom: 12),
+                                      child: Row(
+                                        children: [
+                                          // Game Image
+                                          Container(
+                                            width: 60,
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: Colors.white10,
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: Image.network(
+                                                game.image_url,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Icon(
+                                                    Icons.videogame_asset,
+                                                    color: Colors.white54,
+                                                    size: 24,
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 12),
+                                          // Game Details
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  game.name,
+                                                  style: TextStyle(
+                                                    color: textColor,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 2),
+                                                if (game.category != null)
+                                                  Text(
+                                                    game.category!,
+                                                    style: TextStyle(
+                                                      color: accentBlue,
+                                                      fontSize: 11,
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
+                                          // Price
+                                          Text(
+                                            '\$${game.price.toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                              color: primaryPink,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ))
+                                .toList(),
+                            if (widget.cartItems.length > 1) ...[
+                              Divider(color: Colors.grey[700], height: 24),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    widget.gameData['name'] ?? 'Unknown Game',
+                                    'Subtotal',
+                                    style: TextStyle(
+                                      color: subtextColor,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  Text(
+                                    '\$${totalPrice.toStringAsFixed(2)}',
                                     style: TextStyle(
                                       color: textColor,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 4),
-                                  if (widget.gameData['category'] != null && 
-                                      widget.gameData['category'].isNotEmpty)
-                                    Text(
-                                      widget.gameData['category'].first,
-                                      style: TextStyle(
-                                        color: accentBlue,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  SizedBox(height: 8),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: primaryPink.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      'Digital Download',
-                                      style: TextStyle(
-                                        color: primaryPink,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
+                            ],
                           ],
                         ),
                       ),
@@ -240,7 +304,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                             ),
                             SizedBox(height: 8),
                             Text(
-                              '\$${widget.gameData['price']?.toString() ?? '0.00'}',
+                              '\$${totalPrice.toStringAsFixed(2)}',
                               style: TextStyle(
                                 fontSize: 42,
                                 fontWeight: FontWeight.bold,
@@ -258,7 +322,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                'Game Purchase',
+                                'Game${widget.cartItems.length > 1 ? 's' : ''} Purchase',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[700],
@@ -402,7 +466,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                               Icon(Icons.lock, color: Colors.white, size: 20),
                               SizedBox(width: 8),
                               Text(
-                                'Pay \$${widget.gameData['price']?.toString() ?? '0.00'}',
+                                'Pay \$${totalPrice.toStringAsFixed(2)}',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -784,6 +848,11 @@ class _PaymentScreenState extends State<PaymentScreen>
   }
 
   void _processPayment() {
+    // Get list of game names for display
+    String gameNames = widget.cartItems.length == 1
+        ? widget.cartItems.first.name
+        : '${widget.cartItems.length} games';
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -824,7 +893,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                 ),
                 SizedBox(height: 12),
                 Text(
-                  'Your payment of \$${widget.gameData['price']?.toString() ?? '0.00'} for ${widget.gameData['name'] ?? 'the game'} has been processed successfully.',
+                  'Your payment of \$${totalPrice.toStringAsFixed(2)} for $gameNames has been processed successfully.',
                   style: TextStyle(color: subtextColor, fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
@@ -852,7 +921,13 @@ class _PaymentScreenState extends State<PaymentScreen>
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop(); // Close dialog
-                      Navigator.of(context).pop(); // Go back to game detail
+                      Navigator.of(context).pop(); // Go back to previous screen
+
+                      // Clear cart if payment from cart screen
+                      if (widget.cartItems.length > 1) {
+                        // This means it's from cart, so clear it
+                        // You might want to access CartProvider here to clear
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
