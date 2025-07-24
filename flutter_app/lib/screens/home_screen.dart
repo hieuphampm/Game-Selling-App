@@ -5,9 +5,23 @@ import '../components/FeaturedGamesSection.dart';
 import '../components/NewReleasesSection.dart';
 import '../components/PopularGamesSection.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
+
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String? selectedCategory;
+
+  void onCategorySelected(String category) {
+    setState(() {
+      selectedCategory = category.toLowerCase();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +53,16 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            BannerComponent(),
-            SizedBox(height: 20),
-            CategoriesSection(),
-            SizedBox(height: 20),
-            FeaturedGamesSection(),
-            SizedBox(height: 20),
-            PopularGamesSection(),
-            SizedBox(height: 20),
-            NewReleasesSection(),
+          children: [
+            const BannerComponent(),
+            const SizedBox(height: 20),
+            CategoriesSection(onCategorySelected: onCategorySelected),
+            const SizedBox(height: 20),
+            FeaturedGamesSection(category: selectedCategory),
+            const SizedBox(height: 20),
+            PopularGamesSection(category: selectedCategory),
+            const SizedBox(height: 20),
+            NewReleasesSection(category: selectedCategory),
           ],
         ),
       ),
