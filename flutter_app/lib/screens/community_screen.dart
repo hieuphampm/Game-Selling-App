@@ -425,11 +425,6 @@ class QuestScreen extends StatelessWidget {
       requiresFriend: false,
     ),
     Quest(
-      title: 'Win 3 Matches',
-      description: 'Win 3 solo matches in any mode.',
-      requiresFriend: false,
-    ),
-    Quest(
       title: 'Invite a Friend',
       description: 'Invite a friend to the game for mutual rewards.',
       requiresFriend: true,
@@ -438,11 +433,6 @@ class QuestScreen extends StatelessWidget {
       title: 'Post in Community',
       description: 'Share a tip or question in the community group.',
       requiresFriend: false,
-    ),
-    Quest(
-      title: 'Team Battle',
-      description: 'Join and win a team match with friends.',
-      requiresFriend: true,
     ),
   ];
 
