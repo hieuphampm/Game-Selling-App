@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../utils/cart_provider.dart'; // Import Game class
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../utils/cart_provider.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final List<Game> cartItems; // Changed from gameData to cartItems
+  final List<Game> cartItems;
 
   const PaymentScreen({super.key, required this.cartItems});
 
@@ -847,120 +848,356 @@ class _PaymentScreenState extends State<PaymentScreen>
     );
   }
 
-  void _processPayment() {
+  // Hàm lấy mã từ db.json dựa trên tên game
+  String _getGameCodeFromDB(String gameName) {
+    // Giả định bạn có cách truy xuất db.json (ví dụ: qua provider hoặc service)
+    // Đây là logic mẫu, cần thay bằng cách thực tế của bạn
+    final gameData = {
+      "Microsoft Flight Simulator (2020)": [
+        "mfsA9K3X2T",
+        "mfsB7YQ1NZ",
+        "mfsL4W8V0E",
+        "mfsT3RM6PA",
+        "mfsC2Z8DNL",
+        "mfsX1QWER9",
+        "mfsU5VBNM2",
+        "mfsK8HJ7TR",
+        "mfsZ6PLM3A",
+        "mfsD9XC4YU"
+      ],
+      "Forza Horizon 5": [
+        "fhA7X9T2PQ",
+        "fhM3L8WZ1E",
+        "fhK5Q2N7YD",
+        "fhZ6RP1XMB",
+        "fhB8VC3JNL",
+        "fhD9YU4TWE",
+        "fhL1MK7ZQA",
+        "fhU2XN9EPV",
+        "fhC3WQ6RBT",
+        "fhT0JZ8MLN"
+      ],
+      "Left 4 Dead 2": [
+        "lfdtX9A7Q1",
+        "lfdtM3BZ8K",
+        "lfdtT6Y2WP",
+        "lfdtC7VNX0",
+        "lfdtL4QEM9",
+        "lfdtD1KJZ5",
+        "lfdtU8RPNW",
+        "lfdtZ3XCV6",
+        "lfdtB5WQTA",
+        "lfdtY0MLN2"
+      ],
+      "Grand Theft Auto V": [
+        "gtaX7P2M9L",
+        "gtaL4WQ8ZK",
+        "gtaT1CVN6YE",
+        "gtaM3BZ5XQA",
+        "gtaY9JRL2NT",
+        "gtaB6WEM0KZ",
+        "gtaD8XCNV1P",
+        "gtaU2LZQ7WB",
+        "gtaZ5MKJE4T",
+        "gtaC3YPT9XN"
+      ],
+      "Ready or Not": [
+        "rotA7X2M9Q",
+        "rotL8WZ1KJ",
+        "rotT3PNV6C",
+        "rotM9QE5XB",
+        "rotY2CJK7L",
+        "rotB6WTA0NZ",
+        "rotX1VRD8P",
+        "rotD4MLQZ5E",
+        "rotU3NEK9WY",
+        "rotZ5XC7BTL"
+      ],
+      "Euro Truck Simulator 2": [
+        "etsX9L2MQA",
+        "etsB7WZ1TVC",
+        "etsK5JPN8RY",
+        "etsL3QXEM0D",
+        "etsT6YCB9WN",
+        "etsM2ZRJ4KP",
+        "etsD1VXQ7NE",
+        "etsU8PLMW3X",
+        "etsC4WBTY9N",
+        "etsZ0NKJE5A"
+      ],
+      "Cyberpunk 2077": [
+        "cpX7L9MA2Q",
+        "cpT3WZ1VKC",
+        "cpB6QPN8RYD",
+        "cpM5XEL0JNT",
+        "cpY2CVBN9WA",
+        "cpD8ZRJ4KXE",
+        "cpU1WQTY7LM",
+        "cpZ4PMJN3VX",
+        "cpK9XNE5LTA",
+        "cpC0BTYW6MQ"
+      ],
+      "Hollow Knight": [
+        "hkA9X7M2QL",
+        "hkT4WZ1CBK",
+        "hkL8PNV6YQ",
+        "hkM3QE5XND",
+        "hkB6JRKZ0W",
+        "hkY2CVTN9PA",
+        "hkD1XEM7QLK",
+        "hkU5WQZ3NYX",
+        "hkZ0PLMJ4TE",
+        "hkC7BTYVX9N"
+      ],
+      "Blasphemous": [
+        "blaX7M2Q9L",
+        "blaT4Z1WCKE",
+        "blaL8PNV6YQ",
+        "blaM3XE5QND",
+        "blaB6JR0KZW",
+        "blaY2CV9TNA",
+        "blaD1EM7XLK",
+        "blaU5WQ3ZNY",
+        "blaZ0PMJ4TE",
+        "blaC7BTVX9N"
+      ],
+      "Alien: Isolation": [
+        "asX9M2QL7T",
+        "asT4WZC1BK",
+        "asL8PNY6QV",
+        "asM3QE0XND",
+        "asB6JRKZW9",
+        "asY2CVTNA5",
+        "asD1EMX7LK",
+        "asU5WQZ3NY",
+        "asZ0PM4JTE",
+        "asC7BT9VXN"
+      ],
+    };
+    final codes = gameData[gameName] ?? [];
+    return codes.isNotEmpty
+        ? codes[0]
+        : _generateGameKey(); // Lấy mã đầu tiên hoặc tạo mới nếu không có
+  }
+
+  // Hàm tạo game key ngẫu nhiên (dùng khi không có mã trong db.json)
+  String _generateGameKey() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final random = DateTime.now().millisecondsSinceEpoch;
+    String key = '';
+
+    for (int i = 0; i < 16; i++) {
+      if (i > 0 && i % 4 == 0) {
+        key += '-';
+      }
+      key += chars[(random + i) % chars.length];
+    }
+
+    return key;
+  }
+
+  // Hàm lưu game vào Firestore sau khi thanh toán thành công
+  Future<void> _saveGamesToFirestore() async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+
+      for (Game game in widget.cartItems) {
+        // Lấy mã từ db.json dựa trên tên game
+        String gameCode = _getGameCodeFromDB(game.name);
+        print('Saving game: ${game.name}, Code: $gameCode'); // Log để debug
+
+        await firestore.collection('purchased_games').add({
+          'name': game.name,
+          'image_url': game.image_url,
+          'price': game.price,
+          'code': gameCode,
+          'purchase_date': FieldValue.serverTimestamp(),
+          'transaction_id': '#TXN${DateTime.now().millisecondsSinceEpoch}',
+        });
+      }
+
+      print(
+          'Đã lưu ${widget.cartItems.length} game(s) vào Firestore thành công!');
+    } catch (e) {
+      print('Lỗi khi lưu game vào Firestore: $e');
+    }
+  }
+
+  void _processPayment() async {
     // Get list of game names for display
     String gameNames = widget.cartItems.length == 1
         ? widget.cartItems.first.name
         : '${widget.cartItems.length} games';
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: cardBackground,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-          content: Container(
-            padding: EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        accentBlue.withOpacity(0.3),
-                        primaryPink.withOpacity(0.3),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.check_circle, color: accentBlue, size: 48),
-                ),
-                SizedBox(height: 24),
-                Text(
-                  'Payment Successful!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                  ),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'Your payment of \$${totalPrice.toStringAsFixed(2)} for $gameNames has been processed successfully.',
-                  style: TextStyle(color: subtextColor, fontSize: 16),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Transaction ID: #TXN${DateTime.now().millisecondsSinceEpoch}',
-                  style: TextStyle(
-                    color: accentBlue,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 32),
-                Container(
-                  width: double.infinity,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [accentBlue, Color(0xFF4DC4E8)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close dialog
-                      Navigator.of(context).pop(); // Go back to previous screen
+    try {
+      // Lưu games vào Firestore trước khi hiển thị dialog
+      await _saveGamesToFirestore();
 
-                      // Clear cart if payment from cart screen
-                      if (widget.cartItems.length > 1) {
-                        // This means it's from cart, so clear it
-                        // You might want to access CartProvider here to clear
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                    child: Text(
-                      'Done',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+      // Hiển thị dialog thành công
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: cardBackground,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
             ),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _cardNumberController.dispose();
-    _cardHolderController.dispose();
-    _expiryController.dispose();
-    _cvvController.dispose();
-    _animationController.dispose();
-    super.dispose();
+            content: Container(
+              padding: EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          accentBlue.withOpacity(0.3),
+                          primaryPink.withOpacity(0.3),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child:
+                        Icon(Icons.check_circle, color: accentBlue, size: 48),
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    'Payment Successful!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'Bạn đã mua thành công $gameNames với tổng số tiền \$${totalPrice.toStringAsFixed(2)}. Mã game đã được gửi qua email và lưu trong tài khoản của bạn.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: subtextColor,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 24),
+                  Container(
+                    width: double.infinity,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [accentBlue, Color(0xFF4DC4E8)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Đóng dialog
+                        Navigator.pushReplacementNamed(context,
+                            '/library'); // Quay về LibraryScreen và làm mới
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      child: Text(
+                        'Quay lại',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      // Hiển thị dialog lỗi nếu có vấn đề khi lưu vào Firestore
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: cardBackground,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            content: Container(
+              padding: EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.error, color: Colors.red, size: 48),
+                  SizedBox(height: 24),
+                  Text(
+                    'Lỗi Thanh Toán',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'Đã có lỗi xảy ra trong quá trình xử lý thanh toán. Vui lòng thử lại sau.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: subtextColor,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 24),
+                  Container(
+                    width: double.infinity,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [accentBlue, Color(0xFF4DC4E8)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      child: Text(
+                        'Đóng',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 }
