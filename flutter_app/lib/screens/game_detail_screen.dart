@@ -3,8 +3,50 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
-import '../utils/cart_provider.dart'; // This imports Game class
+import '../utils/cart_provider.dart';
 import 'payment_screen.dart';
+
+// Mock reviews theo từng game (dùng tiếng Việt)
+final Map<String, List<Map<String, dynamic>>> gameReviews = {
+  'Cyberpunk 2077': [
+    {
+      "user": "Nguyễn Thảo",
+      "rating": 4.5,
+      "comment":
+          "Đồ họa đỉnh cao, thế giới mở cực kỳ sống động. Tuy vẫn còn một vài lỗi nhỏ."
+    },
+    {
+      "user": "Trần Quốc Bảo",
+      "rating": 5.0,
+      "comment": "Game siêu hay, cốt truyện lôi cuốn và nhạc nền rất tuyệt!"
+    },
+  ],
+  'The Witcher 3': [
+    {
+      "user": "Lê Hoàng",
+      "rating": 5.0,
+      "comment": "Game nhập vai đỉnh nhất mọi thời đại! Geralt quá ngầu!"
+    },
+    {
+      "user": "Phạm Lan",
+      "rating": 4.8,
+      "comment": "Cốt truyện hấp dẫn, nhiệm vụ phong phú và rất có chiều sâu."
+    },
+  ],
+  'Genshin Impact': [
+    {
+      "user": "Mai Hương",
+      "rating": 4.2,
+      "comment":
+          "Game miễn phí mà chất lượng quá tuyệt vời, đồ họa anime dễ thương."
+    },
+    {
+      "user": "Vũ Dũng",
+      "rating": 3.9,
+      "comment": "Lối chơi lôi cuốn nhưng hơi tốn thời gian cày cuốc."
+    },
+  ],
+};
 
 class GameDetailScreen extends StatefulWidget {
   final String documentId;
@@ -112,28 +154,24 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     try {
       final cart = Provider.of<CartProvider>(context, listen: false);
 
-      // Kiểm tra xem game đã có trong cart chưa
       if (cart.isInCart(widget.documentId)) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${gameData!['name']} is already in cart!'),
+              content: Text('${gameData!['name']} đã có trong giỏ hàng!'),
               backgroundColor: Colors.orange,
               duration: const Duration(seconds: 2),
             ),
           );
         }
       } else {
-        // Tạo Game object từ gameData using factory constructor
         final game = Game.fromMap(gameData!, widget.documentId);
-
-        // Thêm vào cart
         cart.addItem(game);
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${gameData!['name']} added to cart!'),
+              content: Text('${gameData!['name']} đã thêm vào giỏ hàng!'),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
             ),
@@ -144,7 +182,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Cannot add to cart: $e'),
+            content: Text('Không thể thêm vào giỏ: $e'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 2),
           ),
@@ -165,7 +203,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     });
 
     try {
-      // Tạo danh sách chỉ có 1 game để mua using factory constructor
       final gameList = [Game.fromMap(gameData!, widget.documentId)];
 
       if (mounted) {
@@ -180,7 +217,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error when buy game: $e'),
+            content: Text('Lỗi khi mua game: $e'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 2),
           ),
@@ -205,7 +242,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       backgroundColor: const Color(0xFF0A0E21),
       appBar: AppBar(
         title:
-            const Text("Game Details", style: TextStyle(color: Colors.white)),
+            const Text("Chi Tiết Game", style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF0A0E21),
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
@@ -214,7 +251,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           ? const Center(child: CircularProgressIndicator(color: Colors.cyan))
           : gameData == null
               ? const Center(
-                  child: Text("Game not found",
+                  child: Text("Không tìm thấy game",
                       style: TextStyle(color: Colors.white)),
                 )
               : SingleChildScrollView(
@@ -281,8 +318,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-
-                      // ✅ Buy Now & Add to Cart Buttons
                       Row(
                         children: [
                           Expanded(
@@ -298,8 +333,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                       ),
                                     )
                                   : const Icon(Icons.shopping_bag),
-                              label:
-                                  Text(_isBuying ? 'Processing...' : 'Buy Now'),
+                              label: Text(
+                                  _isBuying ? 'Đang xử lý...' : 'Mua ngay'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF71CFFE),
                                 foregroundColor: Colors.white,
@@ -327,10 +362,10 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                       ? Icons.check
                                       : Icons.add_shopping_cart),
                               label: Text(_isAddingToCart
-                                  ? 'Adding...'
+                                  ? 'Đang thêm...'
                                   : isInCart
-                                      ? 'In Cart'
-                                      : 'Add to Cart'),
+                                      ? 'Đã có trong giỏ'
+                                      : 'Thêm vào giỏ'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: isInCart
                                     ? Colors.grey
@@ -343,29 +378,24 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 20),
-
                       if (gameData!['description'] != null)
-                        _buildSectionTitle(
-                            'Description', gameData!['description']),
+                        _buildSectionTitle('Mô Tả', gameData!['description']),
                       if (gameData!['category'] != null)
-                        _buildListSection('Category', gameData!['category']),
+                        _buildListSection('Thể loại', gameData!['category']),
                       if (gameData!['requirements'] != null)
                         _buildListSection(
-                            'System Requirements', gameData!['requirements']),
+                            'Cấu hình yêu cầu', gameData!['requirements']),
                       if (gameData!['modes'] != null)
-                        _buildListSection('Play Modes', gameData!['modes']),
-
+                        _buildListSection('Chế độ chơi', gameData!['modes']),
                       const SizedBox(height: 20),
-
                       ElevatedButton.icon(
                         onPressed:
                             _isLoadingSummary ? null : _generateAiSummary,
                         icon: const Icon(Icons.auto_awesome),
                         label: Text(_isLoadingSummary
-                            ? 'Creating summary...'
-                            : 'Summary with AI'),
+                            ? 'Đang tạo tóm tắt...'
+                            : 'Tóm tắt với AI'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF60D3F3),
                           foregroundColor: Colors.white,
@@ -390,6 +420,22 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                       fontSize: 14,
                                       height: 1.5)),
                         ),
+                      ],
+                      if (gameData != null &&
+                          gameReviews.containsKey(gameData!['name'])) ...[
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Đánh Giá Người Dùng',
+                          style: TextStyle(
+                            color: Color(0xFFFFD9F5),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ...gameReviews[gameData!['name']]!.map((review) =>
+                            _buildReviewCard(review['user'], review['rating'],
+                                review['comment'])),
                       ],
                     ],
                   ),
@@ -434,6 +480,44 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
             style: const TextStyle(color: Colors.white70, fontSize: 14))),
         const SizedBox(height: 20),
       ],
+    );
+  }
+
+  Widget _buildReviewCard(String user, double rating, String comment) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white10,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.person, color: Colors.cyanAccent),
+              const SizedBox(width: 8),
+              Text(
+                user,
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              Icon(Icons.star, color: Colors.amber, size: 18),
+              Text(
+                rating.toString(),
+                style: const TextStyle(color: Colors.amber),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            comment,
+            style: const TextStyle(color: Colors.white70),
+          ),
+        ],
+      ),
     );
   }
 }
