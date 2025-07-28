@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-// Game model class - nếu bạn đã có class này ở nơi khác thì có thể xóa
+// Game model class - Export this class so other files can use it
 class Game {
   final String id;
   final String name;
@@ -17,6 +17,22 @@ class Game {
     this.category,
     this.description,
   });
+
+  // Add factory constructor to create Game from Map (useful for Firestore)
+  factory Game.fromMap(Map<String, dynamic> map, String id) {
+    return Game(
+      id: id,
+      name: map['name'] ?? '',
+      price: (map['price'] is int)
+          ? (map['price'] as int).toDouble()
+          : (map['price'] ?? 0).toDouble(),
+      image_url: map['image_url'] ?? '',
+      category: map['category'] is List
+          ? (map['category'] as List).join(', ')
+          : map['category'],
+      description: map['description'],
+    );
+  }
 }
 
 class CartProvider extends ChangeNotifier {

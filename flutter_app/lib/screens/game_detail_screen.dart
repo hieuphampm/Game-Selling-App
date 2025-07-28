@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
-import '../utils/cart_provider.dart';
+import '../utils/cart_provider.dart'; // This imports Game class
 import 'payment_screen.dart';
 
 class GameDetailScreen extends StatefulWidget {
@@ -110,38 +110,35 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     });
 
     try {
-      // Create Game object from gameData
-      final game = Game(
-        id: widget.documentId,
-        name: gameData!['name'],
-        price: (gameData!['price'] is int)
-            ? (gameData!['price'] as int).toDouble()
-            : gameData!['price'].toDouble(),
-        image_url: gameData!['image_url'],
-        category: gameData!['category']?.join(', '),
-        description: gameData!['description'],
-      );
+      final cart = Provider.of<CartProvider>(context, listen: false);
 
-      // Add to cart using CartProvider
-      Provider.of<CartProvider>(context, listen: false).addItem(game);
+      // Kiểm tra xem game đã có trong cart chưa
+      if (cart.isInCart(widget.documentId)) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${gameData!['name']} is already in cart!'),
+              backgroundColor: Colors.orange,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      } else {
+        // Tạo Game object từ gameData using factory constructor
+        final game = Game.fromMap(gameData!, widget.documentId);
 
-      // Optional: Also save to Firestore if you want to persist cart data
-      await FirebaseFirestore.instance.collection('cart').add({
-        'gameId': widget.documentId,
-        'gameName': gameData!['name'],
-        'price': gameData!['price'],
-        'imageUrl': gameData!['image_url'],
-        'addedAt': FieldValue.serverTimestamp(),
-      });
+        // Thêm vào cart
+        cart.addItem(game);
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${gameData!['name']} added to cart!'),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 2),
-          ),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${gameData!['name']} added to cart!'),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -168,34 +165,14 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     });
 
     try {
-      // Create Game object
-      final game = Game(
-        id: widget.documentId,
-        name: gameData!['name'],
-        price: (gameData!['price'] is int)
-            ? (gameData!['price'] as int).toDouble()
-            : gameData!['price'].toDouble(),
-        image_url: gameData!['image_url'],
-        category: gameData!['category']?.join(', '),
-        description: gameData!['description'],
-      );
-
-      // Save order to Firestore
-      await FirebaseFirestore.instance.collection('orders').add({
-        'gameId': widget.documentId,
-        'gameName': gameData!['name'],
-        'price': gameData!['price'],
-        'imageUrl': gameData!['image_url'],
-        'orderDate': FieldValue.serverTimestamp(),
-        'status': 'pending',
-      });
+      // Tạo danh sách chỉ có 1 game để mua using factory constructor
+      final gameList = [Game.fromMap(gameData!, widget.documentId)];
 
       if (mounted) {
-        // Navigate to payment with single item
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PaymentScreen(cartItems: [game]),
+            builder: (context) => PaymentScreen(cartItems: gameList),
           ),
         );
       }
@@ -220,9 +197,9 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
+    final cart = Provider.of<CartProvider>(context);
     final isInCart =
-        gameData != null ? cartProvider.isInCart(widget.documentId) : false;
+        gameData != null ? cart.isInCart(widget.documentId) : false;
 
     return Scaffold(
       backgroundColor: const Color(0xFF0A0E21),
@@ -316,21 +293,25 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                       width: 20,
                                       height: 20,
                                       child: CircularProgressIndicator(
-                                          strokeWidth: 2, color: Colors.white))
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
                                   : const Icon(Icons.shopping_bag),
                               label:
                                   Text(_isBuying ? 'Processing...' : 'Buy Now'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF71CFFE),
                                 foregroundColor: Colors.white,
-                                minimumSize: const Size.fromHeight(48),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
                               ),
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: ElevatedButton.icon(
-                              onPressed: (isInCart || _isAddingToCart)
+                              onPressed: (_isAddingToCart || isInCart)
                                   ? null
                                   : _addToCart,
                               icon: _isAddingToCart
@@ -338,7 +319,10 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                       width: 20,
                                       height: 20,
                                       child: CircularProgressIndicator(
-                                          strokeWidth: 2, color: Colors.white))
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
                                   : Icon(isInCart
                                       ? Icons.check
                                       : Icons.add_shopping_cart),
@@ -352,7 +336,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                     ? Colors.grey
                                     : const Color(0xFFFFB3D9),
                                 foregroundColor: Colors.white,
-                                minimumSize: const Size.fromHeight(48),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
                               ),
                             ),
                           ),
