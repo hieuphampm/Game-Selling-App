@@ -11,21 +11,45 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
+  Future<List<Game>>? _purchasedGamesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshGames();
+  }
+
+  void _refreshGames() {
+    setState(() {
+      _purchasedGamesFuture = fetchPurchasedGames();
+    });
+  }
+
   Future<List<Game>> fetchPurchasedGames() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('purchased_games').get();
-    return snapshot.docs.map((doc) {
-      final data = doc.data();
-      return Game(
-        id: doc.id,
-        name: data['name'],
-        genre: data['genre'],
-        image_url: data['image_url'],
-        price: (data['price'] as num).toDouble(),
-        rating: (data['rating'] as num).toDouble(),
-        code: data['code'], // Mã game nếu có
-      );
-    }).toList();
+    try {
+      final snapshot =
+          await FirebaseFirestore.instance.collection('purchased_games').get();
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        print(
+            'Fetched game: ${data['name']}, Code: ${data['code']}'); // Log để debug
+        return Game(
+          id: doc.id,
+          name: data['name'] ?? 'Unknown',
+          category: (data['category'] as List<dynamic>?)
+                  ?.map((e) => e.toString())
+                  .toList() ??
+              [], // Sử dụng category thay vì genre
+          image_url: data['image_url'] ?? '',
+          price: (data['price'] as num?)?.toDouble() ?? 0.0,
+          rating: (data['rating'] as num?)?.toDouble() ?? 0.0,
+          code: data['code'] ?? 'No key', // Đảm bảo code luôn có giá trị
+        );
+      }).toList();
+    } catch (e) {
+      print('Error fetching games: $e');
+      return [];
+    }
   }
 
   @override
@@ -38,7 +62,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         foregroundColor: Colors.white,
       ),
       body: FutureBuilder<List<Game>>(
-        future: fetchPurchasedGames(),
+        future: _purchasedGamesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -96,6 +120,10 @@ class LibraryGameCard extends StatelessWidget {
                 game.image_url,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons.videogame_asset,
+                      color: Colors.white54, size: 24);
+                },
               ),
             ),
           ),
@@ -103,7 +131,10 @@ class LibraryGameCard extends StatelessWidget {
           Text(game.name,
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold)),
-          Text(game.genre,
+          Text(
+              game.category.isNotEmpty
+                  ? game.category[0]
+                  : 'Unknown', // Hiển thị category đầu tiên
               style: const TextStyle(color: Colors.white54, fontSize: 12)),
           const SizedBox(height: 4),
           if (game.code != null && game.code!.isNotEmpty) ...[
