@@ -434,6 +434,11 @@ class QuestScreen extends StatelessWidget {
       description: 'Share a tip or question in the community group.',
       requiresFriend: false,
     ),
+    Quest(
+      title: 'Watch an AD',
+      description: 'Watch an AD to get 50 coins!',
+      requiresFriend: false,
+    ),
   ];
 
   @override
