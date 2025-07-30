@@ -22,23 +22,23 @@ const AddGameCode = () => {
     const gameSnap = await getDoc(gameRef);
 
     if (!gameSnap.exists()) {
-      setStatus("🚫 Game không tồn tại!");
+      setStatus("Game không tồn tại!");
     } else {
       const gameData = gameSnap.data();
       const existingCodes = gameData.codes || [];
 
       if (existingCodes.includes(newCode)) {
-        setStatus("🚫 Mã code này đã tồn tại!");
+        setStatus("Mã code này đã tồn tại!");
       } else {
         const updatedCodes = [...existingCodes, newCode];
         await updateDoc(gameRef, { codes: updatedCodes });
-        setStatus("✅ Thêm code thành công!");
+        setStatus("Thêm code thành công!");
         setNewCode("");
       }
     }
   } catch (error) {
-    console.error("⚠️ Lỗi khi thêm code:", error);
-    setStatus("⚠️ Lỗi khi thêm code.");
+    console.error("Lỗi khi thêm code:", error);
+    setStatus("Lỗi khi thêm code.");
   }
 
   setIsLoading(false);
@@ -64,7 +64,7 @@ const AddGameCode = () => {
         rel="stylesheet" 
       />
       
-      <style jsx>{`
+      <style>{`
         body {
           background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
           min-height: 100vh;
