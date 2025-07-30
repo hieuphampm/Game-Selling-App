@@ -64,7 +64,7 @@ const AddGameCode = () => {
         rel="stylesheet" 
       />
       
-      <style jsx>{`
+      <style>{`
         body {
           background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
           min-height: 100vh;
