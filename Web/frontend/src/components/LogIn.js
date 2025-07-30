@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!username || !password) {
-      setStatus("⚠️ Vui lòng nhập đủ thông tin.");
+      setStatus("Vui lòng nhập đủ thông tin.");
       return;
     }
 
