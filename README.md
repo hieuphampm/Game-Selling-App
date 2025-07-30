@@ -40,12 +40,6 @@ Game Selling App is a mobile e-commerce platform where users can:
 
 ---
 
-## 📸 Screenshots
-
-*(Add screenshots here if available)*
-
----
-
 ## 🚀 Getting Started
 
 To run this project locally:
