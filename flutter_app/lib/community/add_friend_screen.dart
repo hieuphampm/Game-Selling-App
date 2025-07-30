@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'friend_chat_screen.dart';
 
 class AddFriendScreen extends StatelessWidget {
   static const routeName = '/add-friend';
@@ -41,20 +42,31 @@ class AddFriendScreen extends StatelessWidget {
               child: ListView.separated(
                 itemCount: friends.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemBuilder: (_, i) => Card(
-                  color: const Color(0xFF1A1A1A),
-                  child: ListTile(
-                    title: Text(
-                      friends[i],
-                      style: const TextStyle(color: Colors.white),
+                itemBuilder: (_, i) {
+                  return Card(
+                    color: const Color(0xFF1A1A1A),
+                    child: ListTile(
+                      title: Text(
+                        friends[i],
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      trailing: const Icon(
+                        Icons.circle,
+                        color: Colors.green,
+                        size: 12,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                FriendChatScreen(friendName: friends[i]),
+                          ),
+                        );
+                      },
                     ),
-                    trailing: const Icon(
-                      Icons.circle,
-                      color: Colors.green,
-                      size: 12,
-                    ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
           ],

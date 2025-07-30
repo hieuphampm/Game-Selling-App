@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'group_chat_screen.dart';
 
 class JoinGroupScreen extends StatelessWidget {
   static const routeName = '/join-group';
@@ -41,15 +42,26 @@ class JoinGroupScreen extends StatelessWidget {
               child: ListView.separated(
                 itemCount: groups.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemBuilder: (_, i) => Card(
-                  color: const Color(0xFF1A1A1A),
-                  child: ListTile(
-                    title: Text(
-                      groups[i],
-                      style: const TextStyle(color: Colors.white),
+                itemBuilder: (_, i) {
+                  return Card(
+                    color: const Color(0xFF1A1A1A),
+                    child: ListTile(
+                      title: Text(
+                        groups[i],
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                GroupChatScreen(groupName: groups[i]),
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
           ],
