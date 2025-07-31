@@ -15,6 +15,23 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  Future<int> _fetchUserCoins() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return 0;
+
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      return doc.exists ? (doc.data()?['coins'] as int? ?? 0) : 0;
+    } catch (e) {
+      print('Error fetching user coins: $e');
+      return 0;
+    }
+  }
+
   void _showLogoutDialog() {
     showDialog(
       context: context,
@@ -175,6 +192,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Text(
                   'Demo',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                FutureBuilder<int>(
+                  future: _fetchUserCoins(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text(
+                        'Coins: Loading...',
+                        style: TextStyle(
+                          color: Color(0xFFb0b0b0),
+                          fontSize: 14,
+                        ),
+                      );
+                    } else if (snapshot.hasError || !snapshot.hasData) {
+                      return const Text(
+                        'Coins: 0',
+                        style: TextStyle(
+                          color: Color(0xFFb0b0b0),
+                          fontSize: 14,
+                        ),
+                      );
+                    } else {
+                      return Text(
+                        'Coins: ${snapshot.data}',
+                        style: const TextStyle(
+                          color: Color(0xFFFFD9F5),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    }
+                  },
                 ),
                 const SizedBox(height: 8),
                 ElevatedButton.icon(
