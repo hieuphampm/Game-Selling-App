@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "797791806867",
+    "firebase_url": "https://gamesellingapp-f26b7-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "gamesellingapp-f26b7",
     "storage_bucket": "gamesellingapp-f26b7.firebasestorage.app"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "797791806867-a0m9bboqk5lc7e470tqqn9vgbreohut4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.interview_application",
+            "certificate_hash": "540fa0189f99c1ad158ae393b88cc6840b5242dd"
+          }
+        },
         {
           "client_id": "797791806867-k17ci49hai0bh7li9lklsphvtab7ncg3.apps.googleusercontent.com",
           "client_type": 3
