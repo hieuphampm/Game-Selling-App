@@ -29,24 +29,20 @@ class _LibraryScreenState extends State<LibraryScreen> {
     try {
       final snapshot =
           await FirebaseFirestore.instance.collection('purchased_games').get();
-
-      print('Total documents found: ${snapshot.docs.length}'); // Debug log
+      print('Total documents found: ${snapshot.docs.length}');
 
       return snapshot.docs.map((doc) {
         final data = doc.data();
-        print('Document ID: ${doc.id}'); // Debug log
-        print('Raw data: $data'); // Debug log
+        print('Document ID: ${doc.id}');
+        print('Raw data: $data');
 
-        // Xử lý category linh hoạt - có thể là String hoặc List
         List<String> categoryList = [];
         if (data['category'] != null) {
           if (data['category'] is List) {
-            // Nếu là List, convert thành List<String>
             categoryList = (data['category'] as List<dynamic>)
                 .map((e) => e.toString())
                 .toList();
           } else if (data['category'] is String) {
-            // Nếu là String, tạo List chỉ có 1 phần tử
             categoryList = [data['category'].toString()];
           }
         }
@@ -61,12 +57,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
           code: data['code'] ?? 'No key',
         );
 
-        print('Created game: ${game.name}, Code: ${game.code}'); // Debug log
+        print('Created game: ${game.name}, Code: ${game.code}');
         return game;
       }).toList();
     } catch (e) {
       print('Error fetching games: $e');
-      print('Stack trace: ${StackTrace.current}'); // Thêm stack trace để debug
+      print('Stack trace: ${StackTrace.current}');
       return [];
     }
   }
@@ -80,7 +76,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         actions: [
-          // Thêm refresh button
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _refreshGames,
@@ -184,18 +179,16 @@ class LibraryGameCard extends StatelessWidget {
           Text(game.category.isNotEmpty ? game.category[0] : 'Unknown',
               style: const TextStyle(color: Colors.white54, fontSize: 12)),
           const SizedBox(height: 4),
-          if (game.code != null &&
-              game.code!.isNotEmpty &&
-              game.code != 'No key') ...[
-            const Text("Code:",
-                style: TextStyle(color: Colors.cyanAccent, fontSize: 12)),
-            SelectableText(
-              game.code!,
-              style: const TextStyle(color: Colors.greenAccent, fontSize: 11),
-            )
-          ] else
-            const Text("No key yet",
-                style: TextStyle(color: Colors.redAccent, fontSize: 12)),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.green.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: Colors.green, width: 1),
+            ),
+            child: const Text("Owned",
+                style: TextStyle(color: Colors.greenAccent, fontSize: 10)),
+          ),
         ],
       ),
     );
