@@ -29,25 +29,44 @@ class _LibraryScreenState extends State<LibraryScreen> {
     try {
       final snapshot =
           await FirebaseFirestore.instance.collection('purchased_games').get();
+
+      print('Total documents found: ${snapshot.docs.length}'); // Debug log
+
       return snapshot.docs.map((doc) {
         final data = doc.data();
-        print(
-            'Fetched game: ${data['name']}, Code: ${data['code']}'); // Log để debug
-        return Game(
+        print('Document ID: ${doc.id}'); // Debug log
+        print('Raw data: $data'); // Debug log
+
+        // Xử lý category linh hoạt - có thể là String hoặc List
+        List<String> categoryList = [];
+        if (data['category'] != null) {
+          if (data['category'] is List) {
+            // Nếu là List, convert thành List<String>
+            categoryList = (data['category'] as List<dynamic>)
+                .map((e) => e.toString())
+                .toList();
+          } else if (data['category'] is String) {
+            // Nếu là String, tạo List chỉ có 1 phần tử
+            categoryList = [data['category'].toString()];
+          }
+        }
+
+        final game = Game(
           id: doc.id,
           name: data['name'] ?? 'Unknown',
-          category: (data['category'] as List<dynamic>?)
-                  ?.map((e) => e.toString())
-                  .toList() ??
-              [], // Sử dụng category thay vì genre
+          category: categoryList,
           image_url: data['image_url'] ?? '',
           price: (data['price'] as num?)?.toDouble() ?? 0.0,
           rating: (data['rating'] as num?)?.toDouble() ?? 0.0,
-          code: data['code'] ?? 'No key', // Đảm bảo code luôn có giá trị
+          code: data['code'] ?? 'No key',
         );
+
+        print('Created game: ${game.name}, Code: ${game.code}'); // Debug log
+        return game;
       }).toList();
     } catch (e) {
       print('Error fetching games: $e');
+      print('Stack trace: ${StackTrace.current}'); // Thêm stack trace để debug
       return [];
     }
   }
@@ -60,6 +79,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
         title: const Text("My Library"),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
+        actions: [
+          // Thêm refresh button
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshGames,
+          ),
+        ],
       ),
       body: FutureBuilder<List<Game>>(
         future: _purchasedGamesFuture,
@@ -67,13 +93,37 @@ class _LibraryScreenState extends State<LibraryScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(
-                child: Text("Error loading library",
-                    style: TextStyle(color: Colors.white)));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Error loading library",
+                      style: TextStyle(color: Colors.white)),
+                  const SizedBox(height: 8),
+                  Text("${snapshot.error}",
+                      style: const TextStyle(color: Colors.red, fontSize: 12)),
+                  ElevatedButton(
+                    onPressed: _refreshGames,
+                    child: const Text("Retry"),
+                  ),
+                ],
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-                child: Text("No games purchased yet",
-                    style: TextStyle(color: Colors.white70)));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("No games purchased yet",
+                      style: TextStyle(color: Colors.white70)),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _refreshGames,
+                    child: const Text("Refresh"),
+                  ),
+                ],
+              ),
+            );
           }
 
           final games = snapshot.data!;
@@ -121,7 +171,7 @@ class LibraryGameCard extends StatelessWidget {
                 width: double.infinity,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  return Icon(Icons.videogame_asset,
+                  return const Icon(Icons.videogame_asset,
                       color: Colors.white54, size: 24);
                 },
               ),
@@ -131,18 +181,17 @@ class LibraryGameCard extends StatelessWidget {
           Text(game.name,
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold)),
-          Text(
-              game.category.isNotEmpty
-                  ? game.category[0]
-                  : 'Unknown', // Hiển thị category đầu tiên
+          Text(game.category.isNotEmpty ? game.category[0] : 'Unknown',
               style: const TextStyle(color: Colors.white54, fontSize: 12)),
           const SizedBox(height: 4),
-          if (game.code != null && game.code!.isNotEmpty) ...[
+          if (game.code != null &&
+              game.code!.isNotEmpty &&
+              game.code != 'No key') ...[
             const Text("Code:",
                 style: TextStyle(color: Colors.cyanAccent, fontSize: 12)),
             SelectableText(
               game.code!,
-              style: const TextStyle(color: Colors.greenAccent),
+              style: const TextStyle(color: Colors.greenAccent, fontSize: 11),
             )
           ] else
             const Text("No key yet",
