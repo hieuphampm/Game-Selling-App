@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../utils/cart_provider.dart';
 import 'payment_screen.dart';
 
-// Mock reviews theo từng game (dùng tiếng Việt)
 final Map<String, List<Map<String, dynamic>>> gameReviews = {
   'Cyberpunk 2077': [
     {
@@ -158,7 +157,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${gameData!['name']} đã có trong giỏ hàng!'),
+              content: Text('${gameData!['name']} Already in cart!'),
               backgroundColor: Colors.orange,
               duration: const Duration(seconds: 2),
             ),
@@ -171,7 +170,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${gameData!['name']} đã thêm vào giỏ hàng!'),
+              content: Text('${gameData!['name']} alrealy in cart!'),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
             ),
@@ -217,7 +216,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Lỗi khi mua game: $e'),
+            content: Text('Error buying game: $e'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 2),
           ),
@@ -242,7 +241,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       backgroundColor: const Color(0xFF0A0E21),
       appBar: AppBar(
         title:
-            const Text("Chi Tiết Game", style: TextStyle(color: Colors.white)),
+            const Text("Game Details", style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF0A0E21),
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
@@ -251,7 +250,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           ? const Center(child: CircularProgressIndicator(color: Colors.cyan))
           : gameData == null
               ? const Center(
-                  child: Text("Không tìm thấy game",
+                  child: Text("Game not found",
                       style: TextStyle(color: Colors.white)),
                 )
               : SingleChildScrollView(
@@ -333,8 +332,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                       ),
                                     )
                                   : const Icon(Icons.shopping_bag),
-                              label: Text(
-                                  _isBuying ? 'Đang xử lý...' : 'Mua ngay'),
+                              label:
+                                  Text(_isBuying ? 'Processing...' : 'Buy Now'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF71CFFE),
                                 foregroundColor: Colors.white,
@@ -362,10 +361,10 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                       ? Icons.check
                                       : Icons.add_shopping_cart),
                               label: Text(_isAddingToCart
-                                  ? 'Đang thêm...'
+                                  ? 'Adding...'
                                   : isInCart
-                                      ? 'Đã có trong giỏ'
-                                      : 'Thêm vào giỏ'),
+                                      ? 'Already in Cart'
+                                      : 'Add to Cart'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: isInCart
                                     ? Colors.grey
@@ -380,22 +379,23 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                       ),
                       const SizedBox(height: 20),
                       if (gameData!['description'] != null)
-                        _buildSectionTitle('Mô Tả', gameData!['description']),
+                        _buildSectionTitle(
+                            'Description', gameData!['description']),
                       if (gameData!['category'] != null)
-                        _buildListSection('Thể loại', gameData!['category']),
+                        _buildListSection('Category', gameData!['category']),
                       if (gameData!['requirements'] != null)
                         _buildListSection(
-                            'Cấu hình yêu cầu', gameData!['requirements']),
+                            'System Requirements', gameData!['requirements']),
                       if (gameData!['modes'] != null)
-                        _buildListSection('Chế độ chơi', gameData!['modes']),
+                        _buildListSection('Game Modes', gameData!['modes']),
                       const SizedBox(height: 20),
                       ElevatedButton.icon(
                         onPressed:
                             _isLoadingSummary ? null : _generateAiSummary,
                         icon: const Icon(Icons.auto_awesome),
                         label: Text(_isLoadingSummary
-                            ? 'Đang tạo tóm tắt...'
-                            : 'Tóm tắt với AI'),
+                            ? 'Creating summary...'
+                            : 'Summarize with AI'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF60D3F3),
                           foregroundColor: Colors.white,
@@ -425,7 +425,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                           gameReviews.containsKey(gameData!['name'])) ...[
                         const SizedBox(height: 20),
                         const Text(
-                          'Đánh Giá Người Dùng',
+                          'User Reviews',
                           style: TextStyle(
                             color: Color(0xFFFFD9F5),
                             fontSize: 20,
